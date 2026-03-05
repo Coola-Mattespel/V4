@@ -1,0 +1,17 @@
+<div id="gameBox">
+  <iframe id="gameFrame" src="https://blooket-cheats.github.io/"></iframe>
+</div>
+
+<button onclick="fullscreenGame()">Fullscreen</button>
+
+<script>
+function fullscreenGame(){
+  const box = document.getElementById("gameBox");
+
+  if(!document.fullscreenElement){
+    box.requestFullscreen();
+  }else{
+    document.exitFullscreen();
+  }
+}
+</script>
