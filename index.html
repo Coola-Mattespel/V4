@@ -133,10 +133,10 @@
     }
 
     .sidebar {
-      width: 90px;
+      width: 210px;
       background: rgba(0, 0, 0, .65);
       backdrop-filter: blur(10px);
-      padding: 72px 5px 10px;
+      padding: 72px 8px 10px;
       flex-shrink: 0;
       position: fixed;
       top: 0;
@@ -154,13 +154,32 @@
     .sidebar-btn {
       width: 100%;
       margin-bottom: 6px;
-      padding: 10px 0;
+      padding: 10px 12px;
       border: none;
       border-radius: 10px;
       background: linear-gradient(135deg, var(--accent-dark), var(--accent));
       color: white;
-      font-size: 20px;
+      font-size: 16px;
+      font-weight: 700;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      text-align: left;
+    }
+
+    .sidebar-btn .icon {
+      width: 24px;
+      text-align: center;
+      font-size: 20px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .sidebar-btn .label {
+      white-space: nowrap;
+      line-height: 1.1;
     }
 
     .main {
@@ -345,8 +364,9 @@
       .header h1 { font-size: 34px; }
       .subtitle { font-size: 14px; letter-spacing: 1px; }
       .menu-toggle { top: 12px; left: 12px; width: 42px; height: 42px; font-size: 24px; }
-      .sidebar { width: 74px; padding-top: 66px; }
-      .sidebar-btn { font-size: 18px; }
+      .sidebar { width: 190px; padding-top: 66px; }
+      .sidebar-btn { font-size: 15px; padding: 10px; }
+      .sidebar-btn .icon { width: 22px; font-size: 18px; }
       .main { padding: 16px; }
     }
   </style>
@@ -358,14 +378,14 @@
     <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
 
     <div class="sidebar" id="sidebar">
-      <button class="sidebar-btn" onclick="goHome()">🏠 Hem</button>
-      <button class="sidebar-btn" onclick="showFavorites()">⭐ Favoriter</button>
-      <button class="sidebar-btn" onclick="showRecent()">⏱ Senaste</button>
-      <button class="sidebar-btn" onclick="openIframe('https://alv3333.github.io/Coola-Mattespel-Soundboard.github.io/')">🔊 Soundboard</button>
-      <button class="sidebar-btn" onclick="openIframe('https://studio.pickaxe.co/STUDIOGX4LHRY55GYHQ15/295XP68K97')">🤖 AI</button>
-      <button class="sidebar-btn" onclick="openIframe('https://play.frogiee1.org/')">🔎 Browser</button>
-      <button class="sidebar-btn" onclick="openIframe('https://docs.google.com/forms/d/e/1FAIpQLScUxR7Ychb0ivMguYI-3BHwb8D3ZH2x7n1vkpXuYjNeVlU3Cg/viewform?usp=header')">📩 Förslag</button>
-      <button class="sidebar-btn" onclick="openThemePopup()">🎨 Tema</button>
+      <button class="sidebar-btn" onclick="goHome()"><span class="icon">🏠</span><span class="label">Hem</span></button>
+      <button class="sidebar-btn" onclick="showFavorites()"><span class="icon">⭐</span><span class="label">Favoriter</span></button>
+      <button class="sidebar-btn" onclick="showRecent()"><span class="icon">⏱</span><span class="label">Senaste</span></button>
+      <button class="sidebar-btn" onclick="openIframe('https://alv3333.github.io/Coola-Mattespel-Soundboard.github.io/')"><span class="icon">🔊</span><span class="label">Soundboard</span></button>
+      <button class="sidebar-btn" onclick="openIframe('https://studio.pickaxe.co/STUDIOGX4LHRY55GYHQ15/295XP68K97')"><span class="icon">🤖</span><span class="label">AI</span></button>
+      <button class="sidebar-btn" onclick="openIframe('https://play.frogiee1.org/')"><span class="icon">🔎</span><span class="label">Browser</span></button>
+      <button class="sidebar-btn" onclick="openIframe('https://docs.google.com/forms/d/e/1FAIpQLScUxR7Ychb0ivMguYI-3BHwb8D3ZH2x7n1vkpXuYjNeVlU3Cg/viewform?usp=header')"><span class="icon">📩</span><span class="label">Förslag</span></button>
+      <button class="sidebar-btn" onclick="openThemePopup()"><span class="icon">🎨</span><span class="label">Tema</span></button>
     </div>
 
     <div class="main">
