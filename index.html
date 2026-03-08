@@ -621,7 +621,7 @@
         <p class="subtitle">Cool sida med coola mattespel!</p>
         <p id="activePlayers" class="active-players">Aktiva spelare: ...</p> <!-- NYTT -->
         <div class="search-box">
-          <input placeholder="Sök spel..." oninput="filterGames()" />
+         <input id="searchInput" placeholder="Sök spel..." oninput="filterGames()" />
         </div>
       </div>
 
@@ -971,10 +971,10 @@
       }
     }
 
-    function filterGames() {
-      const q = document.querySelector("input").value.toLowerCase();
-      renderGames(files.filter((f) => displayName(f).toLowerCase().includes(q)));
-    }
+ function filterGames() {
+  const q = document.getElementById("searchInput").value.toLowerCase();
+  renderGames(files.filter((f) => displayName(f).toLowerCase().includes(q)));
+}
 
     function goHome() {
       location.reload();
