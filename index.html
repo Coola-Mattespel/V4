@@ -646,7 +646,31 @@
 
       <div class="games-grid" id="gamesGrid"></div>
     </div>
-  </div>
+  </div><div id="adminPanel" style="
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:#111;
+padding:20px;
+border-radius:12px;
+display:none;
+z-index:9999;
+width:300px;
+">
+
+<h3>Admin Panel</h3>
+
+<input id="adminUser" placeholder="Användarnamn" style="width:100%;margin-bottom:8px">
+
+<button onclick="timeoutUser()">Timeout 5 min</button>
+<button onclick="banUser()">Banna</button>
+
+<br><br>
+
+<button onclick="closeAdmin()">Stäng</button>
+
+</div>
 
   <div id="themePopup" onclick="if(event.target===this)this.style.display='none'">
     <div class="theme-box">
@@ -882,11 +906,76 @@ function containsBannedWord(text) {
     function addSystemChatMessage(text) {
       addChatMessage({ name: "System", text, ts: Date.now() });
     }
+    function nameTaken(name){
+
+return firebase.database().ref("presence")
+.once("value")
+.then(snap=>{
+
+let taken=false;
+
+snap.forEach(child=>{
+if(child.val().name === name){
+taken=true;
+}
+});
+
+return taken;
+
+});
+
+}
+    nameTaken(name).then(taken=>{
+
+if(taken){
+alert("Det namnet används redan.");
+return;
+}
+
+});
 
 function sendChatMessage() {
-  const text = sanitizeText(chatInputEl.value);
-  if (!text || !chatRef) return;
 
+const name = sanitizeName(chatNameEl.value);
+const text = sanitizeText(chatInputEl.value);
+
+if(!text || !chatRef) return;
+
+if (containsBannedWord(text)) {
+  alert("Ditt meddelande innehåller ord som inte är tillåtna.");
+  return;
+}
+
+firebase.database().ref("bans/" + name).once("value").then(snap => {
+
+if(snap.exists()){
+alert("Du är bannad från chatten.");
+return;
+}
+
+firebase.database().ref("timeouts/" + name).once("value").then(snap2 => {
+
+if(snap2.exists() && snap2.val().until > Date.now()){
+alert("Du har timeout.");
+return;
+}
+
+chatNameEl.value = name;
+localStorage.setItem("chatName", name);
+
+chatRef.push({
+  name,
+  text,
+  ts: Date.now()
+});
+
+chatInputEl.value = "";
+
+});
+
+});
+
+}
   if (containsBannedWord(text)) {
     alert("Ditt meddelande innehåller ord som inte är tillåtna.");
     return;
@@ -1112,7 +1201,51 @@ function sendChatMessage() {
       } catch (err) {
         activePlayersEl.textContent = "Aktiva spelare: --";
         addSystemChatMessage("Kunde inte ansluta chatten.");
-      }
+      }const ADMIN_PASSWORD = "SigmaAdminPanel12345";
+
+document.addEventListener("keydown", function(e){
+
+if(e.ctrlKey && e.shiftKey && e.key === "A"){
+
+const pass = prompt("Admin lösenord:");
+
+if(pass === ADMIN_PASSWORD){
+
+document.getElementById("adminPanel").style.display="block";
+
+}else{
+alert("Fel lösenord");
+}
+
+}
+
+});
+
+function closeAdmin(){
+document.getElementById("adminPanel").style.display="none";
+}function timeoutUser(){
+
+const name = document.getElementById("adminUser").value.trim();
+
+if(!name) return;
+
+firebase.database().ref("timeouts/" + name).set({
+until: Date.now() + (5*60*1000)
+});
+
+alert(name + " har timeout i 5 minuter");
+
+}function banUser(){
+
+const name = document.getElementById("adminUser").value.trim();
+
+if(!name) return;
+
+firebase.database().ref("bans/" + name).set(true);
+
+alert(name + " är bannad");
+
+}
     })();
   </script>
 </body>
