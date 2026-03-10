@@ -566,6 +566,20 @@
     }
     .recommended-row .recommended-btn { min-width: 180px; }
 
+
+    .profile-btn{position:fixed;top:14px;right:14px;border:none;border-radius:12px;padding:10px 14px;background:linear-gradient(135deg,var(--accent-dark),var(--accent));color:#fff;font-weight:700;z-index:1200;cursor:pointer;}
+    .chat-msg{animation:chatPop .25s ease;}
+    @keyframes chatPop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .chat-mode-row{display:flex;gap:6px;margin-bottom:8px;align-items:center;}
+    .chat-tab{border:none;border-radius:8px;padding:6px 8px;background:rgba(255,255,255,.12);color:#fff;cursor:pointer;}
+    .chat-tab.active{background:linear-gradient(135deg,var(--accent-dark),var(--accent));}
+    .friend-select{flex:1;background:#fff;border:none;border-radius:8px;padding:6px;}
+    .chat-status{font-size:12px;opacity:.8;margin-bottom:8px;}
+    .app-modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;z-index:1300;}
+    .app-modal-box{width:min(500px,92vw);max-height:85vh;overflow:auto;background:#111;border:1px solid rgba(255,255,255,.2);border-radius:16px;padding:16px;}
+    .panel-page{margin:24px 0;}
+    .panel-card{background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px;margin-bottom:10px;}
+
     @media (max-width: 768px) {
       .header h1 { font-size: 34px; }
       .subtitle { font-size: 14px; letter-spacing: 1px; }
@@ -590,6 +604,7 @@
 <body class="blue">
   <div class="app">
     <button id="menuToggle" class="menu-toggle" onclick="toggleSidebar()" aria-label="Öppna meny" aria-expanded="false">☰</button>
+    <button id="profileBtn" class="profile-btn" onclick="openProfileModal()">👤 Profil</button>
     <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
 
     <div class="sidebar" id="sidebar">
@@ -601,6 +616,9 @@
       <button class="sidebar-btn" onclick="openIframe('https://mattematikpluggeri.joe.dj')"><span class="icon">🔎</span><span class="label">Browser</span></button>
       <button class="sidebar-btn" onclick="openIframe('https://docs.google.com/forms/d/e/1FAIpQLScUxR7Ychb0ivMguYI-3BHwb8D3ZH2x7n1vkpXuYjNeVlU3Cg/viewform?usp=header')"><span class="icon">📩</span><span class="label">Förslag</span></button>
      <button class="sidebar-btn" onclick="showUpdates()"><span class="icon">⬆</span><span class="label">Uppdateringar</span></button>
+      <button class="sidebar-btn" onclick="showQuestPage()"><span class="icon">🎯</span><span class="label">Quests</span></button>
+      <button class="sidebar-btn" onclick="showShopPage()"><span class="icon">🛒</span><span class="label">Shop</span></button>
+      <button class="sidebar-btn" onclick="openAdminModal()"><span class="icon">🛡️</span><span class="label">Admin</span></button>
       <button class="sidebar-btn" onclick="openThemePopup()"><span class="icon">🎨</span><span class="label">Tema</span></button>
     </div>
 
@@ -608,7 +626,12 @@
       <div class="chat-header">💬 Live Chat</div>
       <div class="chat-messages" id="chatMessages"></div>
       <div class="chat-controls">
-        <input id="chatName" class="chat-name" maxlength="40" placeholder="Ditt namn" />
+        <div class="chat-mode-row">
+          <button id="globalChatBtn" class="chat-tab active" onclick="switchChatMode('global')">Global</button>
+          <button id="privateChatBtn" class="chat-tab" onclick="switchChatMode('private')">Privat</button>
+          <select id="friendSelect" class="friend-select"></select>
+        </div>
+        <div id="chatStatus" class="chat-status">Logga in för att chatta.</div>
         <div class="chat-row">
           <input id="chatInput" class="chat-input" maxlength="200" placeholder="Skriv meddelande..." />
           <button id="chatSend" class="chat-send">Skicka</button>
@@ -657,7 +680,57 @@
   ">
   </div>
 </div>
+      <div id="questPage" class="panel-page" style="display:none;">
+        <h2>🎯 Quests</h2>
+        <div class="panel-card">
+          <p>Spela <b>Snow Rider 3D</b> i 15 min och få <b>10 coins</b>.</p>
+          <button class="chat-send" onclick="claimSnowQuest()">Claim quest</button>
+          <p id="questStatus"></p>
+        </div>
+      </div>
+      <div id="shopPage" class="panel-page" style="display:none;">
+        <h2>🛒 Shop</h2>
+        <div class="panel-card">
+          <p>Glownamn (25 coins)</p>
+          <button class="chat-send" onclick="buyItem('glow',25)">Köp</button>
+        </div>
+        <div class="panel-card">
+          <p>Regnbågsbadge 🌈 (40 coins)</p>
+          <button class="chat-send" onclick="buyItem('rainbow',40)">Köp</button>
+        </div>
+      </div>
       <div class="games-grid" id="gamesGrid"></div>
+    </div>
+  </div>
+
+
+  <div id="profileModal" class="app-modal" onclick="if(event.target===this)closeProfileModal()">
+    <div class="app-modal-box">
+      <h3>👤 Profil</h3>
+      <input id="profileEmail" class="chat-input" placeholder="Mail" />
+      <input id="profileUsername" class="chat-input" placeholder="Username" />
+      <input id="profilePassword" class="chat-input" type="password" placeholder="Lösenord" />
+      <div class="chat-row">
+        <button class="chat-send" onclick="registerUser()">Registrera</button>
+        <button class="chat-send" onclick="loginUser()">Logga in</button>
+      </div>
+      <p id="profileInfo"></p>
+      <hr>
+      <input id="friendInput" class="chat-input" placeholder="Lägg till kompis via username" />
+      <button class="chat-send" onclick="addFriend()">Lägg till kompis</button>
+      <div id="friendList"></div>
+    </div>
+  </div>
+
+  <div id="adminModal" class="app-modal" onclick="if(event.target===this)closeAdminModal()">
+    <div class="app-modal-box">
+      <h3>🛡️ Admin Panel</h3>
+      <input id="adminPassword" class="chat-input" type="password" placeholder="Admin lösenord" />
+      <input id="adminTarget" class="chat-input" placeholder="Username" />
+      <div class="chat-row"><button class="chat-send" onclick="adminAction('kick')">Kick</button><button class="chat-send" onclick="adminAction('timeout')">Timeout 10m</button></div>
+      <div class="chat-row"><button class="chat-send" onclick="adminAction('ban')">Ban 24h</button><button class="chat-send" onclick="adminAction('verify')">Verifiera ✔️</button></div>
+      <div class="chat-row"><input id="adminCoins" class="chat-input" placeholder="Coins" /><button class="chat-send" onclick="adminAction('coins')">Ge coins</button></div>
+      <p id="adminInfo"></p>
     </div>
   </div>
 
@@ -710,10 +783,13 @@
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
     const chatMessagesEl = document.getElementById("chatMessages");
-    const chatNameEl = document.getElementById("chatName");
     const chatInputEl = document.getElementById("chatInput");
     const chatSendEl = document.getElementById("chatSend");
-    const activePlayersEl = document.getElementById("activePlayers"); // NYTT
+    const globalChatBtn = document.getElementById("globalChatBtn");
+    const privateChatBtn = document.getElementById("privateChatBtn");
+    const friendSelectEl = document.getElementById("friendSelect");
+    const chatStatusEl = document.getElementById("chatStatus");
+    const activePlayersEl = document.getElementById("activePlayers");
     const updates = [
       "Här kommer uppdateringar synas, varje uppdatering kommer ungefär varje söndag. 👍",
       "Nästa uppdatering (SÖN 14/3) --> V4.1 ⬆",
@@ -723,8 +799,8 @@
       "Chatt-förbättringar jag ska lägga till bättre filter och göra chatten snyggare, man måste även vara inloggad för att kunna chatta",
       "Admin-panel där JAG kan timeouta, banna och kicka folk från chatten. Kanske nåt mer????",
       "SKICKA FÖRSLAG!!!"
+    ];
 
-];
     const firebaseConfig = {
       apiKey: "AIzaSyDRnICpSXjxHQDqhGMZzFGvmcBjJC5RNaw",
       authDomain: "chatt-4d3c7.firebaseapp.com",
@@ -734,6 +810,14 @@
     };
 
     let chatRef = null;
+    let db = null;
+    let currentUser = JSON.parse(localStorage.getItem("currentUser") || "null");
+    let userRef = null;
+    let currentUserData = null;
+    let chatMode = "global";
+    let privateChatUnsub = null;
+    let lastChatSentAt = 0;
+    let snowRideStartedAt = null;
 
     const loadingMessages = [
       "Laddar laddningen som laddar laddningen",
@@ -789,27 +873,26 @@
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") closeSidebar();
     });
-    function showUpdates(){
 
-  gamesGrid.style.display="none";
-  recommendedSection.style.display="none";
-  embedContainer.style.display="none";
+    function showUpdates() {
+      gamesGrid.style.display = "none";
+      recommendedSection.style.display = "none";
+      embedContainer.style.display = "none";
+      hidePages();
 
-  const page=document.getElementById("updatesPage");
-  const list=document.getElementById("updatesList");
+      const page = document.getElementById("updatesPage");
+      const list = document.getElementById("updatesList");
 
-  page.style.display="block";
+      page.style.display = "block";
+      list.innerHTML = "";
 
-  list.innerHTML="";
-
-  updates.forEach(u=>{
-    const item=document.createElement("div");
-    item.style.marginBottom="8px";
-    item.textContent="• "+u;
-    list.appendChild(item);
-  });
-
-}
+      updates.forEach((u) => {
+        const item = document.createElement("div");
+        item.style.marginBottom = "8px";
+        item.textContent = "• " + u;
+        list.appendChild(item);
+      });
+    }
 
     function stopFakeLoaderTimers() {
       clearTimeout(fakeLoadTimeout);
@@ -883,36 +966,38 @@
     function sanitizeText(v) {
       return (v || "").replace(/\s+/g, " ").trim().slice(0, 200);
     }
-const bannedWords = [
-  "nigger",
-  "hitler",
-  "alve",
-  "bernflo", 
-  "epsteien",
-  "fitta", 
-  "neger", 
-  "hor",
-  "fuck",
-  "horunge",
-  "goon",
-  "sperm",
-  "runk",
-  "dö",
-  "snopp",
-  "kuk",
-  "penis",
-  "nigga",
-  "k4k",
-  "dih",
-  "dräng",
-  "snippa",
-  "niger"
-];
 
-function containsBannedWord(text) {
-  const lower = text.toLowerCase();
-  return bannedWords.some(word => lower.includes(word));
-}
+    const bannedWords = [
+      "nigger",
+      "hitler",
+      "alve",
+      "bernflo",
+      "epsteien",
+      "fitta",
+      "neger",
+      "hor",
+      "fuck",
+      "horunge",
+      "goon",
+      "sperm",
+      "runk",
+      "dö",
+      "snopp",
+      "kuk",
+      "penis",
+      "nigga",
+      "k4k",
+      "dih",
+      "dräng",
+      "snippa",
+      "niger"
+    ];
+
+    function containsBannedWord(text) {
+      const lower = text.toLowerCase();
+      return bannedWords.some((word) => lower.includes(word));
+    }
+
     function addChatMessage(msg) {
       const box = document.createElement("div");
       box.className = "chat-msg";
@@ -935,27 +1020,326 @@ function containsBannedWord(text) {
       addChatMessage({ name: "System", text, ts: Date.now() });
     }
 
-function sendChatMessage() {
-  const text = sanitizeText(chatInputEl.value);
-  if (!text || !chatRef) return;
+    function getSafeUsername(v) {
+      return (v || "").replace(/[^a-zA-Z0-9åäöÅÄÖ_-]/g, "").trim().slice(0, 20);
+    }
 
-  if (containsBannedWord(text)) {
-    alert("Ditt meddelande innehåller ord som inte är tillåtna.");
-    return;
-  }
+    function getChatDisplayName() {
+      if (!currentUserData) return "Gäst";
+      return `${currentUserData.username}${currentUserData.verified ? " ✔️" : ""}`;
+    }
 
+    function setChatEnabledState() {
+      const loggedIn = !!(currentUser && currentUser.username);
+      chatInputEl.disabled = !loggedIn;
+      chatSendEl.disabled = !loggedIn;
+      privateChatBtn.disabled = !loggedIn;
+      chatStatusEl.textContent = loggedIn
+        ? `Inloggad som ${getChatDisplayName()} • Cooldown 3s`
+        : "Logga in för att chatta. Du kan fortfarande läsa global chat.";
+    }
 
-  const name = sanitizeName(chatNameEl.value);
-  chatNameEl.value = name;
-  localStorage.setItem("chatName", name);
+    function getPrivateChatPath(a, b) {
+      return [a, b].sort((x, y) => x.localeCompare(y, "sv", { sensitivity: "base" })).join("__");
+    }
 
-  chatRef.push({ name, text, ts: Date.now() });
-  chatInputEl.value = "";
-}
+    function switchChatMode(mode) {
+      chatMode = mode;
+      globalChatBtn.classList.toggle("active", mode === "global");
+      privateChatBtn.classList.toggle("active", mode === "private");
+      friendSelectEl.style.display = mode === "private" ? "block" : "none";
+      chatMessagesEl.innerHTML = "";
+
+      if (chatRef) chatRef.off();
+      if (privateChatUnsub) {
+        privateChatUnsub.off();
+        privateChatUnsub = null;
+      }
+      if (!db) return;
+
+      if (mode === "global") {
+        chatRef.limitToLast(120).on("child_added", (snap) => addChatMessage(snap.val() || {}));
+        return;
+      }
+
+      if (!currentUser) {
+        addSystemChatMessage("Logga in för privat chatt.");
+        return;
+      }
+
+      const friend = friendSelectEl.value;
+      if (!friend) {
+        addSystemChatMessage("Välj en kompis för privat chatt.");
+        return;
+      }
+
+      const room = getPrivateChatPath(currentUser.username, friend);
+      privateChatUnsub = db.ref(`private-chats/${room}`);
+      privateChatUnsub.limitToLast(120).on("child_added", (snap) => addChatMessage(snap.val() || {}));
+    }
+
+    function sendChatMessage() {
+      const text = sanitizeText(chatInputEl.value);
+      if (!text || !db || !currentUser) return;
+
+      if (Date.now() - lastChatSentAt < 3000) {
+        alert("Vänta 3 sekunder mellan meddelanden.");
+        return;
+      }
+
+      if (containsBannedWord(text)) {
+        alert("Ditt meddelande innehåller ord som inte är tillåtna.");
+        return;
+      }
+
+      if (currentUserData?.bannedUntil && Date.now() < currentUserData.bannedUntil) {
+        alert("Du är bannad tillfälligt.");
+        return;
+      }
+      if (currentUserData?.timeoutUntil && Date.now() < currentUserData.timeoutUntil) {
+        alert("Du har timeout just nu.");
+        return;
+      }
+
+      const payload = {
+        name: getChatDisplayName(),
+        username: currentUser.username,
+        text,
+        ts: Date.now()
+      };
+
+      if (chatMode === "private") {
+        const friend = friendSelectEl.value;
+        if (!friend) return alert("Välj en kompis först.");
+        const room = getPrivateChatPath(currentUser.username, friend);
+        db.ref(`private-chats/${room}`).push(payload);
+      } else if (chatRef) {
+        chatRef.push(payload);
+      }
+
+      lastChatSentAt = Date.now();
+      chatInputEl.value = "";
+    }
+
+    function openProfileModal() {
+      document.getElementById("profileModal").style.display = "flex";
+      renderFriendList();
+    }
+
+    function closeProfileModal() {
+      document.getElementById("profileModal").style.display = "none";
+    }
+
+    function openAdminModal() {
+      document.getElementById("adminModal").style.display = "flex";
+    }
+
+    function closeAdminModal() {
+      document.getElementById("adminModal").style.display = "none";
+    }
+
+    function validateUsername(username) {
+      if (!username || username.length < 3) return "Username måste vara minst 3 tecken.";
+      if (containsBannedWord(username)) return "Username innehåller förbjudna ord.";
+      return "";
+    }
+
+    async function registerUser() {
+      if (!db) return;
+      const email = sanitizeText(document.getElementById("profileEmail").value).toLowerCase();
+      const username = getSafeUsername(document.getElementById("profileUsername").value);
+      const password = sanitizeText(document.getElementById("profilePassword").value);
+      const info = document.getElementById("profileInfo");
+
+      const uErr = validateUsername(username);
+      if (uErr) return (info.textContent = uErr);
+      if (!email.includes("@")) return (info.textContent = "Skriv en giltig mail.");
+      if (password.length < 4) return (info.textContent = "Lösenord minst 4 tecken.");
+
+      const exists = await db.ref(`users/${username}`).get();
+      if (exists.exists()) return (info.textContent = "Username är redan taget.");
+
+      const allUsersSnap = await db.ref("users").get();
+      const allUsers = allUsersSnap.val() || {};
+      const duplicateEmail = Object.values(allUsers).some((u) => (u?.email || "").toLowerCase() === email);
+      if (duplicateEmail) return (info.textContent = "Mail används redan av ett annat konto.");
+
+      await db.ref(`users/${username}`).set({
+        email,
+        password,
+        username,
+        coins: 0,
+        verified: false,
+        friends: {},
+        inventory: {},
+        createdAt: Date.now()
+      });
+      info.textContent = "Konto skapat! Logga in nu.";
+    }
+
+    async function loginUser() {
+      if (!db) return;
+      const email = sanitizeText(document.getElementById("profileEmail").value).toLowerCase();
+      const username = getSafeUsername(document.getElementById("profileUsername").value);
+      const password = sanitizeText(document.getElementById("profilePassword").value);
+      const info = document.getElementById("profileInfo");
+
+      if (!email.includes("@")) return (info.textContent = "Skriv mail för att logga in.");
+
+      const snap = await db.ref(`users/${username}`).get();
+      if (!snap.exists()) return (info.textContent = "Användaren finns inte.");
+      const data = snap.val();
+      if ((data.email || "").toLowerCase() !== email) return (info.textContent = "Fel mail för detta konto.");
+      if (data.password !== password) return (info.textContent = "Fel lösenord.");
+      if (data.bannedUntil && Date.now() < data.bannedUntil) return (info.textContent = "Du är bannad just nu.");
+
+      currentUser = { username };
+      currentUserData = data;
+      localStorage.setItem("currentUser", JSON.stringify(currentUser));
+      info.textContent = `Inloggad som ${username}`;
+      setChatEnabledState();
+      bindUserRef();
+      renderFriendList();
+      populateFriendSelect();
+    }
+
+    function bindUserRef() {
+      if (!db || !currentUser) return;
+      if (userRef) userRef.off();
+      userRef = db.ref(`users/${currentUser.username}`);
+      userRef.on("value", (snap) => {
+        currentUserData = snap.val() || null;
+        setChatEnabledState();
+        renderFriendList();
+        populateFriendSelect();
+      });
+    }
+
+    async function addFriend() {
+      if (!db || !currentUser) return;
+      const friend = getSafeUsername(document.getElementById("friendInput").value);
+      if (!friend || friend === currentUser.username) return;
+      const fSnap = await db.ref(`users/${friend}`).get();
+      if (!fSnap.exists()) return alert("Den användaren finns inte.");
+      await db.ref(`users/${currentUser.username}/friends/${friend}`).set(true);
+      await db.ref(`users/${friend}/friends/${currentUser.username}`).set(true);
+      document.getElementById("friendInput").value = "";
+    }
+
+    function renderFriendList() {
+      const box = document.getElementById("friendList");
+      if (!box) return;
+      box.innerHTML = "";
+      const friends = Object.keys(currentUserData?.friends || {});
+      if (!friends.length) {
+        box.textContent = "Inga kompisar ännu.";
+        return;
+      }
+      friends.forEach((f) => {
+        const el = document.createElement("div");
+        el.textContent = `• ${f}`;
+        box.appendChild(el);
+      });
+    }
+
+    function populateFriendSelect() {
+      friendSelectEl.innerHTML = "";
+      const friends = Object.keys(currentUserData?.friends || {});
+      const opt = document.createElement("option");
+      opt.value = "";
+      opt.textContent = friends.length ? "Välj kompis" : "Inga kompisar";
+      friendSelectEl.appendChild(opt);
+      friends.forEach((f) => {
+        const o = document.createElement("option");
+        o.value = f;
+        o.textContent = f;
+        friendSelectEl.appendChild(o);
+      });
+    }
+
+    function hidePages() {
+      document.getElementById("updatesPage").style.display = "none";
+      document.getElementById("questPage").style.display = "none";
+      document.getElementById("shopPage").style.display = "none";
+    }
+
+    function showQuestPage() {
+      gamesGrid.style.display = "none";
+      recommendedSection.style.display = "none";
+      embedContainer.style.display = "none";
+      hidePages();
+      document.getElementById("questPage").style.display = "block";
+    }
+
+    function showShopPage() {
+      gamesGrid.style.display = "none";
+      recommendedSection.style.display = "none";
+      embedContainer.style.display = "none";
+      hidePages();
+      document.getElementById("shopPage").style.display = "block";
+    }
+
+    function claimSnowQuest() {
+      if (!currentUser) return alert("Logga in först.");
+      const status = document.getElementById("questStatus");
+      if (!snowRideStartedAt) {
+        status.textContent = "Starta Snow Rider 3D först för att börja questen.";
+        return;
+      }
+      if (Date.now() - snowRideStartedAt < 15 * 60 * 1000) {
+        status.textContent = "Inte klart än. Fortsätt spela Snow Rider 3D!";
+        return;
+      }
+      snowRideStartedAt = null;
+      const coins = (currentUserData?.coins || 0) + 10;
+      db.ref(`users/${currentUser.username}/coins`).set(coins);
+      status.textContent = "Quest klar! +10 coins";
+    }
+
+    function buyItem(item, cost) {
+      if (!currentUser) return alert("Logga in först.");
+      const coins = currentUserData?.coins || 0;
+      if (coins < cost) return alert("Du har inte tillräckligt med coins.");
+      db.ref(`users/${currentUser.username}/coins`).set(coins - cost);
+      db.ref(`users/${currentUser.username}/inventory/${item}`).set(true);
+      alert("Köp lyckades!");
+    }
+
+    async function adminAction(action) {
+      if (!db) return;
+      const pw = document.getElementById("adminPassword").value;
+      const target = getSafeUsername(document.getElementById("adminTarget").value);
+      const info = document.getElementById("adminInfo");
+      if (pw !== "SigmaAdmin1234!") return (info.textContent = "Fel admin-lösenord.");
+      if (!target) return (info.textContent = "Skriv username.");
+
+      const ref = db.ref(`users/${target}`);
+      const snap = await ref.get();
+      if (!snap.exists()) return (info.textContent = "Användaren finns inte.");
+
+      if (action === "kick") {
+        await ref.update({ timeoutUntil: Date.now() + 60 * 1000 });
+        info.textContent = `${target} kickad (1 min timeout).`;
+      } else if (action === "timeout") {
+        await ref.update({ timeoutUntil: Date.now() + 10 * 60 * 1000 });
+        info.textContent = `${target} timeoutad 10 min.`;
+      } else if (action === "ban") {
+        await ref.update({ bannedUntil: Date.now() + 24 * 60 * 60 * 1000 });
+        info.textContent = `${target} bannad 24h.`;
+      } else if (action === "verify") {
+        await ref.update({ verified: true });
+        info.textContent = `${target} är nu verifierad.`;
+      } else if (action === "coins") {
+        const amount = Number(document.getElementById("adminCoins").value || 0);
+        const base = snap.val().coins || 0;
+        await ref.update({ coins: base + amount });
+        info.textContent = `${target} fick ${amount} coins.`;
+      }
+    }
 
     function renderRecommended() {
       recommendedRow.innerHTML = "";
-      const picks = recommendedGames.filter(g => files.includes(g)).slice(0, 5);
+      const picks = recommendedGames.filter((g) => files.includes(g)).slice(0, 5);
 
       picks.forEach((file) => {
         const btn = document.createElement("button");
@@ -1044,6 +1428,10 @@ function sendChatMessage() {
         embedContainer.scrollIntoView({ behavior: "smooth", block: "start" });
       });
 
+      if (game === "clsummerRider3D") {
+        if (!snowRideStartedAt) snowRideStartedAt = Date.now();
+      }
+
       if (!recentGames.includes(game)) {
         recentGames.unshift(game);
         recentGames = recentGames.slice(0, 10);
@@ -1051,10 +1439,10 @@ function sendChatMessage() {
       }
     }
 
- function filterGames() {
-  const q = document.getElementById("searchInput").value.toLowerCase();
-  renderGames(files.filter((f) => displayName(f).toLowerCase().includes(q)));
-}
+    function filterGames() {
+      const q = document.getElementById("searchInput").value.toLowerCase();
+      renderGames(files.filter((f) => displayName(f).toLowerCase().includes(q)));
+    }
 
     function goHome() {
       location.reload();
@@ -1107,12 +1495,12 @@ function sendChatMessage() {
         btn.addEventListener("click", closeSidebar);
       });
 
-      const savedName = localStorage.getItem("chatName");
-      chatNameEl.value = savedName ? sanitizeName(savedName) : `Gäst${Math.floor(1000 + Math.random() * 9000)}`;
-
       chatSendEl.addEventListener("click", sendChatMessage);
       chatInputEl.addEventListener("keydown", (e) => {
         if (e.key === "Enter") sendChatMessage();
+      });
+      friendSelectEl.addEventListener("change", () => {
+        if (chatMode === "private") switchChatMode("private");
       });
 
       const notConfigured = (
@@ -1126,11 +1514,12 @@ function sendChatMessage() {
         return;
       }
 
+      setChatEnabledState();
+
       try {
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+        db = firebase.database();
 
-        // NYTT: Aktiva spelare (presence)
         const presenceRef = db.ref("presence");
         const tabKey = "presenceTabId";
         let tabId = sessionStorage.getItem(tabKey);
@@ -1156,10 +1545,13 @@ function sendChatMessage() {
         }, () => {
           activePlayersEl.textContent = "Aktiva spelare: --";
         });
-      chatRef = db.ref("global-chat");
-        chatRef.limitToLast(120).on("child_added", (snap) => {
-          addChatMessage(snap.val() || {});
-        });
+
+        chatRef = db.ref("global-chat");
+        switchChatMode("global");
+        setChatEnabledState();
+        if (currentUser && currentUser.username) {
+          bindUserRef();
+        }
       } catch (err) {
         activePlayersEl.textContent = "Aktiva spelare: --";
         addSystemChatMessage("Kunde inte ansluta chatten.");
@@ -1169,9 +1561,3 @@ function sendChatMessage() {
   </script>
 </body>
 </html>
-
-
-
-
-
-
