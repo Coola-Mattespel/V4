@@ -566,6 +566,50 @@
     }
     .recommended-row .recommended-btn { min-width: 180px; }
 
+    
+
+    .profile-btn {
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      z-index: 1200;
+      border: none;
+      border-radius: 12px;
+      padding: 11px 14px;
+      font-weight: 700;
+      color: white;
+      background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(0,0,0,.4);
+    }
+    .chat-status { font-size: 12px; margin-bottom: 8px; opacity: .9; }
+    .chat-msg { animation: popIn .25s ease; }
+    @keyframes popIn { from { transform: translateY(8px); opacity: 0;} to { transform: translateY(0); opacity: 1; } }
+    .modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,.62); z-index: 1500; }
+    .modal-box { width: min(520px, 90vw); max-height: 85vh; overflow: auto; background: rgba(10,10,10,.95); border: 1px solid rgba(255,255,255,.18); border-radius: 14px; padding: 16px; }
+    .modal-box.wide { width: min(760px, 94vw); }
+    .auth-input { width: 100%; margin-bottom: 8px; border: none; border-radius: 8px; padding: 9px; }
+    .info-card { margin-top: 10px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12); border-radius: 10px; padding: 10px; }
+    .intro-overlay { position: fixed; inset: 0; background: radial-gradient(circle at center, rgba(20,20,20,.35), rgba(0,0,0,.97)); z-index: 2200; display:flex; align-items:center; justify-content:center; }
+    .intro-box { text-align:center; background: rgba(0,0,0,.55); padding: 26px; border: 1px solid rgba(255,255,255,.24); border-radius: 16px; width:min(520px,88vw); }
+    .intro-loader-box .loader-title { margin-bottom: 14px; }
+    .intro-overlay.fade-out { animation: introFadeOut .55s ease forwards; }
+    @keyframes introFadeOut { from { opacity:1; } to { opacity:0; visibility:hidden; } }
+    .admin-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px; }
+
+    .chat-tabs { display:flex; gap:6px; }
+    .chat-tab { border:none; border-radius:999px; padding:6px 10px; background:rgba(255,255,255,.12); color:#fff; font-weight:700; cursor:pointer; }
+    .chat-tab.active { background: linear-gradient(135deg, var(--accent-dark), var(--accent)); }
+    .chat-view { display:flex; flex-direction:column; min-height:0; flex:1; }
+    .private-friends { display:flex; gap:6px; overflow-x:auto; padding:8px; border-bottom:1px solid rgba(255,255,255,.12); }
+    .private-friend-btn { border:none; border-radius:999px; padding:6px 12px; cursor:pointer; color:#fff; background:rgba(255,255,255,.14); white-space:nowrap; }
+    .private-friend-btn.active { background: linear-gradient(135deg, var(--accent-dark), var(--accent)); }
+    .profile-modal-box { background: linear-gradient(155deg, rgba(10,10,16,.95), rgba(18,26,40,.95)); border:1px solid rgba(120,180,255,.35); box-shadow: 0 20px 40px rgba(0,0,0,.45); }
+    .profile-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .profile-section { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:10px; }
+    .profile-section h4 { margin:0 0 8px; }
+
+
     @media (max-width: 768px) {
       .header h1 { font-size: 34px; }
       .subtitle { font-size: 14px; letter-spacing: 1px; }
@@ -577,6 +621,8 @@
       .main { padding: 16px; }
       .loader-title { font-size: 20px; }
       .loader-message { font-size: 13px; }
+
+      .profile-grid { grid-template-columns: 1fr; }
 
       .chat-panel {
         left: 10px;
@@ -591,6 +637,7 @@
   <div class="app">
     <button id="menuToggle" class="menu-toggle" onclick="toggleSidebar()" aria-label="Öppna meny" aria-expanded="false">☰</button>
     <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
+    <button id="profileBtn" class="profile-btn" onclick="openProfileModal()">👤 Profil</button>
 
     <div class="sidebar" id="sidebar">
       <button class="sidebar-btn" onclick="goHome()"><span class="icon">🏠</span><span class="label">Hem</span></button>
@@ -600,17 +647,39 @@
       <button class="sidebar-btn" onclick="openIframe('https://studio.pickaxe.co/STUDIOGX4LHRY55GYHQ15/295XP68K97')"><span class="icon">🤖</span><span class="label">AI</span></button>
       <button class="sidebar-btn" onclick="openIframe('https://docs.google.com/forms/d/e/1FAIpQLScUxR7Ychb0ivMguYI-3BHwb8D3ZH2x7n1vkpXuYjNeVlU3Cg/viewform?usp=header')"><span class="icon">📩</span><span class="label">Förslag</span></button>
      <button class="sidebar-btn" onclick="showUpdates()"><span class="icon">⬆</span><span class="label">Uppdateringar</span></button>
+      <button class="sidebar-btn" onclick="showQuests()"><span class="icon">🎯</span><span class="label">Quests</span></button>
+      <button class="sidebar-btn" onclick="showShop()"><span class="icon">🛒</span><span class="label">Shop</span></button>
+      <button class="sidebar-btn" onclick="openAdminGate()"><span class="icon">🛡️</span><span class="label">Admin</span></button>
       <button class="sidebar-btn" onclick="openThemePopup()"><span class="icon">🎨</span><span class="label">Tema</span></button>
     </div>
 
     <div class="chat-panel" id="chatPanel">
-      <div class="chat-header">💬 Live Chat</div>
-      <div class="chat-messages" id="chatMessages"></div>
-      <div class="chat-controls">
-        <input id="chatName" class="chat-name" maxlength="40" placeholder="Ditt namn" />
-        <div class="chat-row">
-          <input id="chatInput" class="chat-input" maxlength="200" placeholder="Skriv meddelande..." />
-          <button id="chatSend" class="chat-send">Skicka</button>
+      <div class="chat-header">
+        <span>💬 Chat</span>
+        <div class="chat-tabs">
+          <button id="globalTabBtn" class="chat-tab active" onclick="setChatTab('global')">Global</button>
+          <button id="privateTabBtn" class="chat-tab" onclick="setChatTab('private')">Privat</button>
+        </div>
+      </div>
+      <div id="globalChatView" class="chat-view">
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-controls">
+          <div id="chatStatus" class="chat-status">Logga in för att chatta.</div>
+          <div class="chat-row">
+            <input id="chatInput" class="chat-input" maxlength="200" placeholder="Skriv meddelande..." />
+            <button id="chatSend" class="chat-send">Skicka</button>
+          </div>
+        </div>
+      </div>
+      <div id="privateChatView" class="chat-view" style="display:none;">
+        <div id="privateFriendsList" class="private-friends"></div>
+        <div id="privateMessages" class="chat-messages"></div>
+        <div class="chat-controls">
+          <div id="privateStatus" class="chat-status">Välj en vän för privat chatt.</div>
+          <div class="chat-row">
+            <input id="privateInput" class="chat-input" maxlength="200" placeholder="Privat meddelande..." />
+            <button id="privateSend" class="chat-send">Skicka</button>
+          </div>
         </div>
       </div>
     </div>
@@ -656,6 +725,14 @@
   ">
   </div>
 </div>
+      <div id="questsPage" style="display:none;margin-top:30px;">
+  <h2 style="font-size:28px;margin-bottom:15px;">🎯 Quests</h2>
+  <div id="questCard" class="info-card"></div>
+</div>
+<div id="shopPage" style="display:none;margin-top:30px;">
+  <h2 style="font-size:28px;margin-bottom:15px;">🛒 Shop</h2>
+  <div id="shopList" class="info-card"></div>
+</div>
       <div class="games-grid" id="gamesGrid"></div>
     </div>
   </div>
@@ -670,6 +747,66 @@
       <button class="theme-btn" onclick="setTheme('gray')">⚪</button>
       <button class="theme-btn" onclick="setTheme('purple')">🟣</button>
       <button class="theme-btn" onclick="setTheme('pink')">🌸</button>
+    </div>
+  </div>
+
+  <div id="introOverlay" class="intro-overlay">
+    <div class="intro-box intro-loader-box">
+      <div class="loader-title">Laddar Coola Mattespel V4</div>
+      <div class="loader-track">
+        <div id="introLoaderFill" class="loader-fill"></div>
+      </div>
+      <div id="introLoaderMessage" class="loader-message"></div>
+    </div>
+  </div>
+
+  <div id="profileModal" class="modal" onclick="closeModalOnBackdrop(event, 'profileModal')">
+    <div class="modal-box wide profile-modal-box">
+      <h3>👤 Min Profil</h3>
+      <div class="profile-grid">
+        <div class="profile-section">
+          <h4>Inloggning</h4>
+          <input id="authEmail" class="auth-input" type="email" placeholder="Mail" />
+          <input id="authUsername" class="auth-input" maxlength="20" placeholder="Username (vid registrering)" />
+          <input id="authPassword" class="auth-input" type="password" placeholder="Lösenord" />
+          <div class="chat-row">
+            <button class="chat-send" onclick="registerAccount()">Registrera</button>
+            <button class="chat-send" onclick="loginAccount()">Logga in</button>
+            <button class="chat-send" onclick="logoutAccount()">Logga ut</button>
+          </div>
+          <div id="profileInfo" class="info-card"></div>
+        </div>
+        <div class="profile-section">
+          <h4>Kompisar</h4>
+          <div class="chat-row">
+            <input id="friendInput" class="chat-input" placeholder="Lägg till vän via username" />
+            <button class="chat-send" onclick="sendFriendRequest()">Lägg till</button>
+          </div>
+          <div id="friendRequests" class="info-card"></div>
+          <div id="friendsList" class="info-card"></div>
+          <div id="privateChat" class="info-card" style="display:none;"></div>
+        </div>
+      </div>
+      <button class="chat-send" onclick="closeProfileModal()">Stäng</button>
+    </div>
+  </div>
+
+  </div>
+
+  <div id="adminModal" class="modal" onclick="closeModalOnBackdrop(event, 'adminModal')">
+    <div class="modal-box">
+      <h3>🛡️ Admin Panel</h3>
+      <input id="adminPassword" class="auth-input" type="password" placeholder="Admin-lösenord" />
+      <input id="adminTarget" class="auth-input" placeholder="Mål (username)" />
+      <input id="adminCoins" class="auth-input" type="number" placeholder="Coins att ge" />
+      <div class="admin-actions">
+        <button class="chat-send" onclick="adminAction('kick')">Kick</button>
+        <button class="chat-send" onclick="adminAction('timeout')">Timeout 5 min</button>
+        <button class="chat-send" onclick="adminAction('ban')">Ban</button>
+        <button class="chat-send" onclick="adminAction('coins')">Ge coins</button>
+        <button class="chat-send" onclick="adminAction('verify')">Verifera ✔️</button>
+      </div>
+      <button class="chat-send" onclick="closeAdminPanel()">Stäng</button>
     </div>
   </div>
 
@@ -706,13 +843,24 @@
     const iframeLoader = document.getElementById("iframeLoader");
     const loaderFill = document.getElementById("loaderFill");
     const loaderMessage = document.getElementById("loaderMessage");
+    const introLoaderFill = document.getElementById("introLoaderFill");
+    const introLoaderMessage = document.getElementById("introLoaderMessage");
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
     const chatMessagesEl = document.getElementById("chatMessages");
-    const chatNameEl = document.getElementById("chatName");
     const chatInputEl = document.getElementById("chatInput");
     const chatSendEl = document.getElementById("chatSend");
-    const activePlayersEl = document.getElementById("activePlayers"); // NYTT
+    const chatStatusEl = document.getElementById("chatStatus");
+    const privateStatusEl = document.getElementById("privateStatus");
+    const privateInputEl = document.getElementById("privateInput");
+    const privateSendEl = document.getElementById("privateSend");
+    const privateMessagesEl = document.getElementById("privateMessages");
+    const privateFriendsListEl = document.getElementById("privateFriendsList");
+    const activePlayersEl = document.getElementById("activePlayers");
+    const profileInfoEl = document.getElementById("profileInfo");
+    const friendRequestsEl = document.getElementById("friendRequests");
+    const friendsListEl = document.getElementById("friendsList");
+    const privateChatEl = document.getElementById("privateChat");
     const updates = [
       "Här kommer uppdateringar synas, varje uppdatering kommer ungefär varje söndag. 👍",
       "Nästa uppdatering (SÖN 14/3) --> V4.1 ⬆",
@@ -733,6 +881,43 @@
     };
 
     let chatRef = null;
+    let db = null;
+    let currentUser = null;
+    let userRef = null;
+    let chatCooldownUntil = 0;
+    let selectedFriend = null;
+    let activeGame = null;
+    let activeGameStartedAt = null;
+    let gameTrackerInterval = null;
+    const ADMIN_PASSWORD = "SigmaAdmin1234!";
+    const USER_BANNED_WORDS = ["admin", "mod", "owner", "support"];
+    let adminUnlocked = false;
+    let activeChatTab = "global";
+    let privateListenerRef = null;
+    const questsConfig = [
+      { id: "snow15", game: "clsummerRider3D", label: "Spela Snow Rider 3D 15 min", targetMs: 15*60*1000, reward: 10 },
+      { id: "imposter10", game: "climposter", label: "Spela Imposter 10 min", targetMs: 10*60*1000, reward: 8 },
+      { id: "guessr10", game: "clworldguessr", label: "Spela Worldguessr 10 min", targetMs: 10*60*1000, reward: 8 },
+      { id: "slope12", game: "clslopeplus", label: "Spela Slope Plus 12 min", targetMs: 12*60*1000, reward: 9 },
+      { id: "retrobowl8", game: "clretrobowl", label: "Spela Retro Bowl 8 min", targetMs: 8*60*1000, reward: 7 },
+      { id: "templerun7", game: "cltemplerun2", label: "Spela Temple Run 2 i 7 min", targetMs: 7*60*1000, reward: 6 },
+      { id: "subway9", game: "clsubwaysurfers", label: "Spela Subway Surfers 9 min", targetMs: 9*60*1000, reward: 8 },
+      { id: "vex8", game: "clvex", label: "Spela Vex i 8 min", targetMs: 8*60*1000, reward: 7 },
+      { id: "paperio10", game: "clpaperio", label: "Spela Paper.io 10 min", targetMs: 10*60*1000, reward: 9 },
+      { id: "tinyfish6", game: "cltinyfishing", label: "Spela Tiny Fishing 6 min", targetMs: 6*60*1000, reward: 5 }
+    ];
+    const shopItems = [
+      { id: "sparkle", title: "✨ Namn-effekt", price: 15 },
+      { id: "vip", title: "👑 VIP-tag", price: 25 },
+      { id: "rainbow", title: "🌈 Rainbow-tag", price: 30 },
+      { id: "glow", title: "💡 Glow-namn", price: 22 },
+      { id: "avatarFrame", title: "🖼️ Profilram", price: 20 },
+      { id: "chatBubble", title: "💬 Chat-bubbla", price: 18 },
+      { id: "titleLegend", title: "🏆 Titel: Legend", price: 35 },
+      { id: "nameFire", title: "🔥 Fire-namn", price: 28 },
+      { id: "iconStar", title: "⭐ Stjärnikon", price: 12 },
+      { id: "bgNebula", title: "🌌 Nebula-bakgrund", price: 40 }
+    ];
 
     const loadingMessages = [
       "Laddar laddningen som laddar laddningen",
@@ -790,10 +975,7 @@
     });
     function showUpdates(){
 
-  gamesGrid.style.display="none";
-  recommendedSection.style.display="none";
-  embedContainer.style.display="none";
-
+  hidePages();
   const page=document.getElementById("updatesPage");
   const list=document.getElementById("updatesList");
 
@@ -934,22 +1116,66 @@ function containsBannedWord(text) {
       addChatMessage({ name: "System", text, ts: Date.now() });
     }
 
+function getDisplayUsername() {
+  if (!currentUser) return "Gäst";
+  return `${currentUser.username}${currentUser.verified ? " ✔️" : ""}`;
+}
+
+function isChatBlocked() {
+  const now = Date.now();
+  if (!currentUser) return "Du måste vara inloggad för att chatta.";
+  if (currentUser.banned) return "Du är bannad från chatten.";
+  if (currentUser.timeoutUntil && currentUser.timeoutUntil > now) {
+    return `Du har timeout i ${Math.ceil((currentUser.timeoutUntil - now) / 1000)} sek.`;
+  }
+  if (chatCooldownUntil > now) return `Cooldown: ${((chatCooldownUntil - now) / 1000).toFixed(1)}s`;
+  return "";
+}
+
+function refreshChatStatus() {
+  const msg = isChatBlocked();
+  chatStatusEl.textContent = msg || `Inloggad som ${getDisplayUsername()}`;
+}
+
 function sendChatMessage() {
   const text = sanitizeText(chatInputEl.value);
   if (!text || !chatRef) return;
-
+  const blockedMsg = isChatBlocked();
+  if (blockedMsg) {
+    alert(blockedMsg);
+    return;
+  }
   if (containsBannedWord(text)) {
     alert("Ditt meddelande innehåller ord som inte är tillåtna.");
     return;
   }
 
-
-  const name = sanitizeName(chatNameEl.value);
-  chatNameEl.value = name;
-  localStorage.setItem("chatName", name);
-
-  chatRef.push({ name, text, ts: Date.now() });
+  chatRef.push({ uid: currentUser.id, name: getDisplayUsername(), text, ts: Date.now() });
+  chatCooldownUntil = Date.now() + 3000;
   chatInputEl.value = "";
+  refreshChatStatus();
+  setTimeout(refreshChatStatus, 3100);
+}
+
+function hidePages() {
+  gamesGrid.style.display = "none";
+  recommendedSection.style.display = "none";
+  embedContainer.style.display = "none";
+  document.getElementById("updatesPage").style.display = "none";
+  document.getElementById("questsPage").style.display = "none";
+  document.getElementById("shopPage").style.display = "none";
+}
+
+function showQuests() {
+  hidePages();
+  document.getElementById("questsPage").style.display = "block";
+  renderQuest();
+}
+
+function showShop() {
+  hidePages();
+  document.getElementById("shopPage").style.display = "block";
+  renderShop();
 }
 
     function renderRecommended() {
@@ -1034,6 +1260,8 @@ function sendChatMessage() {
 
     function openGame(game) {
       startFakeLoader();
+      activeGame = game;
+      activeGameStartedAt = Date.now();
 
       embedContainer.style.display = "block";
       gameFrame.onload = null;
@@ -1056,7 +1284,12 @@ function sendChatMessage() {
 }
 
     function goHome() {
-      location.reload();
+      document.getElementById("updatesPage").style.display = "none";
+      document.getElementById("questsPage").style.display = "none";
+      document.getElementById("shopPage").style.display = "none";
+      recommendedSection.style.display = "block";
+      gamesGrid.style.display = "grid";
+      renderGames(files);
     }
 
     function showFavorites() {
@@ -1076,6 +1309,9 @@ function sendChatMessage() {
 
       gamesGrid.style.display = "none";
       recommendedSection.style.display = "none";
+      document.getElementById("updatesPage").style.display = "none";
+      document.getElementById("questsPage").style.display = "none";
+      document.getElementById("shopPage").style.display = "none";
     }
 
     function toggleFullscreen() {
@@ -1096,23 +1332,363 @@ function sendChatMessage() {
       document.getElementById("themePopup").style.display = "flex";
     }
 
+
+    function closeModalOnBackdrop(event, id) {
+      if (event.target.id === id) document.getElementById(id).style.display = "none";
+    }
+
+    function setChatTab(tab) {
+      activeChatTab = tab;
+      const isGlobal = tab === "global";
+      document.getElementById("globalChatView").style.display = isGlobal ? "flex" : "none";
+      document.getElementById("privateChatView").style.display = isGlobal ? "none" : "flex";
+      document.getElementById("globalTabBtn").classList.toggle("active", isGlobal);
+      document.getElementById("privateTabBtn").classList.toggle("active", !isGlobal);
+      renderPrivateFriendsBar();
+    }
+
+    function openProfileModal() { document.getElementById("profileModal").style.display = "flex"; renderProfile(); }
+    function closeProfileModal() { document.getElementById("profileModal").style.display = "none"; }
+    function openAdminGate() {
+      const entered = prompt("Skriv admin-lösenord för att öppna panelen:") || "";
+      if (entered !== ADMIN_PASSWORD) return alert("Fel admin-lösenord.");
+      adminUnlocked = true;
+      document.getElementById("adminPassword").value = "";
+      openAdminPanel();
+    }
+    function openAdminPanel() {
+      if (!adminUnlocked) return alert("Du måste verifiera admin-lösenord först.");
+      document.getElementById("adminModal").style.display = "flex";
+    }
+    function closeAdminPanel() { document.getElementById("adminModal").style.display = "none"; }
+
+    async function registerAccount() {
+      if (!db) return;
+      const email = (document.getElementById("authEmail").value || "").trim().toLowerCase();
+      const username = sanitizeName(document.getElementById("authUsername").value);
+      const password = (document.getElementById("authPassword").value || "").trim();
+      if (!email || !username || !password) return alert("Fyll i mail, username och lösenord.");
+      if (containsBannedWord(username) || USER_BANNED_WORDS.some((w) => username.toLowerCase().includes(w))) return alert("Username innehåller förbjudet ord.");
+      const existing = await db.ref("accounts").orderByChild("usernameLower").equalTo(username.toLowerCase()).once("value");
+      if (existing.exists()) return alert("Det username är upptaget.");
+      const emailExists = await db.ref("accounts").orderByChild("email").equalTo(email).once("value");
+      if (emailExists.exists()) return alert("Mail används redan.");
+      const ref = db.ref("accounts").push();
+      const quests = {};
+      questsConfig.forEach((q) => { quests[q.id] = { progressMs: 0, claimed: false }; });
+      await ref.set({ email, username, usernameLower: username.toLowerCase(), password, coins: 0, verified: false, banned: false, timeoutUntil: 0, sessionActive: false, createdAt: Date.now(), quests, inventory: {} });
+      alert("Konto skapat! Logga in nu.");
+    }
+
+    async function loginAccount() {
+      if (!db) return;
+      const email = (document.getElementById("authEmail").value || "").trim().toLowerCase();
+      const password = (document.getElementById("authPassword").value || "").trim();
+      const snap = await db.ref("accounts").orderByChild("email").equalTo(email).once("value");
+      if (!snap.exists()) return alert("Kontot hittades inte.");
+      let found = null;
+      snap.forEach((c) => { if (!found) found = { id: c.key, ...c.val() }; });
+      if (!found || found.password !== password) return alert("Fel lösenord.");
+      if (found.banned) return alert("Detta konto är bannat.");
+      if (found.sessionActive) return alert("Kontot är redan inloggat på en annan enhet.");
+      const sessionId = `sess_${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
+      await db.ref(`accounts/${found.id}`).update({ sessionActive: true, sessionId, lastSeen: Date.now(), forcedLogout: false });
+      currentUser = { ...found, sessionId };
+      userRef = db.ref(`accounts/${found.id}`);
+      userRef.onDisconnect().update({ sessionActive: false, lastSeen: Date.now() });
+      watchCurrentUser();
+      renderProfile();
+      refreshChatStatus();
+      setChatTab(activeChatTab);
+      alert("Inloggad!");
+    }
+
+    async function logoutAccount() {
+      if (!currentUser || !db) return;
+      await db.ref(`accounts/${currentUser.id}`).update({ sessionActive: false, sessionId: null });
+      if (userRef) userRef.off();
+      if (privateListenerRef) privateListenerRef.off();
+      currentUser = null;
+      selectedFriend = null;
+      privateMessagesEl.innerHTML = "";
+      renderProfile();
+      refreshChatStatus();
+      renderPrivateFriendsBar();
+    }
+
+    function watchCurrentUser() {
+      if (!userRef) return;
+      userRef.off();
+      userRef.on("value", (snap) => {
+        const data = snap.val();
+        if (!data) return;
+        currentUser = { id: snap.key, ...data };
+        if (data.forcedLogout) {
+          alert("Du blev utloggad av admin.");
+          logoutAccount();
+          return;
+        }
+        renderProfile();
+        refreshChatStatus();
+        renderPrivateFriendsBar();
+        renderQuest();
+        renderShop();
+      });
+    }
+
+    async function sendFriendRequest() {
+      if (!currentUser || !db) return alert("Logga in först.");
+      const targetName = sanitizeName(document.getElementById("friendInput").value);
+      const snap = await db.ref("accounts").orderByChild("usernameLower").equalTo(targetName.toLowerCase()).once("value");
+      if (!snap.exists()) return alert("Användaren finns inte.");
+      let target = null;
+      snap.forEach((c) => { if (!target) target = { id: c.key, ...c.val() }; });
+      if (target.id === currentUser.id) return alert("Du kan inte adda dig själv.");
+      const alreadyFriends = await db.ref(`friends/${currentUser.id}/${target.id}`).once("value");
+      if (alreadyFriends.exists()) return alert("Ni är redan vänner.");
+      await db.ref(`friend-requests/${target.id}/${currentUser.id}`).set({ fromUsername: currentUser.username, ts: Date.now() });
+      alert("Förfrågan skickad.");
+    }
+
+    async function respondFriendRequest(uid, accept) {
+      if (!currentUser || !db) return;
+      if (accept) {
+        await db.ref(`friends/${currentUser.id}/${uid}`).set(true);
+        await db.ref(`friends/${uid}/${currentUser.id}`).set(true);
+      }
+      await db.ref(`friend-requests/${currentUser.id}/${uid}`).remove();
+      renderPrivateFriendsBar();
+    }
+
+    function getPrivateChatId(a, b) { return [a, b].sort().join("__"); }
+
+    function openPrivateChat(friendId, friendName) {
+      selectedFriend = { id: friendId, name: friendName };
+      privateChatEl.style.display = "block";
+      privateChatEl.innerHTML = `<h4>Vald vän: ${friendName}</h4><div>Gå till chatten och öppna fliken <b>Privat</b>.</div>`;
+      setChatTab("private");
+      renderPrivateFriendsBar();
+      subscribePrivateChat();
+    }
+
+    function subscribePrivateChat() {
+      privateMessagesEl.innerHTML = "";
+      if (!selectedFriend || !currentUser) {
+        privateStatusEl.textContent = "Välj en vän för privat chatt.";
+        return;
+      }
+      privateStatusEl.textContent = `Privat chatt med ${selectedFriend.name}`;
+      const cid = getPrivateChatId(currentUser.id, selectedFriend.id);
+      if (privateListenerRef) privateListenerRef.off();
+      privateListenerRef = db.ref(`private-chats/${cid}/messages`).limitToLast(120);
+      privateListenerRef.on("child_added", (snap) => {
+        const msg = snap.val() || {};
+        const row = document.createElement("div");
+        row.className = "chat-msg";
+        row.innerHTML = `<div class="chat-meta">${msg.fromName || "Okänd"}</div><div class="chat-text">${(msg.text || "").slice(0,200)}</div>`;
+        privateMessagesEl.appendChild(row);
+        privateMessagesEl.scrollTop = privateMessagesEl.scrollHeight;
+      });
+    }
+
+    async function renderPrivateFriendsBar() {
+      privateFriendsListEl.innerHTML = "";
+      if (!currentUser || !db) return;
+      const snap = await db.ref(`friends/${currentUser.id}`).once("value");
+      if (!snap.exists()) {
+        privateFriendsListEl.innerHTML = `<div class="chat-status">Inga vänner ännu.</div>`;
+        return;
+      }
+      const ids = Object.keys(snap.val());
+      for (const fid of ids) {
+        const fs = await db.ref(`accounts/${fid}`).once("value");
+        const f = fs.val();
+        if (!f) continue;
+        const btn = document.createElement("button");
+        btn.className = "private-friend-btn" + (selectedFriend && selectedFriend.id === fid ? " active" : "");
+        btn.textContent = f.username;
+        btn.onclick = () => {
+          selectedFriend = { id: fid, name: f.username };
+          renderPrivateFriendsBar();
+          subscribePrivateChat();
+        };
+        privateFriendsListEl.appendChild(btn);
+      }
+    }
+
+    function sendPrivateMessage() {
+      if (!selectedFriend || !currentUser) return alert("Välj en vän först.");
+      const text = sanitizeText(privateInputEl.value);
+      if (!text) return;
+      if (containsBannedWord(text)) return alert("Ditt meddelande innehåller ord som inte är tillåtna.");
+      const cid = getPrivateChatId(currentUser.id, selectedFriend.id);
+      db.ref(`private-chats/${cid}/messages`).push({ from: currentUser.id, fromName: currentUser.username, text, ts: Date.now() });
+      privateInputEl.value = "";
+    }
+
+    function renderProfile() {
+      if (!currentUser) {
+        profileInfoEl.innerHTML = "Inte inloggad.";
+        friendRequestsEl.innerHTML = "";
+        friendsListEl.innerHTML = "";
+        privateChatEl.style.display = "none";
+        return;
+      }
+      profileInfoEl.innerHTML = `Inloggad som <b>${getDisplayUsername()}</b><br>Mail: ${currentUser.email}<br>Coins: ${currentUser.coins || 0}`;
+      db.ref(`friend-requests/${currentUser.id}`).on("value", (snap) => {
+        friendRequestsEl.innerHTML = "<b>Vänförfrågningar (måste accepteras)</b><br>";
+        if (!snap.exists()) { friendRequestsEl.innerHTML += "Inga."; return; }
+        snap.forEach((c) => {
+          const d = c.val() || {};
+          friendRequestsEl.innerHTML += `${d.fromUsername} <button onclick="respondFriendRequest('${c.key}', true)">Acceptera</button> <button onclick="respondFriendRequest('${c.key}', false)">Neka</button><br>`;
+        });
+      });
+      db.ref(`friends/${currentUser.id}`).on("value", async (snap) => {
+        friendsListEl.innerHTML = "<b>Kompisar</b><br>";
+        if (!snap.exists()) { friendsListEl.innerHTML += "Inga ännu."; return; }
+        for (const fid of Object.keys(snap.val())) {
+          const fs = await db.ref(`accounts/${fid}`).once("value");
+          const f = fs.val();
+          if (!f) continue;
+          friendsListEl.innerHTML += `${f.username} <button onclick="openPrivateChat('${fid}','${f.username}')">Öppna privat chat</button><br>`;
+        }
+      });
+    }
+
+    function renderQuest() {
+      const card = document.getElementById("questCard");
+      if (!currentUser) { card.textContent = "Logga in för quests."; return; }
+      const questState = currentUser.quests || {};
+      card.innerHTML = "";
+      questsConfig.forEach((q) => {
+        const st = questState[q.id] || { progressMs: 0, claimed: false };
+        const done = st.progressMs >= q.targetMs;
+        const row = document.createElement("div");
+        row.className = "info-card";
+        row.innerHTML = `<b>${q.label}</b><br>Reward: ${q.reward} coins<br>Progress: ${(st.progressMs/60000).toFixed(1)} / ${(q.targetMs/60000).toFixed(0)} min<br>${st.claimed ? "✅ Claimad" : done ? `<button onclick="claimQuest('${q.id}')">Claim ${q.reward}</button>` : "Spela mer..."}`;
+        card.appendChild(row);
+      });
+    }
+
+    async function claimQuest(questId) {
+      if (!currentUser) return;
+      const q = questsConfig.find((x) => x.id === questId);
+      if (!q) return;
+      const state = currentUser.quests?.[questId] || { progressMs: 0, claimed: false };
+      if (state.claimed || state.progressMs < q.targetMs) return;
+      await db.ref(`accounts/${currentUser.id}/coins`).set((currentUser.coins || 0) + q.reward);
+      await db.ref(`accounts/${currentUser.id}/quests/${questId}/claimed`).set(true);
+    }
+
+    function renderShop() {
+      const list = document.getElementById("shopList");
+      if (!currentUser) { list.textContent = "Logga in för shoppen."; return; }
+      const inv = currentUser.inventory || {};
+      list.innerHTML = `Coins: <b>${currentUser.coins || 0}</b><br><br>`;
+      shopItems.forEach((item) => {
+        list.innerHTML += `<div class="info-card"><b>${item.title}</b> — ${item.price} coins<br>${inv[item.id] ? "✅ Köpt" : `<button onclick="buyItem('${item.id}', ${item.price})">Köp</button>`}</div>`;
+      });
+    }
+
+    async function buyItem(item, price) {
+      if (!currentUser || (currentUser.coins || 0) < price) return alert("Inte tillräckligt med coins.");
+      const inv = currentUser.inventory || {};
+      if (inv[item]) return alert("Du har redan denna item.");
+      inv[item] = true;
+      await db.ref(`accounts/${currentUser.id}`).update({ coins: (currentUser.coins || 0) - price, inventory: inv });
+    }
+
+    async function adminAction(action) {
+      if (!adminUnlocked) return alert("Adminpanelen är låst.");
+      if ((document.getElementById("adminPassword").value || "") !== ADMIN_PASSWORD) return alert("Skriv admin-lösenord igen för att bekräfta åtgärden.");
+      const username = sanitizeName(document.getElementById("adminTarget").value);
+      const snap = await db.ref("accounts").orderByChild("usernameLower").equalTo(username.toLowerCase()).once("value");
+      if (!snap.exists()) return alert("Mål hittades inte.");
+      let target = null;
+      snap.forEach((c) => { if (!target) target = { id: c.key, ...c.val() }; });
+      if (action === "kick") await db.ref(`accounts/${target.id}`).update({ forcedLogout: true, sessionActive: false });
+      if (action === "timeout") await db.ref(`accounts/${target.id}`).update({ timeoutUntil: Date.now() + 5 * 60 * 1000 });
+      if (action === "ban") await db.ref(`accounts/${target.id}`).update({ banned: true, sessionActive: false, forcedLogout: true });
+      if (action === "verify") await db.ref(`accounts/${target.id}`).update({ verified: true });
+      if (action === "coins") {
+        const amount = Number(document.getElementById("adminCoins").value || 0);
+        await db.ref(`accounts/${target.id}/coins`).set((target.coins || 0) + amount);
+      }
+      alert("Admin-åtgärd utförd.");
+    }
+
+    function startGameTracker() {
+      if (gameTrackerInterval) clearInterval(gameTrackerInterval);
+      gameTrackerInterval = setInterval(async () => {
+        if (!currentUser || !activeGame || !activeGameStartedAt || !db) return;
+        const now = Date.now();
+        const delta = Math.min(now - activeGameStartedAt, 5000);
+        activeGameStartedAt = now;
+        const matching = questsConfig.filter((q) => q.game === activeGame);
+        if (!matching.length) return;
+        for (const q of matching) {
+          const current = currentUser.quests?.[q.id] || { progressMs: 0, claimed: false };
+          const next = Math.min(current.progressMs + delta, q.targetMs);
+          await db.ref(`accounts/${currentUser.id}/quests/${q.id}`).update({ progressMs: next, claimed: !!current.claimed });
+        }
+      }, 5000);
+    }
+
+    function startIntroLoader() {
+      const intro = document.getElementById("introOverlay");
+      if (!intro || !introLoaderFill || !introLoaderMessage) return;
+      const duration = Math.floor(Math.random() * 3000) + 3000; // 3-6s
+      const slowDownStart = Math.floor(duration * 0.82);
+      introLoaderFill.style.transform = "scaleX(0)";
+      introLoaderMessage.textContent = loadingMessages[Math.floor(Math.random() * loadingMessages.length)];
+      let startTs = null;
+
+      const animate = (ts) => {
+        if (startTs === null) startTs = ts;
+        const elapsed = ts - startTs;
+        let progress = 0;
+        if (elapsed < slowDownStart) {
+          const t = elapsed / slowDownStart;
+          progress = 95 * (1 - Math.pow(1 - t, 3));
+        } else if (elapsed < duration) {
+          const t = (elapsed - slowDownStart) / (duration - slowDownStart);
+          progress = 95 + 5 * (1 - Math.pow(1 - t, 2));
+        } else {
+          introLoaderFill.style.transform = "scaleX(1)";
+          setTimeout(() => {
+            intro.classList.add("fade-out");
+            setTimeout(() => intro.remove(), 560);
+          }, 180);
+          return;
+        }
+        introLoaderFill.style.transform = `scaleX(${Math.min(progress, 100) / 100})`;
+        requestAnimationFrame(animate);
+      };
+
+      requestAnimationFrame(animate);
+    }
+
     (function init() {
       const saved = localStorage.getItem("theme");
       if (saved) document.body.className = saved;
       renderRecommended();
       renderGames(files);
+      startIntroLoader();
+      refreshChatStatus();
 
       document.querySelectorAll(".sidebar .sidebar-btn").forEach((btn) => {
         btn.addEventListener("click", closeSidebar);
       });
 
-      const savedName = localStorage.getItem("chatName");
-      chatNameEl.value = savedName ? sanitizeName(savedName) : `Gäst${Math.floor(1000 + Math.random() * 9000)}`;
-
       chatSendEl.addEventListener("click", sendChatMessage);
       chatInputEl.addEventListener("keydown", (e) => {
         if (e.key === "Enter") sendChatMessage();
       });
+      privateSendEl.addEventListener("click", sendPrivateMessage);
+      privateInputEl.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") sendPrivateMessage();
+      });
+      setChatTab("global");
 
       const notConfigured = (
         !firebaseConfig.apiKey || firebaseConfig.apiKey.includes("DIN_") ||
@@ -1127,7 +1703,7 @@ function sendChatMessage() {
 
       try {
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+        db = firebase.database();
 
         // NYTT: Aktiva spelare (presence)
         const presenceRef = db.ref("presence");
@@ -1156,9 +1732,8 @@ function sendChatMessage() {
           activePlayersEl.textContent = "Aktiva spelare: --";
         });
       chatRef = db.ref("global-chat");
-        chatRef.limitToLast(120).on("child_added", (snap) => {
-          addChatMessage(snap.val() || {});
-        });
+        chatRef.limitToLast(120).on("child_added", (snap) => { addChatMessage(snap.val() || {}); });
+        startGameTracker();
       } catch (err) {
         activePlayersEl.textContent = "Aktiva spelare: --";
         addSystemChatMessage("Kunde inte ansluta chatten.");
