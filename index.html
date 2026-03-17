@@ -16,21 +16,33 @@
   </script>
 
   <style>
+    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap");
+
     * { box-sizing: border-box; }
 
     html, body {
       width: 100%;
       height: 100%;
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
       color: white;
       transition: background .6s ease;
     }
 
     body {
-      background-size: 400% 400%;
-      animation: bgMove 25s ease infinite;
+      --theme-r: 30;
+      --theme-g: 79;
+      --theme-b: 163;
+      background-size: 280% 280%;
+      animation: bgMove 34s ease infinite;
+      transition: background .3s ease;
     }
+
+    button, .chat-send, .sidebar-btn, .game-btn, .theme-btn {
+      font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+      letter-spacing: .2px;
+    }
+
 
     @keyframes bgMove {
       0% { background-position: 0% 50%; }
@@ -93,9 +105,10 @@
     body::after {
       background:
         radial-gradient(circle at 60% 30%, var(--accent-dark), transparent 60%),
-        radial-gradient(circle at 20% 60%, var(--accent), transparent 65%);
+        radial-gradient(circle at 20% 60%, var(--accent), transparent 65%),
+        radial-gradient(circle at 50% 50%, rgba(var(--theme-r), var(--theme-g), var(--theme-b), .22), transparent 62%);
       animation-duration: 60s;
-      opacity: .4;
+      opacity: .45;
     }
 
     @keyframes auroraMove {
@@ -193,6 +206,7 @@
     }
 
        .chat-panel {
+      display: none !important;
       position: fixed;
       top: 72px;
       left: 224px;
@@ -363,16 +377,57 @@
 
     #embedContainer {
       display: none;
-      margin: 20px auto;
+      margin: 0 auto;
       width: 100%;
       aspect-ratio: 16/9;
       background: #000;
       border-radius: 18px;
       overflow: hidden;
       position: relative;
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: 0 20px 46px rgba(0,0,0,.45);
     }
 
     #embedContainer iframe { width: 100%; height: 100%; border: none; }
+
+    #playArea {
+      display: none;
+      margin: 20px auto;
+      width: min(100%, 1420px);
+      grid-template-columns: minmax(760px, 1080px) 320px;
+      justify-content: center;
+      gap: 14px;
+      align-items: start;
+    }
+
+    #questTrackerPanel {
+      background: linear-gradient(165deg, rgba(8,10,20,.9), rgba(15,23,42,.82));
+      border: 1px solid rgba(148,163,184,.34);
+      border-radius: 16px;
+      padding: 12px;
+      min-height: 120px;
+    }
+    .tracker-title { font-weight: 900; margin-bottom: 8px; }
+    .tracker-empty { opacity: .8; font-size: 13px; }
+
+    html.theme-cyber #embedContainer,
+    html.theme-cyber #questTrackerPanel,
+    html.theme-cyber .shop-shell,
+    html.theme-cyber .roadmap-shell {
+      border-color: rgba(34,211,238,.7);
+      box-shadow:
+        0 0 0 1px rgba(34,211,238,.35) inset,
+        0 0 18px rgba(34,211,238,.45),
+        0 0 36px rgba(34,211,238,.2);
+    }
+    html.theme-cyber #embedContainer::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-radius: 18px;
+      box-shadow: 0 0 20px rgba(34,211,238,.55) inset;
+    }
 
     #iframeLoader {
       position: absolute;
@@ -499,31 +554,86 @@
 
     .game-card { position: relative; }
 
+    .game-preview {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      margin-bottom: 12px;
+      border-radius: 16px;
+      position: relative;
+      border: 1px solid rgba(255,255,255,.2);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.2), rgba(255,255,255,.02) 45%),
+        linear-gradient(225deg, rgba(0,0,0,.35), rgba(255,255,255,.02)),
+        linear-gradient(120deg, color-mix(in oklab, var(--accent) 58%, #fff 10%), color-mix(in oklab, var(--accent-dark) 86%, #000 18%));
+      overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.26), 0 12px 28px rgba(0,0,0,.32);
+    }
+
+    .game-preview::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(115deg, rgba(255,255,255,.12) 0 6px, transparent 6px 18px),
+        linear-gradient(180deg, transparent 0 68%, rgba(0,0,0,.36) 100%);
+      opacity: .45;
+      pointer-events: none;
+    }
+
+    .game-title {
+      margin-top: 8px;
+      display: block;
+      font-size: 13px;
+      font-weight: 800;
+      text-align: center;
+      color: rgba(255,255,255,.96);
+      text-shadow: 0 2px 8px rgba(0,0,0,.35);
+    }
+
+    .game-name-chip {
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      text-align: center;
+      padding: 7px 10px;
+      border-radius: 10px;
+      background: rgba(0,0,0,.44);
+      border: 1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(7px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     .game-btn {
       width: 100%;
-      padding: 22px;
-      border-radius: 16px;
-      border: none;
-      background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+      padding: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.26);
+      background:
+        linear-gradient(160deg, rgba(255,255,255,.2), rgba(255,255,255,.04)),
+        linear-gradient(120deg, color-mix(in oklab, var(--accent) 80%, #fff 10%), color-mix(in oklab, var(--accent-dark) 92%, #000 24%));
       color: white;
       font-size: 16px;
+      font-weight: 900;
       cursor: pointer;
       position: relative;
-      box-shadow:
-        0 6px 14px rgba(0, 0, 0, 0.4),
-        inset 0 2px 4px rgba(255, 255, 255, 0.15);
-      transition:
-        transform .15s ease,
-        box-shadow .15s ease,
-        filter .2s ease;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 44px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.3);
+      transition: transform .16s ease, box-shadow .2s ease, filter .2s ease, border-color .2s ease;
     }
 
     .game-btn:hover {
-      transform: translateY(-4px) scale(1.03);
-      box-shadow:
-        0 12px 22px rgba(0, 0, 0, 0.55),
-        inset 0 2px 6px rgba(255, 255, 255, 0.25);
-      filter: brightness(1.1);
+      transform: translateY(-4px) scale(1.018);
+      box-shadow: 0 24px 46px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.34);
+      border-color: rgba(255,255,255,.45);
+      filter: brightness(1.12) saturate(1.08);
     }
 
     .game-btn:active {
@@ -539,21 +649,60 @@
       inset: 0;
       border-radius: 16px;
       pointer-events: none;
-      box-shadow: 0 0 12px var(--accent);
-      opacity: .5;
+      box-shadow: 0 0 20px color-mix(in oklab, var(--accent) 80%, #fff 20%);
+      opacity: .75;
+    }
+
+    .sidebar-btn, .chat-send, .theme-btn, .fullscreen-btn, .profile-btn {
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.24);
+      box-shadow: 0 10px 26px rgba(0,0,0,.36), inset 0 1px 0 rgba(255,255,255,.2);
+      transition: transform .14s ease, filter .18s ease, box-shadow .18s ease;
+    }
+
+    .sidebar-btn:hover, .chat-send:hover, .theme-btn:hover, .fullscreen-btn:hover, .profile-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.08);
+      box-shadow: 0 14px 32px rgba(0,0,0,.44), inset 0 1px 0 rgba(255,255,255,.26);
     }
 
     .favorite {
       position: absolute;
       top: 10px;
       right: 12px;
-      font-size: 20px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.28);
+      background: rgba(0,0,0,.42);
+      color: rgba(255,255,255,.75);
+      display: grid;
+      place-items: center;
+      font-size: 16px;
       cursor: pointer;
-      opacity: .5;
-      user-select: none;
+      transition: transform .14s ease, background .16s ease, color .16s ease, box-shadow .16s ease;
+      z-index: 2;
     }
 
-    .favorite.active { opacity: 1; color: gold; }
+    .favorite:hover { transform: scale(1.08); background: rgba(255,255,255,.16); color: #fff; }
+    .favorite.active { color: #ffd54a; background: rgba(255,205,64,.22); box-shadow: 0 0 16px rgba(255,205,64,.45); }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,.75);
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 13px;
+      z-index: 2600;
+      backdrop-filter: blur(8px);
+      opacity: 0;
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(-6px); }
 
     #themePopup {
       position: fixed;
@@ -565,22 +714,71 @@
     }
 
     .theme-box {
-      background: #111;
-      padding: 25px;
-      border-radius: 18px;
+      width: min(760px, 94vw);
+      background: rgba(8,8,12,.92);
+      padding: 24px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(14px);
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .theme-presets {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      align-content: start;
     }
 
     .theme-btn {
-      padding: 18px;
+      padding: 14px 10px;
       border-radius: 12px;
-      border: none;
+      border: 1px solid rgba(255,255,255,.16);
       cursor: pointer;
-      font-size: 22px;
-      background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+      font-size: 12px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: .5px;
+      background: linear-gradient(135deg, color-mix(in oklab, var(--accent-dark) 80%, #000), var(--accent));
     }
+
+
+    .theme-btn.locked {
+      opacity: .6;
+      filter: grayscale(.4);
+      cursor: not-allowed;
+      border-color: rgba(250,204,21,.45);
+    }
+    .theme-btn .req { display:block; font-size:10px; opacity:.85; margin-top:4px; }
+
+    .roadmap-shell {
+      background: radial-gradient(circle at top, rgba(56,189,248,.16), transparent 52%), linear-gradient(165deg, rgba(8,10,20,.92), rgba(15,23,42,.88));
+      border: 1px solid rgba(148, 163, 184, .32);
+      border-radius: 20px;
+      padding: 18px;
+    }
+    .roadmap-progress-wrap { margin-bottom: 18px; }
+    .roadmap-progress-title { font-weight: 800; margin-bottom: 8px; }
+    .roadmap-progress-track { height: 14px; border-radius: 999px; background: rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); overflow:hidden; }
+    .roadmap-progress-fill { height:100%; width:0; background: linear-gradient(90deg, #22d3ee, #818cf8, #f472b6); border-radius:inherit; }
+    .roadmap-progress-text { margin-top: 8px; font-size: 13px; opacity:.9; }
+    .roadmap-rewards { display:grid; grid-template-columns: repeat(auto-fit,minmax(190px,1fr)); gap:10px; }
+    .roadmap-reward { background: linear-gradient(165deg, rgba(255,255,255,.08), rgba(255,255,255,.03)); border:1px solid rgba(255,255,255,.2); border-radius:12px; padding:10px; }
+    .roadmap-reward.unlocked { border-color: rgba(34,197,94,.55); box-shadow: 0 0 0 1px rgba(34,197,94,.2) inset; }
+
+    .profile-visual-card {
+      border-radius: 16px;
+      padding: 14px;
+      background: radial-gradient(circle at 20% 10%, rgba(56,189,248,.22), transparent 45%), radial-gradient(circle at 80% 0%, rgba(236,72,153,.16), transparent 40%), linear-gradient(165deg, rgba(15,23,42,.95), rgba(30,41,59,.88));
+      border: 1px solid rgba(255,255,255,.25);
+      box-shadow: 0 14px 24px rgba(0,0,0,.35);
+    }
+    .profile-visual-name { font-size: 20px; font-weight: 900; letter-spacing: .2px; }
+    .profile-visual-stats { margin-top: 8px; display:grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap:8px; }
+    .profile-stat { background: rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); border-radius:10px; padding:8px; font-size:12px; }
+    .profile-badges { margin-top:10px; display:flex; flex-wrap:wrap; gap:6px; }
 
     .recommended-section { margin: 20px 0 42px; }
     .recommended-title {
@@ -597,7 +795,29 @@
     }
     .recommended-row .recommended-btn { min-width: 180px; }
 
-    
+    #searchInput {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.38);
+      color: #fff;
+      padding: 12px 14px;
+      outline: none;
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+
+    #searchInput:focus {
+      border-color: rgba(255,255,255,.42);
+      box-shadow: 0 0 0 3px rgba(255,255,255,.12);
+    }
+
+    .search-meta {
+      margin-top: 6px;
+      font-size: 12px;
+      opacity: .82;
+      min-height: 16px;
+    }
+
 
     .profile-btn {
       position: fixed;
@@ -622,7 +842,7 @@
     .chat-msg { animation: popIn .25s ease; }
     @keyframes popIn { from { transform: translateY(8px); opacity: 0;} to { transform: translateY(0); opacity: 1; } }
     .modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,.62); z-index: 1500; }
-    .modal-box { width: min(520px, 90vw); max-height: 85vh; overflow: auto; background: rgba(10,10,10,.95); border: 1px solid rgba(255,255,255,.18); border-radius: 14px; padding: 16px; }
+    .modal-box { width: min(520px, 90vw); max-height: 85vh; overflow: auto; background: linear-gradient(165deg, rgba(255,255,255,.08), rgba(0,0,0,.7)); border: 1px solid rgba(255,255,255,.22); border-radius: 18px; padding: 18px; box-shadow: 0 24px 60px rgba(0,0,0,.5); backdrop-filter: blur(14px); }
     .modal-box.wide { width: min(760px, 94vw); }
     .auth-input { width: 100%; margin-bottom: 8px; border: none; border-radius: 8px; padding: 9px; }
     .info-card { margin-top: 10px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12); border-radius: 10px; padding: 10px; }
@@ -634,6 +854,21 @@
     html.theme-gray body { --accent: #aaaaaa; --accent-dark: #666666; background-image: linear-gradient(180deg, #2b2b2b, #000, #2b2b2b); }
     html.theme-purple body { --accent: #8a2be2; --accent-dark: #4b0082; background-image: linear-gradient(180deg, #2b0040, #000, #2b0040); }
     html.theme-pink body { --accent: #ff69b4; --accent-dark: #c71585; background-image: linear-gradient(180deg, #4a0028, #000, #4a0028); }
+    html.theme-cyan body { --accent: #00d4ff; --accent-dark: #005f7a; background-image: linear-gradient(180deg, #002c36, #000, #003d4d); }
+    html.theme-sunset body { --accent: #ff6b6b; --accent-dark: #7a1b4d; background-image: linear-gradient(180deg, #4a1736, #14010a, #6a2e25); }
+    html.theme-neon body { --accent: #39ff14; --accent-dark: #0f5a19; background-image: linear-gradient(180deg, #05210b, #000, #0a2d0f); }
+    html.theme-ocean body { --accent: #38bdf8; --accent-dark: #075985; background-image: linear-gradient(180deg, #03283e, #000, #063755); }
+    html.theme-lava body { --accent: #fb923c; --accent-dark: #7c2d12; background-image: linear-gradient(180deg, #431407, #000, #7c2d12); }
+    html.theme-forest body { --accent: #4ade80; --accent-dark: #14532d; background-image: linear-gradient(180deg, #052e16, #000, #14532d); }
+    html.theme-midnight body { --accent: #a78bfa; --accent-dark: #312e81; background-image: linear-gradient(180deg, #1e1b4b, #000, #312e81); }
+    html.theme-candy body { --accent: #f472b6; --accent-dark: #9d174d; background-image: linear-gradient(180deg, #4a044e, #000, #831843); }
+    html.theme-gold body { --accent: #facc15; --accent-dark: #92400e; background-image: linear-gradient(180deg, #3f2a00, #000, #713f12); }
+    html.theme-arctic body { --accent: #93c5fd; --accent-dark: #1e3a8a; background-image: linear-gradient(180deg, #0b1b44, #000, #1d4ed8); }
+    html.theme-emerald body { --accent: #34d399; --accent-dark: #065f46; background-image: linear-gradient(180deg, #022c22, #000, #065f46); }
+    html.theme-rose body { --accent: #fb7185; --accent-dark: #9f1239; background-image: linear-gradient(180deg, #4c0519, #000, #9f1239); }
+    html.theme-storm body { --accent: #94a3b8; --accent-dark: #334155; background-image: linear-gradient(180deg, #0f172a, #000, #1e293b); }
+    html.theme-cyber body { --accent: #22d3ee; --accent-dark: #155e75; background-image: linear-gradient(180deg, #083344, #000, #164e63); }
+    html.theme-dusk body { --accent: #c084fc; --accent-dark: #6b21a8; background-image: linear-gradient(180deg, #2e1065, #000, #581c87); }
 
     .intro-overlay { position: fixed; inset: 0; z-index: 2200; display:flex; align-items:center; justify-content:center; background-image: inherit; background-size: 400% 400%; animation: bgMove 25s ease infinite; overflow:hidden; }
     .intro-overlay::before,
@@ -664,6 +899,24 @@
     .intro-overlay.fade-out { animation: introFadeOut .55s ease forwards; }
     @keyframes introFadeOut { from { opacity:1; } to { opacity:0; visibility:hidden; } }
     .admin-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px; }
+    body.popup-open .favorite { pointer-events: none; }
+
+    .admin-modal-box {
+      background: linear-gradient(160deg, rgba(255,255,255,.1), rgba(0,0,0,.76));
+      border: 1px solid rgba(255,255,255,.24);
+    }
+    .admin-modal-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
+    .admin-modal-head h3 { margin:0; letter-spacing:.4px; }
+    .admin-badge {
+      font-size: 12px;
+      font-weight: 800;
+      border-radius: 999px;
+      padding: 6px 10px;
+      border: 1px solid rgba(255,255,255,.24);
+      background: rgba(0,0,0,.35);
+    }
+    .admin-badge.offline { background: rgba(180,40,40,.35); border-color: rgba(255,90,90,.45); }
+    .admin-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:10px; }
 
     .chat-tabs { display:flex; gap:6px; }
     .chat-tab { border:none; border-radius:999px; padding:6px 10px; background:rgba(255,255,255,.12); color:#fff; font-weight:700; cursor:pointer; }
@@ -780,6 +1033,8 @@
       .profile-grid { grid-template-columns: 1fr; }
       .profile-actions .chat-send { min-width: 100%; }
 
+      #playArea { grid-template-columns: 1fr; }
+      #embedContainer { width: 100%; }
       .chat-panel {
         left: 10px;
         right: 10px;
@@ -797,7 +1052,7 @@
 
     <div class="sidebar" id="sidebar">
       <button class="sidebar-btn" onclick="goHome()"><span class="icon">🏠</span><span class="label">Hem</span></button>
-      <button class="sidebar-btn" onclick="showFavorites()"><span class="icon">⭐</span><span class="label">Favoriter</span></button>
+      <button id="favoritesBtn" class="sidebar-btn" onclick="showFavorites()"><span class="icon">⭐</span><span id="favoritesLabel" class="label">Favoriter (0)</span></button>
       <button class="sidebar-btn" onclick="showRecent()"><span class="icon">⏱</span><span class="label">Senaste</span></button>
       <button class="sidebar-btn" onclick="openIframe('https://alv3333.github.io/Coola-Mattespel-Soundboard.github.io/')"><span class="icon">🔊</span><span class="label">Soundboard</span></button>
       <button class="sidebar-btn" onclick="openIframe('https://studio.pickaxe.co/STUDIOGX4LHRY55GYHQ15/295XP68K97')"><span class="icon">🤖</span><span class="label">AI</span></button>
@@ -806,7 +1061,7 @@
       <button class="sidebar-btn" onclick="showQuests()"><span class="icon">🎯</span><span class="label">Quests</span></button>
       <button class="sidebar-btn" onclick="showShop()"><span class="icon">🛒</span><span class="label">Shop</span></button>
       <button class="sidebar-btn" onclick="showInventory()"><span class="icon">🎒</span><span class="label">Inventory</span></button>
-      <button class="sidebar-btn" onclick="openAdminGate()"><span class="icon">🛡️</span><span class="label">Admin</span></button>
+      <button class="sidebar-btn" onclick="showRoadmap()"><span class="icon">🧭</span><span class="label">Roadmap</span></button>
       <button class="sidebar-btn" onclick="openThemePopup()"><span class="icon">🎨</span><span class="label">Tema</span></button>
     </div>
 
@@ -847,22 +1102,26 @@
         <p class="subtitle">Cool sida med coola mattespel!</p>
         <p id="activePlayers" class="active-players">Aktiva spelare: ...</p> <!-- NYTT -->
         <div class="search-box">
-         <input id="searchInput" placeholder="Sök spel..." oninput="filterGames()" />
+         <input id="searchInput" placeholder="Sök spel snabbt..." oninput="filterGames()" />
+         <div id="searchMeta" class="search-meta"></div>
         </div>
       </div>
 
-      <div id="embedContainer">
-        <div id="iframeLoader">
-          <div class="loader-box">
-            <div class="loader-title">Laddar</div>
-            <div class="loader-track">
-              <div id="loaderFill" class="loader-fill"></div>
+      <div id="playArea">
+        <div id="embedContainer">
+          <div id="iframeLoader">
+            <div class="loader-box">
+              <div class="loader-title">Laddar</div>
+              <div class="loader-track">
+                <div id="loaderFill" class="loader-fill"></div>
+              </div>
+              <div id="loaderMessage" class="loader-message"></div>
             </div>
-            <div id="loaderMessage" class="loader-message"></div>
           </div>
+          <iframe id="gameFrame"></iframe>
+          <button class="fullscreen-btn" onclick="toggleFullscreen()">Fullscreen</button>
         </div>
-        <iframe id="gameFrame"></iframe>
-        <button class="fullscreen-btn" onclick="toggleFullscreen()">Fullscreen</button>
+        <div id="questTrackerPanel"><div class="tracker-title">🎯 Quest progression</div><div class="tracker-empty">Starta ett spel med quest för att se progress här.</div></div>
       </div>
 
       <div id="recommendedSection" class="recommended-section">
@@ -883,8 +1142,9 @@
   </div>
 </div>
       <div id="questsPage" style="display:none;margin-top:30px;">
-  <h2 style="font-size:28px;margin-bottom:15px;">🎯 Quests</h2>
-  <div id="questCard" class="info-card quest-list"></div>
+  <h2 style="font-size:28px;margin-bottom:6px;">🎯 Quests</h2>
+  <div id="questResetTimer" class="search-meta">Quests nollställs om --:--:--</div>
+  <div id="questCard" class="shop-shell quest-list"></div>
 </div>
 <div id="shopPage" style="display:none;margin-top:30px;">
   <h2 style="font-size:28px;margin-bottom:15px;">🛒 Shop</h2>
@@ -894,20 +1154,41 @@
   <h2 style="font-size:28px;margin-bottom:15px;">🎒 Inventory</h2>
   <div id="inventoryList" class="shop-shell"></div>
 </div>
+<div id="roadmapPage" style="display:none;margin-top:30px;">
+  <h2 style="font-size:28px;margin-bottom:15px;">🧭 Roadmap</h2>
+  <div id="roadmapCard" class="roadmap-shell"></div>
+</div>
       <div class="games-grid" id="gamesGrid"></div>
     </div>
   </div>
 
-  <div id="themePopup" onclick="if(event.target===this)this.style.display='none'">
+  <div id="themePopup" onclick="if(event.target===this)closeThemePopup()">
     <div class="theme-box">
-      <button class="theme-btn" onclick="setTheme('blue')">🔵</button>
-      <button class="theme-btn" onclick="setTheme('red')">🔴</button>
-      <button class="theme-btn" onclick="setTheme('green')">🟢</button>
-      <button class="theme-btn" onclick="setTheme('yellow')">🟡</button>
-      <button class="theme-btn" onclick="setTheme('orange')">🟠</button>
-      <button class="theme-btn" onclick="setTheme('gray')">⚪</button>
-      <button class="theme-btn" onclick="setTheme('purple')">🟣</button>
-      <button class="theme-btn" onclick="setTheme('pink')">🌸</button>
+      <div class="theme-presets">
+        <button class="theme-btn" data-theme="blue" onclick="setTheme('blue')">BLUE</button>
+        <button class="theme-btn" data-theme="red" onclick="setTheme('red')">RED</button>
+        <button class="theme-btn" data-theme="green" onclick="setTheme('green')">GREEN</button>
+        <button class="theme-btn" data-theme="yellow" onclick="setTheme('yellow')">YELLOW</button>
+        <button class="theme-btn" data-theme="orange" onclick="setTheme('orange')">ORANGE</button>
+        <button class="theme-btn" data-theme="gray" onclick="setTheme('gray')">GRAY</button>
+        <button class="theme-btn" data-theme="purple" onclick="setTheme('purple')">PURPLE</button>
+        <button class="theme-btn" data-theme="pink" onclick="setTheme('pink')">PINK</button>
+        <button class="theme-btn" data-theme="cyan" onclick="setTheme('cyan')">CYAN</button>
+        <button class="theme-btn" data-theme="sunset" onclick="setTheme('sunset')">SUNSET</button>
+        <button class="theme-btn" data-theme="neon" onclick="setTheme('neon')">NEON</button>
+        <button class="theme-btn" data-theme="ocean" onclick="setTheme('ocean')">OCEAN</button>
+        <button class="theme-btn" data-theme="lava" onclick="setTheme('lava')">LAVA</button>
+        <button class="theme-btn" data-theme="forest" onclick="setTheme('forest')">FOREST</button>
+        <button class="theme-btn" data-theme="midnight" onclick="setTheme('midnight')">MIDNIGHT</button>
+        <button class="theme-btn" data-theme="candy" onclick="setTheme('candy')">CANDY</button>
+        <button class="theme-btn" data-theme="gold" onclick="setTheme('gold')">GOLD</button>
+        <button class="theme-btn" data-theme="arctic" onclick="setTheme('arctic')">ARCTIC</button>
+        <button class="theme-btn" data-theme="emerald" onclick="setTheme('emerald')">EMERALD</button>
+        <button class="theme-btn" data-theme="rose" onclick="setTheme('rose')">ROSE</button>
+        <button class="theme-btn" data-theme="storm" onclick="setTheme('storm')">STORM</button>
+        <button class="theme-btn" data-theme="cyber" onclick="setTheme('cyber')">CYBER</button>
+        <button class="theme-btn" data-theme="dusk" onclick="setTheme('dusk')">DUSK</button>
+      </div>
     </div>
   </div>
 
@@ -939,6 +1220,7 @@
             <button class="chat-send" onclick="logoutAccount()">Logga ut</button>
           </div>
           <div id="profileInfo" class="info-card"></div>
+          <div id="profileStylePreview" class="info-card"></div>
         </div>
         <div class="profile-section">
           <h4>🤝 Kompisar</h4>
@@ -949,6 +1231,14 @@
           <div id="friendRequests" class="info-card"></div>
           <div id="friendsList" class="info-card"></div>
           <div id="privateChat" class="info-card" style="display:none;"></div>
+          <div class="chat-row" style="margin-top:8px;">
+            <input id="viewProfileInput" class="chat-input" placeholder="Visa profil via username" />
+            <button class="chat-send" onclick="viewPublicProfile()">Visa profil</button>
+          </div>
+          <div id="publicProfileView" class="info-card"></div>
+          <h4 style="margin-top:12px;">🔎 Browsa profiler</h4>
+          <div class="chat-row"><input id="profileBrowseInput" class="chat-input" placeholder="Sök username..." oninput="renderProfileBrowser()" /></div>
+          <div id="profileBrowseList" class="info-card"></div>
         </div>
       </div>
       <div class="profile-actions" style="margin-top:10px;">
@@ -960,17 +1250,27 @@
   </div>
 
   <div id="adminModal" class="modal" onclick="closeModalOnBackdrop(event, 'adminModal')">
-    <div class="modal-box">
-      <h3>🛡️ Admin Panel</h3>
-      <input id="adminPassword" class="auth-input" type="password" placeholder="Admin-lösenord" />
-      <input id="adminTarget" class="auth-input" placeholder="Mål (username)" />
-      <input id="adminCoins" class="auth-input" type="number" placeholder="Coins att ge" />
+    <div class="modal-box wide admin-modal-box">
+      <div class="admin-modal-head">
+        <h3>🛡️ Admin Panel</h3>
+        <div id="chatToggleStatus" class="admin-badge">Chat: Aktiv</div>
+      </div>
+      <div class="admin-grid">
+        <input id="adminPassword" class="auth-input" type="password" placeholder="Admin-lösenord" />
+        <input id="adminTarget" class="auth-input" placeholder="Mål (username)" />
+        <input id="adminCoins" class="auth-input" type="number" placeholder="Coins att ge" />
+        <input id="adminXp" class="auth-input" type="number" placeholder="XP att ge" />
+      </div>
       <div class="admin-actions">
         <button class="chat-send" onclick="adminAction('kick')">Kick</button>
         <button class="chat-send" onclick="adminAction('timeout')">Timeout 5 min</button>
         <button class="chat-send" onclick="adminAction('ban')">Ban</button>
         <button class="chat-send" onclick="adminAction('coins')">Ge coins</button>
         <button class="chat-send" onclick="adminAction('verify')">Verifera ✔️</button>
+        <button class="chat-send" onclick="adminAction('xp')">Ge XP</button>
+        <button class="chat-send" onclick="adminAction('clearInventory')">Clear inventory</button>
+        <button class="chat-send" onclick="adminAction('clearAccounts')">Clear accounts</button>
+        <button class="chat-send" onclick="adminAction('resetQuests')">Reset quests</button>
       </div>
       <button class="chat-send" onclick="closeAdminPanel()">Stäng</button>
     </div>
@@ -996,10 +1296,11 @@
     files.sort((a, b) => a.localeCompare(b, "sv", { sensitivity: "base" }));
 
     let recentGames = JSON.parse(localStorage.getItem("recentGames") || "[]");
-    let favoriteGames = JSON.parse(localStorage.getItem("favoriteGames") || "[]");
+    let favoriteGames = [...new Set(JSON.parse(localStorage.getItem("favoriteGames") || "[]"))];
 
     const gamesGrid = document.getElementById("gamesGrid");
-    const embedContainer = document.getElementById("embedContainer");
+    const playArea = document.getElementById("playArea");
+const embedContainer = document.getElementById("embedContainer");
     const gameFrame = document.getElementById("gameFrame");
     const recommendedSection = document.getElementById("recommendedSection");
     const recommendedRow = document.getElementById("recommendedRow");
@@ -1038,13 +1339,14 @@
       "SKICKA FÖRSLAG!!!"
 
 ];
-    const firebaseConfig = {
-      apiKey: "AIzaSyAC_EFaFuRTGIWEQmMPhhI2Pq4CCkR7tMs",
-      authDomain: "v4-sigma.firebaseapp.com",
-      databaseURL: "https://v4-sigma-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId: "v4-sigma",
-      appId: "1:348091861694:web:ff6f9945fae5fee9412cef"
+ const firebaseConfig = {
+      apiKey: "AIzaSyAZAaNITSnkwfCEkYI5NGUyEWiuSEGhfp4",
+      authDomain: "project-4243346869068615583.firebaseapp.com",
+      databaseURL: "https://project-4243346869068615583-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "project-4243346869068615583",
+      appId: "1:40272837740:web:3f908e419e625a3077ac49"
     };
+
 
     let chatRef = null;
     let db = null;
@@ -1062,6 +1364,8 @@
     let activeChatTab = "global";
     let privateListenerRef = null;
     const SESSION_KEY = "v4AuthSession";
+    const CHAT_ENABLED_KEY = "v4ChatEnabled";
+    let chatEnabled = localStorage.getItem(CHAT_ENABLED_KEY) !== "0";
     const preferredQuestGames = [
       "clsummerRider3D", "climposter", "clworldguessr", "clslopeplus", "clretrobowl", "cltemplerun2",
       "clsubwaysurfers", "clvex", "clpaperio", "cltinyfishing", "clbasketrandom", "clbasketballstars",
@@ -1092,29 +1396,51 @@
 
       return selectedGames.slice(0, 40).map((game, idx) => {
         const minutes = 6 + (idx % 10);
-        const reward = Math.max(5, Math.round(minutes * 0.9));
+        const rewardXp = Math.max(8, Math.round(minutes * 1.8));
         return {
           id: `quest_${idx + 1}_${game.replace(/[^a-z0-9]/gi, "").toLowerCase().slice(0, 18)}`,
           game,
           label: `Spela ${questDisplayName(game)} i ${minutes} min`,
           targetMs: minutes * 60 * 1000,
-          reward
+          rewardXp
         };
       });
     }
 
     const questsConfig = buildQuestsFromFiles();
     const shopItems = [
-      { id: "sparkle", title: "✨ Namn-effekt", price: 15, desc: "Lägger till extra sparkle i ditt namn." },
-      { id: "vip", title: "👑 VIP-tag", price: 25, desc: "Ger dig VIP-prefix i chatten." },
-      { id: "rainbow", title: "🌈 Rainbow-tag", price: 30, desc: "Gör namnet neon/rainbow i chatten." },
-      { id: "glow", title: "💡 Glow-namn", price: 22, desc: "Ger lysande namn-effekt." },
-      { id: "avatarFrame", title: "🖼️ Profilram", price: 20, desc: "Visar en ram runt ditt chattnamn." },
-      { id: "chatBubble", title: "💬 Chat-bubbla", price: 18, desc: "Snygg rundad bubbla runt dina meddelanden." },
-      { id: "titleLegend", title: "🏆 Titel: Legend", price: 35, desc: "Lägger till [Legend] efter namnet." },
-      { id: "nameFire", title: "🔥 Fire-namn", price: 28, desc: "Lägger till fire-badge vid ditt namn." },
-      { id: "iconStar", title: "⭐ Stjärnikon", price: 12, desc: "Visar en stjärna efter ditt namn." },
-      { id: "bgNebula", title: "🌌 Nebula-bakgrund", price: 40, desc: "Nebula-bakgrund på dina meddelanden." }
+      { id: "profileFrame", title: "🖼️ Profilram", price: 20, desc: "Visar en glödande ram i din profil.", effect: "frame" },
+      { id: "profileNeon", title: "🌈 Neon-namn", price: 28, desc: "Ger neon-effekt på namnet i profilen.", effect: "neon" },
+      { id: "profileVip", title: "👑 VIP-tag", price: 24, desc: "Visar VIP-tag i din profil.", effect: "vip" },
+      { id: "profileFire", title: "🔥 Fire-badge", price: 22, desc: "Visar fire-badge i din profil.", effect: "fire" },
+      { id: "profileGalaxy", title: "🌌 Galaxy-kort", price: 34, desc: "Galaxybakgrund på profilkortet.", effect: "galaxy" },
+      { id: "profileGold", title: "🥇 Guld-namn", price: 26, desc: "Guldig namntext i profil.", effect: "gold" },
+      { id: "profileShadow", title: "🕶️ Shadow-kort", price: 18, desc: "Mörk kontrast-stil i profil.", effect: "shadow" },
+      { id: "profilePulse", title: "💓 Pulse-effekt", price: 30, desc: "Pulserande accent runt profilkort.", effect: "pulse" },
+      { id: "profileCrystal", title: "💎 Crystal-tag", price: 27, desc: "Kristall-badge i profil.", effect: "crystal" },
+      { id: "profileRetro", title: "🕹️ Retro-tema", price: 21, desc: "Retro-färgtema i profil.", effect: "retro" },
+      { id: "profileWave", title: "🌊 Wave-overlay", price: 19, desc: "Våg-mönster i profilkort.", effect: "wave" },
+      { id: "profileAura", title: "✨ Aura-glow", price: 25, desc: "Auralys runt profilkort.", effect: "aura" },
+      { id: "profileFrost", title: "❄️ Frostram", price: 23, desc: "Isblå frostkant runt profilkortet.", effect: "frost" },
+      { id: "profileVolt", title: "⚡ Volttext", price: 29, desc: "Elektrisk glow runt namnet.", effect: "volt" },
+      { id: "profileMeteor", title: "☄️ Meteorstänk", price: 31, desc: "Meteor-partiklar i profilkort.", effect: "meteor" },
+      { id: "profileRuby", title: "🔴 Ruby-badge", price: 24, desc: "Röd premium-badge.", effect: "ruby" },
+      { id: "profileEmerald", title: "🟢 Emerald-badge", price: 24, desc: "Grön premium-badge.", effect: "emerald" },
+      { id: "profileSapphire", title: "🔵 Sapphire-badge", price: 24, desc: "Blå premium-badge.", effect: "sapphire" },
+      { id: "profileVortex", title: "🌀 Vortex-kort", price: 33, desc: "Virvel-bakgrund med djup.", effect: "vortex" },
+      { id: "profileCarbon", title: "🧩 Carbon-mönster", price: 20, desc: "Mörkt mönster i kortet.", effect: "carbon" },
+      { id: "profileHolo", title: "🪩 Holo-shine", price: 34, desc: "Holografisk reflex i kortet.", effect: "holo" },
+      { id: "profileComet", title: "🌠 Comet trail", price: 32, desc: "Rörlig ljussvans över profilkortet.", effect: "comet" },
+      { id: "profilePixel", title: "🧱 Pixelstil", price: 19, desc: "8-bit profilkänsla.", effect: "pixel" },
+      { id: "profileRose", title: "🌹 Rose glow", price: 21, desc: "Mjuk rosafärgad glöd.", effect: "rose" },
+      { id: "profileLime", title: "🍀 Lime boost", price: 21, desc: "Fräsch limefärgad accent.", effect: "lime" },
+      { id: "profileSun", title: "☀️ Sun flare", price: 27, desc: "Varmt solljus över kortet.", effect: "sun" },
+      { id: "profileMoon", title: "🌙 Moon aura", price: 27, desc: "Nattlig glow med stjärnton.", effect: "moon" },
+      { id: "profileGlitch", title: "👾 Glitch-overlay", price: 30, desc: "Digital glitch-effekt i profil.", effect: "glitch" },
+      { id: "profileInk", title: "🖋️ Ink fade", price: 18, desc: "Tusch-liknande skuggövergång.", effect: "ink" },
+      { id: "profilePlasma", title: "🔮 Plasma-ring", price: 35, desc: "Högenergi-ring runt namnet.", effect: "plasma" },
+      { id: "profileCrown", title: "🏆 Champion crown", price: 38, desc: "Champion-markering i profilen.", effect: "crown" },
+      { id: "profileGoldBorder", title: "💠 Premium kant", price: 26, desc: "Tjock premium-kant i guld.", effect: "goldborder" }
     ];
 
     const loadingMessages = [
@@ -1140,6 +1466,42 @@
     let fakeLoadRaf = null;
     let currentLoadId = 0;
 
+    const xpForLevel = (lvl) => Math.floor(120 + (lvl - 1) * 32 + Math.pow(lvl - 1, 1.55) * 6);
+    function getLevelFromXp(xp = 0) {
+      let level = 1;
+      let remaining = xp;
+      while (remaining >= xpForLevel(level) && level < 200) {
+        remaining -= xpForLevel(level);
+        level++;
+      }
+      return { level, progressXp: remaining, neededXp: xpForLevel(level) };
+    }
+
+
+    function getCoinsForLevel(level) {
+      return 10 + (level % 21);
+    }
+
+    async function ensureLevelCoinRewards() {
+      if (!currentUser || !db) return;
+      const levelNow = getLevelFromXp(currentUser.xp || 0).level;
+      const rewardedLevel = Number(currentUser.rewardedLevel || 1);
+      if (levelNow <= rewardedLevel) return;
+      let bonus = 0;
+      for (let l = rewardedLevel + 1; l <= levelNow; l++) bonus += getCoinsForLevel(l);
+      await db.ref(`accounts/${currentUser.id}`).update({
+        coins: (currentUser.coins || 0) + bonus,
+        rewardedLevel: levelNow
+      });
+    }
+
+    function getTodayKey() {
+      const d = new Date();
+      const mm = String(d.getMonth() + 1).padStart(2, "0");
+      const dd = String(d.getDate()).padStart(2, "0");
+      return `${d.getFullYear()}-${mm}-${dd}`;
+    }
+
     const displayName = (f) => {
       const raw = f.replace(/^cl/i, "").trim();
       return raw.replace(/^([^A-Za-zÅÄÖåäö]*)([a-zåäö])/, (_, prefix, letter) => {
@@ -1147,13 +1509,61 @@
       });
     };
 
+    function createGameThumb(file) {
+      const wrap = document.createElement("div");
+
+      const preview = document.createElement("div");
+      preview.className = "game-preview";
+
+      const title = document.createElement("div");
+      title.className = "game-title";
+      title.textContent = displayName(file);
+
+      wrap.append(preview, title);
+      return wrap;
+    }
+
+    function saveFavorites() {
+      localStorage.setItem("favoriteGames", JSON.stringify(favoriteGames));
+      if (favoritesLabel) favoritesLabel.textContent = `Favoriter (${favoriteGames.length})`;
+    }
+
+    function isFavorite(file) {
+      return favoriteGames.includes(file);
+    }
+
+    function showToast(message) {
+      let toast = document.getElementById("uiToast");
+      if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "uiToast";
+        toast.className = "toast";
+        document.body.appendChild(toast);
+      }
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => toast.classList.remove("show"), 1500);
+    }
+
+    function toggleFavorite(file, { quiet = false } = {}) {
+      if (isFavorite(file)) {
+        favoriteGames = favoriteGames.filter((g) => g !== file);
+        if (!quiet) showToast(`Tog bort ${displayName(file)} från favoriter`);
+      } else {
+        favoriteGames.unshift(file);
+        favoriteGames = [...new Set(favoriteGames)].slice(0, 300);
+        if (!quiet) showToast(`La till ${displayName(file)} i favoriter`);
+      }
+      saveFavorites();
+    }
+
     function openSidebar() {
       sidebar.classList.add("open");
       sidebarOverlay.classList.add("show");
       menuToggle.textContent = "✕";
       menuToggle.setAttribute("aria-expanded", "true");
       menuToggle.setAttribute("aria-label", "Stäng meny");
-      addSystemChatMessage("Välkommen till chatten, om det finns någon som säger att de är Coola Mattespel och de inte har \"✔️\" i sitt namn så är den personen oftast inte Coola Mattespel så lita EJ på vad de säger.");
     }
 
     function closeSidebar() {
@@ -1399,8 +1809,23 @@ function isChatBlocked() {
 }
 
 function refreshChatStatus() {
+  if (!chatEnabled) {
+    chatStatusEl.textContent = "Chatten har blivit stoppad.";
+    privateStatusEl.textContent = "Chatten har blivit stoppad.";
+    chatInputEl.disabled = true;
+    chatSendEl.disabled = true;
+    privateInputEl.disabled = true;
+    privateSendEl.disabled = true;
+    return;
+  }
+
   const msg = isChatBlocked();
   chatStatusEl.textContent = msg || `Inloggad som ${getDisplayUsername()}`;
+  privateStatusEl.textContent = selectedFriend ? `Privat chatt med ${selectedFriend.name}` : "Välj en vän för privat chatt.";
+  chatInputEl.disabled = !!msg;
+  chatSendEl.disabled = !!msg;
+  privateInputEl.disabled = !currentUser || !selectedFriend;
+  privateSendEl.disabled = !currentUser || !selectedFriend;
 }
 
 function getCurrentUserChatStyle() {
@@ -1449,6 +1874,10 @@ function applyChatMessageVisuals(box, msg) {
 function sendChatMessage() {
   const text = sanitizeText(chatInputEl.value);
   if (!text || !chatRef) return;
+  if (!chatEnabled) {
+    alert("Chatten har blivit stoppad.");
+    return;
+  }
   const blockedMsg = isChatBlocked();
   if (blockedMsg) {
     alert(blockedMsg);
@@ -1470,13 +1899,16 @@ function sendChatMessage() {
 function hidePages() {
   gamesGrid.style.display = "none";
   recommendedSection.style.display = "none";
+  playArea.style.display = "none";
   embedContainer.style.display = "none";
+  gameFrame.src = "about:blank";
   activeGame = null;
   activeGameLastTick = null;
   document.getElementById("updatesPage").style.display = "none";
   document.getElementById("questsPage").style.display = "none";
   document.getElementById("shopPage").style.display = "none";
   document.getElementById("inventoryPage").style.display = "none";
+  document.getElementById("roadmapPage").style.display = "none";
 }
 
 function showQuests() {
@@ -1504,7 +1936,7 @@ function showInventory() {
       picks.forEach((file) => {
         const btn = document.createElement("button");
         btn.className = "game-btn recommended-btn";
-        btn.textContent = displayName(file);
+        btn.append(createGameThumb(file));
         btn.onclick = () => openGame(file);
         recommendedRow.appendChild(btn);
       });
@@ -1521,25 +1953,20 @@ function showInventory() {
       gamesGrid.style.display = "grid";
       recommendedSection.style.display = "block";
 
-      const groups = { "#": [] };
-      alphabet.forEach((letter) => (groups[letter] = []));
-
-      list.forEach((file) => {
-        groups[getGroupLabel(file)].push(file);
+      const sortedList = [...list].sort((a, b) => {
+        const favDelta = Number(isFavorite(b)) - Number(isFavorite(a));
+        if (favDelta !== 0) return favDelta;
+        return displayName(a).localeCompare(displayName(b), "sv", { sensitivity: "base", numeric: true });
       });
 
-      const order = ["#", ...alphabet];
+      const groups = { "#": [] };
+      alphabet.forEach((letter) => (groups[letter] = []));
+      sortedList.forEach((file) => groups[getGroupLabel(file)].push(file));
 
+      const order = ["#", ...alphabet];
       order.forEach((groupKey) => {
         const groupItems = groups[groupKey];
         if (!groupItems.length) return;
-
-        groupItems.sort((a, b) =>
-          displayName(a).localeCompare(displayName(b), "sv", {
-            sensitivity: "base",
-            numeric: true
-          })
-        );
 
         const header = document.createElement("div");
         header.className = "group-header";
@@ -1552,23 +1979,24 @@ function showInventory() {
 
           const b = document.createElement("button");
           b.className = "game-btn";
-          b.textContent = displayName(file);
+          b.append(createGameThumb(file));
           b.onclick = () => openGame(file);
 
-          const f = document.createElement("span");
-          f.className = "favorite";
+          const f = document.createElement("button");
+          f.type = "button";
+          f.className = `favorite${isFavorite(file) ? " active" : ""}`;
           f.textContent = "★";
-          if (favoriteGames.includes(file)) f.classList.add("active");
+          f.title = isFavorite(file) ? "Ta bort favorit" : "Lägg till favorit";
+          f.setAttribute("aria-label", f.title);
+          f.setAttribute("aria-pressed", String(isFavorite(file)));
 
           f.onclick = (e) => {
             e.stopPropagation();
-            if (favoriteGames.includes(file)) {
-              favoriteGames = favoriteGames.filter((g) => g !== file);
-            } else {
-              favoriteGames.push(file);
-            }
-            localStorage.setItem("favoriteGames", JSON.stringify(favoriteGames));
-            renderGames(list);
+            toggleFavorite(file);
+            f.classList.toggle("active", isFavorite(file));
+            f.title = isFavorite(file) ? "Ta bort favorit" : "Lägg till favorit";
+            f.setAttribute("aria-label", f.title);
+            f.setAttribute("aria-pressed", String(isFavorite(file)));
           };
 
           c.append(b, f);
@@ -1582,6 +2010,7 @@ function showInventory() {
       activeGame = game;
       activeGameLastTick = Date.now();
 
+      playArea.style.display = "grid";
       embedContainer.style.display = "block";
       gameFrame.onload = null;
       gameFrame.src = `UGS-Files/${game}.html`;
@@ -1597,16 +2026,68 @@ function showInventory() {
       }
     }
 
- function filterGames() {
-  const q = document.getElementById("searchInput").value.toLowerCase();
-  renderGames(files.filter((f) => displayName(f).toLowerCase().includes(q)));
-}
+    let searchDebounce = null;
+
+    function normalizeSearchText(value) {
+      return (value || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[̀-ͯ]/g, "")
+        .replace(/[^a-z0-9]/g, "");
+    }
+
+    function scoreGameMatch(file, query) {
+      const raw = displayName(file);
+      const name = normalizeSearchText(raw);
+      if (!query) return { score: 1, ok: true };
+      if (name.startsWith(query)) return { score: 1000 - name.length, ok: true };
+      const idx = name.indexOf(query);
+      if (idx !== -1) return { score: 700 - idx, ok: true };
+
+      let qi = 0;
+      for (let i = 0; i < name.length && qi < query.length; i++) {
+        if (name[i] === query[qi]) qi++;
+      }
+      if (qi === query.length) return { score: 300 - Math.max(0, name.length - query.length), ok: true };
+      return { score: -1, ok: false };
+    }
+
+    function runGameSearch() {
+      const q = normalizeSearchText(searchInput.value);
+      if (!q) {
+        searchMeta.textContent = "Visar alla spel";
+        renderGames(files);
+        return;
+      }
+
+      const ranked = files
+        .map((file) => ({ file, ...scoreGameMatch(file, q) }))
+        .filter((r) => r.ok)
+        .sort((a, b) => b.score - a.score || displayName(a.file).localeCompare(displayName(b.file), "sv", { sensitivity: "base" }));
+
+      searchMeta.textContent = `${ranked.length} träffar för "${searchInput.value.trim()}"`;
+      renderGames(ranked.map((r) => r.file));
+    }
+
+    function filterGames() {
+      if (searchDebounce) clearTimeout(searchDebounce);
+      searchDebounce = setTimeout(runGameSearch, 90);
+    }
 
     function goHome() {
-      location.reload();
+      hidePages();
+      gamesGrid.style.display = "grid";
+      recommendedSection.style.display = "block";
+      searchMeta.textContent = "Visar alla spel";
+      renderGames(files);
     }
 
     function showFavorites() {
+      if (!favoriteGames.length) {
+        searchMeta.textContent = "Inga favoriter än. Klicka på ★ för att lägga till.";
+      } else {
+        searchMeta.textContent = `Visar ${favoriteGames.length} favoriter`;
+      }
       renderGames(favoriteGames);
     }
 
@@ -1619,6 +2100,7 @@ function showInventory() {
       activeGame = null;
       activeGameLastTick = null;
 
+      playArea.style.display = "grid";
       embedContainer.style.display = "block";
       gameFrame.onload = null;
       gameFrame.src = url;
@@ -1629,6 +2111,7 @@ function showInventory() {
       document.getElementById("questsPage").style.display = "none";
       document.getElementById("shopPage").style.display = "none";
       document.getElementById("inventoryPage").style.display = "none";
+  document.getElementById("roadmapPage").style.display = "none";
     }
 
     function toggleFullscreen() {
@@ -1639,21 +2122,90 @@ function showInventory() {
       }
     }
 
+
+    const themeUnlockLevels = { blue: 1, red: 1, green: 1, yellow: 2, orange: 3, gray: 4, purple: 5, pink: 6, cyan: 7, sunset: 9, neon: 11, ocean: 14, lava: 18, forest: 22, midnight: 30, candy: 40, gold: 55, arctic: 62, emerald: 70, rose: 78, storm: 86, cyber: 92, dusk: 98 };
+    const roadmapRewards = Array.from({ length: 100 }, (_, i) => {
+      const level = i + 1;
+      const coins = 10 + (level % 21);
+      const base = { level, label: `+${coins} coins` };
+      const themeByLevel = { 2:"yellow",3:"orange",4:"gray",5:"purple",6:"pink",7:"cyan",9:"sunset",11:"neon",14:"ocean",18:"lava",22:"forest",30:"midnight",40:"candy",55:"gold",62:"arctic",70:"emerald",78:"rose",86:"storm",92:"cyber",98:"dusk" };
+      if (themeByLevel[level]) base.label = `Lås upp tema: ${themeByLevel[level].toUpperCase()} + ${coins} coins`;
+      if ([10,20,35,50,65,80,100].includes(level)) base.label += " • Bonus reward";
+      return base;
+    });
+
+    function getThemeRequiredLevel(theme) {
+      return themeUnlockLevels[theme] || 999;
+    }
+
+    function isThemeUnlocked(theme, user = currentUser) {
+      const req = getThemeRequiredLevel(theme);
+      if (req <= 1) return true;
+      const level = getLevelFromXp(user?.xp || 0).level;
+      return level >= req;
+    }
+
+    function refreshThemeButtons() {
+      const level = getLevelFromXp(currentUser?.xp || 0).level;
+      document.querySelectorAll('.theme-btn[data-theme]').forEach((btn) => {
+        const theme = btn.dataset.theme;
+        const req = getThemeRequiredLevel(theme);
+        const unlocked = req <= level;
+        btn.classList.toggle('locked', !unlocked);
+        const base = theme.toUpperCase();
+        btn.innerHTML = unlocked || req <= 1 ? base : `${base}<span class="req">LÅST • LVL ${req}</span>`;
+      });
+    }
+
     function setTheme(t) {
+      if (!isThemeUnlocked(t)) {
+        const req = getThemeRequiredLevel(t);
+        return alert(`Det temat är låst. Nå level ${req} i roadmapen först.`);
+      }
       document.body.className = t;
-      document.documentElement.classList.remove("theme-blue","theme-red","theme-green","theme-yellow","theme-orange","theme-gray","theme-purple","theme-pink");
+      document.documentElement.classList.remove("theme-blue","theme-red","theme-green","theme-yellow","theme-orange","theme-gray","theme-purple","theme-pink","theme-cyan","theme-sunset","theme-neon","theme-ocean","theme-lava","theme-forest","theme-midnight","theme-candy","theme-gold","theme-arctic","theme-emerald","theme-rose","theme-storm","theme-cyber","theme-dusk");
       document.documentElement.classList.add(`theme-${t}`);
       localStorage.setItem("theme", t);
-      document.getElementById("themePopup").style.display = "none";
+      closeThemePopup();
     }
 
     function openThemePopup() {
+      refreshThemeButtons();
       document.getElementById("themePopup").style.display = "flex";
+      setPopupOpen(true);
     }
 
 
+    function setPopupOpen(open) {
+      document.body.classList.toggle("popup-open", !!open);
+    }
+
+    function closeThemePopup() {
+      document.getElementById("themePopup").style.display = "none";
+      setPopupOpen(false);
+    }
+
+    function updateChatToggleUI() {
+      const badge = document.getElementById("chatToggleStatus");
+      if (!badge) return;
+      badge.textContent = chatEnabled ? "Chat: Aktiv" : "Chat: Stoppad";
+      badge.classList.toggle("offline", !chatEnabled);
+    }
+
+    function toggleChatState() {
+      chatEnabled = !chatEnabled;
+      localStorage.setItem(CHAT_ENABLED_KEY, chatEnabled ? "1" : "0");
+      updateChatToggleUI();
+      refreshChatStatus();
+      if (!chatEnabled) addSystemChatMessage("Chatten har blivit stoppad.");
+      else addSystemChatMessage("Chatten är startad igen.");
+    }
+
     function closeModalOnBackdrop(event, id) {
-      if (event.target.id === id) document.getElementById(id).style.display = "none";
+      if (event.target.id === id) {
+        document.getElementById(id).style.display = "none";
+        setPopupOpen(false);
+      }
     }
 
     function setChatTab(tab) {
@@ -1666,8 +2218,8 @@ function showInventory() {
       renderPrivateFriendsBar();
     }
 
-    function openProfileModal() { document.getElementById("profileModal").style.display = "flex"; renderProfile(); }
-    function closeProfileModal() { document.getElementById("profileModal").style.display = "none"; }
+    function openProfileModal() { document.getElementById("profileModal").style.display = "flex"; setPopupOpen(true); renderProfile(); }
+    function closeProfileModal() { document.getElementById("profileModal").style.display = "none"; setPopupOpen(false); }
     function openAdminGate() {
       const entered = prompt("Skriv admin-lösenord för att öppna panelen:") || "";
       if (entered !== ADMIN_PASSWORD) return alert("Fel admin-lösenord.");
@@ -1678,8 +2230,10 @@ function showInventory() {
     function openAdminPanel() {
       if (!adminUnlocked) return alert("Du måste verifiera admin-lösenord först.");
       document.getElementById("adminModal").style.display = "flex";
+      setPopupOpen(true);
+      updateChatToggleUI();
     }
-    function closeAdminPanel() { document.getElementById("adminModal").style.display = "none"; }
+    function closeAdminPanel() { document.getElementById("adminModal").style.display = "none"; setPopupOpen(false); }
 
     async function registerAccount() {
       if (!db) return;
@@ -1698,7 +2252,7 @@ function showInventory() {
       const ref = db.ref("accounts").push();
       const quests = {};
       questsConfig.forEach((q) => { quests[q.id] = { progressMs: 0, claimed: false }; });
-      await ref.set({ email, username, usernameLower: username.toLowerCase(), password, coins: 0, verified: false, banned: false, timeoutUntil: 0, sessionActive: false, createdAt: Date.now(), quests, inventory: {}, equipped: {} });
+      await ref.set({ email, username, usernameLower: username.toLowerCase(), password, coins: 0, xp: 0, verified: false, banned: false, timeoutUntil: 0, createdAt: Date.now(), lastQuestReset: getTodayKey(), quests, inventory: {}, equipped: {}, rewardedLevel: 1 });
       alert("Konto skapat! Logga in nu.");
     }
 
@@ -1712,16 +2266,12 @@ function showInventory() {
       snap.forEach((c) => { if (!found) found = { id: c.key, ...c.val() }; });
       if (!found || found.password !== password) return alert("Fel lösenord.");
       if (found.banned) return alert("Detta konto är bannat.");
-      const existingSessionRaw = localStorage.getItem(SESSION_KEY);
-      let existingSession = null;
-      try { existingSession = existingSessionRaw ? JSON.parse(existingSessionRaw) : null; } catch (e) {}
-      if (found.sessionActive && (!existingSession || existingSession.accountId !== found.id || existingSession.sessionId !== found.sessionId)) {
-        return alert("Kontot är redan inloggat på en annan enhet.");
-      }
-      const sessionId = found.sessionId || `sess_${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
-      await db.ref(`accounts/${found.id}`).update({ sessionActive: true, sessionId, lastSeen: Date.now(), forcedLogout: false });
-      localStorage.setItem(SESSION_KEY, JSON.stringify({ accountId: found.id, sessionId }));
-      currentUser = { ...found, sessionId };
+
+      // Tillåt flera enheter och håll session permanent.
+      await db.ref(`accounts/${found.id}`).update({ lastSeen: Date.now(), forcedLogout: false });
+      localStorage.setItem(SESSION_KEY, JSON.stringify({ accountId: found.id }));
+
+      currentUser = { ...found };
       userRef = db.ref(`accounts/${found.id}`);
       watchCurrentUser();
       renderProfile();
@@ -1731,8 +2281,7 @@ function showInventory() {
     }
 
     async function logoutAccount() {
-      if (!currentUser || !db) return;
-      await db.ref(`accounts/${currentUser.id}`).update({ sessionActive: false, sessionId: null });
+      if (!currentUser) return;
       localStorage.removeItem(SESSION_KEY);
       if (userRef) userRef.off();
       if (privateListenerRef) privateListenerRef.off();
@@ -1751,12 +2300,6 @@ function showInventory() {
         const data = snap.val();
         if (!data) return;
         currentUser = { id: snap.key, ...data };
-        if (data.forcedLogout) {
-          alert("Du blev utloggad av admin.");
-          localStorage.removeItem(SESSION_KEY);
-          logoutAccount();
-          return;
-        }
         renderProfile();
         refreshChatStatus();
         renderPrivateFriendsBar();
@@ -1854,6 +2397,7 @@ function showInventory() {
     }
 
     function sendPrivateMessage() {
+      if (!chatEnabled) return alert("Chatten har blivit stoppad.");
       if (!selectedFriend || !currentUser) return alert("Välj en vän först.");
       const text = sanitizeText(privateInputEl.value);
       if (!text) return;
@@ -1871,15 +2415,21 @@ function showInventory() {
     }
 
     function renderProfile() {
+      const profileStylePreview = document.getElementById("profileStylePreview");
       if (!currentUser) {
         profileInfoEl.innerHTML = "Inte inloggad.";
+        if (profileStylePreview) profileStylePreview.textContent = "Ingen profil att visa.";
         friendRequestsEl.innerHTML = "";
         friendsListEl.innerHTML = "";
         privateChatEl.style.display = "none";
+        const browseList = document.getElementById("profileBrowseList");
+        if (browseList) browseList.innerHTML = "";
         return;
       }
       const ownedEffects = getOwnedShopEffects(currentUser.inventory || {}, currentUser.equipped || {});
-      profileInfoEl.innerHTML = `Inloggad som <b>${getDisplayUsername()}</b><br>Mail: ${currentUser.email}<br>Coins: ${currentUser.coins || 0}<br>Shop-effekter i chatten/profilen: ${ownedEffects.length ? ownedEffects.join(", ") : "Inga köpta ännu."}`;
+      const lv = getLevelFromXp(currentUser.xp || 0);
+      profileInfoEl.innerHTML = `Inloggad som <b>${getDisplayUsername()}</b><br>Mail: ${currentUser.email}<br>Coins: ${currentUser.coins || 0}<br>XP: ${currentUser.xp || 0}<br>Level: ${lv.level}<br>Shop-effekter i profil: ${ownedEffects.length ? ownedEffects.join(", ") : "Inga köpta ännu."}`;
+      if (profileStylePreview) profileStylePreview.innerHTML = buildProfileVisual(currentUser);
       db.ref(`friend-requests/${currentUser.id}`).on("value", (snap) => {
         friendRequestsEl.innerHTML = "<b>Vänförfrågningar (måste accepteras)</b><br>";
         if (!snap.exists()) { friendRequestsEl.innerHTML += "Inga."; return; }
@@ -1898,11 +2448,123 @@ function showInventory() {
           friendsListEl.innerHTML += `${f.username} <button onclick="openPrivateChat('${fid}','${f.username}')">Öppna privat chat</button><br>`;
         }
       });
+      renderProfileBrowser();
     }
 
-    function renderQuest() {
+    async function sendFriendRequestToUsername(name) {
+      const input = document.getElementById("friendInput");
+      if (input) input.value = name || "";
+      await sendFriendRequest();
+    }
+
+    async function renderProfileBrowser() {
+      const list = document.getElementById("profileBrowseList");
+      const query = (document.getElementById("profileBrowseInput")?.value || "").toLowerCase();
+      if (!list || !db || !currentUser) return;
+      const snap = await db.ref("accounts").limitToLast(120).once("value");
+      if (!snap.exists()) { list.textContent = "Inga profiler hittades."; return; }
+      const users = [];
+      snap.forEach((c) => users.push({ id: c.key, ...(c.val() || {}) }));
+      const rows = users
+        .filter((u) => u.id !== currentUser.id)
+        .filter((u) => !query || String(u.username || "").toLowerCase().includes(query))
+        .sort((a, b) => (b.xp || 0) - (a.xp || 0))
+        .slice(0, 40)
+        .map((u) => {
+          const rawName = String(u.username || "Okänd");
+          const safeName = rawName.replace(/["'<>]/g, "");
+          const lvl = getLevelFromXp(u.xp || 0).level;
+          return `<div style="margin-bottom:8px;"><b>${safeName}</b> • LVL ${lvl} <button onclick="document.getElementById('viewProfileInput').value='${safeName}'; viewPublicProfile();">Visa</button> <button onclick="sendFriendRequestToUsername('${safeName}')">Lägg till vän</button></div>`;
+        }).join("");
+      list.innerHTML = rows || "Inga profiler matchar sökningen.";
+    }
+
+    async function maybeResetDailyQuests() {
+      if (!currentUser || !db) return;
+      const today = getTodayKey();
+      if ((currentUser.lastQuestReset || "") === today) return;
+      const reset = {};
+      questsConfig.forEach((q) => { reset[q.id] = { progressMs: 0, claimed: false }; });
+      await db.ref(`accounts/${currentUser.id}`).update({ quests: reset, lastQuestReset: today });
+    }
+
+    function updateQuestResetTimer() {
+      const el = document.getElementById("questResetTimer");
+      if (!el) return;
+      const now = new Date();
+      const next = new Date(now);
+      next.setHours(24, 0, 0, 0);
+      const diff = Math.max(0, next - now);
+      const h = Math.floor(diff / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      el.textContent = `Quests nollställs om ${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+    }
+
+    function renderRoadmap() {
+      const card = document.getElementById("roadmapCard");
+      if (!card) return;
+      if (!currentUser) { card.textContent = "Logga in för att se roadmap."; return; }
+
+      const xp = currentUser.xp || 0;
+      const lv = getLevelFromXp(xp);
+      const pct = Math.max(0, Math.min(100, (lv.progressXp / lv.neededXp) * 100));
+
+      const rewardsHtml = roadmapRewards.map((m) => {
+        const unlocked = lv.level >= m.level;
+        return `<div class="roadmap-reward ${unlocked ? "unlocked" : ""}"><div class="quest-head"><div class="quest-title">Level ${m.level}</div><div class="quest-status ${unlocked ? "done" : "progress"}">${unlocked ? "Unlockad" : "Låst"}</div></div><div>${m.label}</div></div>`;
+      }).join("");
+
+      card.innerHTML = `<div class="roadmap-progress-wrap">
+          <div class="roadmap-progress-title">🚀 Din roadmap-progress</div>
+          <div class="roadmap-progress-track"><div class="roadmap-progress-fill" style="width:${pct}%"></div></div>
+          <div class="roadmap-progress-text">Level ${lv.level} • XP ${xp} • ${lv.progressXp}/${lv.neededXp} till nästa level</div>
+        </div>
+        <div class="roadmap-rewards">${rewardsHtml}</div>`;
+    }
+
+    function showRoadmap() {
+      hidePages();
+      document.getElementById("roadmapPage").style.display = "block";
+      renderRoadmap();
+    }
+
+    function buildProfileVisual(user) {
+      const inv = user?.inventory || {};
+      const equipped = user?.equipped || {};
+      const owned = shopItems.filter((it) => inv[it.id]);
+      const active = owned.filter((it) => equipped[it.id]);
+      const lv = getLevelFromXp(user?.xp || 0);
+      const badges = active.map((it) => `<span class="tag owned">${it.title}</span>`).join("");
+      return `<div class="profile-visual-card">
+        <div class="profile-visual-name">${user?.username || "Gäst"}${user?.verified ? " ✔️" : ""}</div>
+        <div class="profile-visual-stats">
+          <div class="profile-stat">🏅 Level <b>${lv.level}</b></div>
+          <div class="profile-stat">✨ XP <b>${user?.xp || 0}</b></div>
+          <div class="profile-stat">🪙 Coins <b>${user?.coins || 0}</b></div>
+          <div class="profile-stat">🎒 Items <b>${owned.length}</b></div>
+        </div>
+        <div class="profile-badges">${badges || '<span class="tag missing">Inga aktiva effekter</span>'}</div>
+      </div>`;
+    }
+
+    async function viewPublicProfile() {
+      if (!db) return;
+      const name = sanitizeName(document.getElementById("viewProfileInput").value || "");
+      const box = document.getElementById("publicProfileView");
+      if (!name) { box.textContent = "Skriv ett username."; return; }
+      const snap = await db.ref("accounts").orderByChild("usernameLower").equalTo(name.toLowerCase()).once("value");
+      if (!snap.exists()) { box.textContent = "Profil hittades inte."; return; }
+      let acc = null;
+      snap.forEach((c) => { if (!acc) acc = c.val(); });
+      box.innerHTML = buildProfileVisual(acc);
+    }
+
+    async function renderQuest() {
       const card = document.getElementById("questCard");
+      updateQuestResetTimer();
       if (!currentUser) { card.textContent = "Logga in för quests."; return; }
+      await maybeResetDailyQuests();
       const questState = currentUser.quests || {};
       card.innerHTML = "";
       questsConfig.forEach((q) => {
@@ -1918,13 +2580,41 @@ function showInventory() {
             <div class="quest-title">${q.label}</div>
             <div class="quest-status ${statusClass}">${statusText}</div>
           </div>
-          <div class="quest-reward">Reward: <b>${q.reward} coins</b></div>
+          <div class="quest-reward">Reward: <b>${q.rewardXp} XP</b></div>
           <div class="quest-progress">${(st.progressMs/60000).toFixed(1)} / ${(q.targetMs/60000).toFixed(0)} min</div>
           <div class="quest-progress-track"><div class="quest-progress-fill" style="width:${pct.toFixed(1)}%"></div></div>
-          <div>${st.claimed ? "✅ Claimad" : done ? `<button class="chat-send" onclick="claimQuest('${q.id}')">Claim ${q.reward}</button>` : "Spela mer för att låsa upp reward."}</div>
+          <div>${st.claimed ? "✅ Claimad" : done ? `<button class="chat-send" onclick="claimQuest('${q.id}')">Claim ${q.rewardXp}</button>` : "Spela mer för att låsa upp reward."}</div>
+          <div><button class="chat-send" onclick="openQuestGame('${q.game}')">▶ Spela detta quest-spel</button></div>
         `;
         card.appendChild(row);
       });
+      renderQuestTrackerPanel();
+    }
+
+    function openQuestGame(game) {
+      hidePages();
+      openGame(game);
+      renderQuestTrackerPanel();
+    }
+
+    function renderQuestTrackerPanel() {
+      const panel = document.getElementById("questTrackerPanel");
+      if (!panel) return;
+      if (!activeGame) {
+        panel.innerHTML = `<div class="tracker-title">🎯 Quest progression</div><div class="tracker-empty">Starta ett spel med quest för att se progress här.</div>`;
+        return;
+      }
+      const matching = questsConfig.filter((q) => q.game === activeGame);
+      if (!matching.length || !currentUser) {
+        panel.innerHTML = `<div class="tracker-title">🎯 Quest progression</div><div class="tracker-empty">Inga quests för ${displayName(activeGame)} just nu.</div>`;
+        return;
+      }
+      const rows = matching.map((q) => {
+        const st = currentUser.quests?.[q.id] || { progressMs: 0, claimed: false };
+        const pct = Math.max(0, Math.min(100, (st.progressMs / q.targetMs) * 100));
+        return `<div class="quest-item"><div class="quest-title">${q.label}</div><div class="quest-progress">${(st.progressMs/60000).toFixed(1)} / ${(q.targetMs/60000).toFixed(0)} min</div><div class="quest-progress-track"><div class="quest-progress-fill" style="width:${pct.toFixed(1)}%"></div></div></div>`;
+      }).join("");
+      panel.innerHTML = `<div class="tracker-title">🎯 Quest progression: ${displayName(activeGame)}</div>${rows}`;
     }
 
     function isActivelyPlayingGame() {
@@ -1942,8 +2632,9 @@ function showInventory() {
       if (!q) return;
       const state = currentUser.quests?.[questId] || { progressMs: 0, claimed: false };
       if (state.claimed || state.progressMs < q.targetMs) return;
-      await db.ref(`accounts/${currentUser.id}/coins`).set((currentUser.coins || 0) + q.reward);
+      await db.ref(`accounts/${currentUser.id}/xp`).set((currentUser.xp || 0) + q.rewardXp);
       await db.ref(`accounts/${currentUser.id}/quests/${questId}/claimed`).set(true);
+      setTimeout(ensureLevelCoinRewards, 200);
     }
 
     function renderShop() {
@@ -2015,18 +2706,37 @@ function showInventory() {
     async function adminAction(action) {
       if (!adminUnlocked) return alert("Adminpanelen är låst.");
       if ((document.getElementById("adminPassword").value || "") !== ADMIN_PASSWORD) return alert("Skriv admin-lösenord igen för att bekräfta åtgärden.");
-      const username = sanitizeName(document.getElementById("adminTarget").value);
-      const snap = await db.ref("accounts").orderByChild("usernameLower").equalTo(username.toLowerCase()).once("value");
-      if (!snap.exists()) return alert("Mål hittades inte.");
+
+      const globalActions = new Set(["clearAccounts"]);
       let target = null;
-      snap.forEach((c) => { if (!target) target = { id: c.key, ...c.val() }; });
+
+      if (!globalActions.has(action)) {
+        const username = sanitizeName(document.getElementById("adminTarget").value);
+        const snap = await db.ref("accounts").orderByChild("usernameLower").equalTo(username.toLowerCase()).once("value");
+        if (!snap.exists()) return alert("Mål hittades inte.");
+        snap.forEach((c) => { if (!target) target = { id: c.key, ...c.val() }; });
+      }
       if (action === "kick") await db.ref(`accounts/${target.id}`).update({ forcedLogout: true, sessionActive: false });
       if (action === "timeout") await db.ref(`accounts/${target.id}`).update({ timeoutUntil: Date.now() + 5 * 60 * 1000 });
-      if (action === "ban") await db.ref(`accounts/${target.id}`).update({ banned: true, sessionActive: false, forcedLogout: true });
+      if (action === "ban") await db.ref(`accounts/${target.id}`).update({ banned: true, forcedLogout: true });
       if (action === "verify") await db.ref(`accounts/${target.id}`).update({ verified: true });
       if (action === "coins") {
         const amount = Number(document.getElementById("adminCoins").value || 0);
         await db.ref(`accounts/${target.id}/coins`).set((target.coins || 0) + amount);
+      }
+      if (action === "xp") {
+        const amount = Number(document.getElementById("adminXp").value || 0);
+        await db.ref(`accounts/${target.id}/xp`).set((target.xp || 0) + amount);
+      }
+      if (action === "clearInventory") await db.ref(`accounts/${target.id}`).update({ inventory: {}, equipped: {}, rewardedLevel: 1 });
+      if (action === "resetQuests") {
+        const reset = {};
+        questsConfig.forEach((q) => { reset[q.id] = { progressMs: 0, claimed: false }; });
+        await db.ref(`accounts/${target.id}`).update({ quests: reset, lastQuestReset: getTodayKey() });
+      }
+      if (action === "clearAccounts") {
+        const ok = confirm("Är du säker? Detta raderar ALLA konton.");
+        if (ok) await db.ref("accounts").remove();
       }
       alert("Admin-åtgärd utförd.");
     }
@@ -2049,6 +2759,7 @@ function showInventory() {
           const next = Math.min(current.progressMs + delta, q.targetMs);
           if (next === current.progressMs) continue;
           await db.ref(`accounts/${currentUser.id}/quests/${q.id}`).update({ progressMs: next, claimed: !!current.claimed });
+          renderQuestTrackerPanel();
         }
       }, 1000);
     }
@@ -2091,22 +2802,37 @@ function showInventory() {
       if (!db) return;
       const raw = localStorage.getItem(SESSION_KEY);
       if (!raw) return;
-      let sess = null;
-      try { sess = JSON.parse(raw); } catch (e) { localStorage.removeItem(SESSION_KEY); return; }
-      if (!sess || !sess.accountId || !sess.sessionId) { localStorage.removeItem(SESSION_KEY); return; }
 
-      const snap = await db.ref(`accounts/${sess.accountId}`).once("value");
-      if (!snap.exists()) { localStorage.removeItem(SESSION_KEY); return; }
-      const acc = snap.val() || {};
-      if (acc.sessionId !== sess.sessionId && acc.sessionActive) {
-        localStorage.removeItem(SESSION_KEY);
+      let sess = null;
+      try {
+        sess = JSON.parse(raw);
+      } catch (e) {
+        addSystemChatMessage("Kunde inte läsa sparad session.");
         return;
       }
-      if (acc.banned) { localStorage.removeItem(SESSION_KEY); return; }
 
-      await db.ref(`accounts/${sess.accountId}`).update({ sessionActive: true, sessionId: sess.sessionId, lastSeen: Date.now(), forcedLogout: false });
-      currentUser = { id: sess.accountId, ...acc, sessionId: sess.sessionId };
-      userRef = db.ref(`accounts/${sess.accountId}`);
+      const accountId = sess?.accountId;
+      if (!accountId) {
+        addSystemChatMessage("Sparad session är ogiltig.");
+        return;
+      }
+
+      const snap = await db.ref(`accounts/${accountId}`).once("value");
+      if (!snap.exists()) {
+        addSystemChatMessage("Konto för sparad session hittades inte.");
+        return;
+      }
+
+      const acc = snap.val() || {};
+      if (acc.banned) {
+        addSystemChatMessage("Kontot är bannat.");
+        return;
+      }
+
+      await db.ref(`accounts/${accountId}`).update({ lastSeen: Date.now(), forcedLogout: false });
+
+      currentUser = { id: accountId, ...acc };
+      userRef = db.ref(`accounts/${accountId}`);
       watchCurrentUser();
       renderProfile();
       refreshChatStatus();
@@ -2117,11 +2843,14 @@ function showInventory() {
       const saved = localStorage.getItem("theme");
       if (saved) {
         document.body.className = saved;
-        document.documentElement.classList.remove("theme-blue","theme-red","theme-green","theme-yellow","theme-orange","theme-gray","theme-purple","theme-pink");
+        document.documentElement.classList.remove("theme-blue","theme-red","theme-green","theme-yellow","theme-orange","theme-gray","theme-purple","theme-pink","theme-cyan","theme-sunset","theme-neon","theme-ocean","theme-lava","theme-forest","theme-midnight","theme-candy","theme-gold","theme-arctic","theme-emerald","theme-rose","theme-storm","theme-cyber","theme-dusk");
         document.documentElement.classList.add(`theme-${saved}`);
       }
+      saveFavorites();
       renderRecommended();
       renderGames(files);
+      searchMeta.textContent = "Visar alla spel";
+      refreshThemeButtons();
       startIntroLoader();
       refreshChatStatus();
 
@@ -2129,15 +2858,15 @@ function showInventory() {
         btn.addEventListener("click", closeSidebar);
       });
 
-      chatSendEl.addEventListener("click", sendChatMessage);
-      chatInputEl.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") sendChatMessage();
+      updateQuestResetTimer();
+      setInterval(updateQuestResetTimer, 1000);
+
+      document.addEventListener("keydown", (e) => {
+        if (e.ctrlKey && e.shiftKey && (e.key === "A" || e.key === "a")) {
+          e.preventDefault();
+          openAdminGate();
+        }
       });
-      privateSendEl.addEventListener("click", sendPrivateMessage);
-      privateInputEl.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") sendPrivateMessage();
-      });
-      setChatTab("global");
 
       const notConfigured = (
         !firebaseConfig.apiKey || firebaseConfig.apiKey.includes("DIN_") ||
@@ -2146,7 +2875,6 @@ function showInventory() {
 
       if (notConfigured) {
         activePlayersEl.textContent = "Aktiva spelare: --";
-        addSystemChatMessage("Chatten är inte kopplad ännu. Fyll i firebaseConfig i koden.");
         return;
       }
 
@@ -2180,13 +2908,10 @@ function showInventory() {
         }, () => {
           activePlayersEl.textContent = "Aktiva spelare: --";
         });
-      chatRef = db.ref("global-chat");
-        chatRef.limitToLast(120).on("child_added", (snap) => { addChatMessage(snap.val() || {}); });
         startGameTracker();
         restoreSessionFromStorage();
       } catch (err) {
         activePlayersEl.textContent = "Aktiva spelare: --";
-        addSystemChatMessage("Kunde inte ansluta chatten.");
       }
 
     })();
