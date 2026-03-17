@@ -6,43 +6,22 @@
   <title>Matte Plugg</title>
   <link rel="icon" type="image/png" href="UGS-Files/icon.png">
 
-  <script>
-    (function () {
-      try {
-        const savedTheme = localStorage.getItem("theme");
-        if (savedTheme) document.documentElement.classList.add(`theme-${savedTheme}`);
-      } catch (e) {}
-    })();
-  </script>
-
   <style>
-    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap");
-
     * { box-sizing: border-box; }
 
     html, body {
       width: 100%;
       height: 100%;
       margin: 0;
-      font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+      font-family: Arial, sans-serif;
       color: white;
       transition: background .6s ease;
     }
 
     body {
-      --theme-r: 30;
-      --theme-g: 79;
-      --theme-b: 163;
-      background-size: 280% 280%;
-      animation: bgMove 34s ease infinite;
-      transition: background .3s ease;
+      background-size: 400% 400%;
+      animation: bgMove 25s ease infinite;
     }
-
-    button, .chat-send, .sidebar-btn, .game-btn, .theme-btn {
-      font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
-      letter-spacing: .2px;
-    }
-
 
     @keyframes bgMove {
       0% { background-position: 0% 50%; }
@@ -105,10 +84,9 @@
     body::after {
       background:
         radial-gradient(circle at 60% 30%, var(--accent-dark), transparent 60%),
-        radial-gradient(circle at 20% 60%, var(--accent), transparent 65%),
-        radial-gradient(circle at 50% 50%, rgba(var(--theme-r), var(--theme-g), var(--theme-b), .22), transparent 62%);
+        radial-gradient(circle at 20% 60%, var(--accent), transparent 65%);
       animation-duration: 60s;
-      opacity: .45;
+      opacity: .4;
     }
 
     @keyframes auroraMove {
@@ -263,32 +241,10 @@
       margin-bottom: 4px;
     }
 
-    .chat-meta.neon {
-      font-weight: 800;
-      background: linear-gradient(90deg,#00fff7,#6f7bff,#ff5bf2,#00fff7);
-      background-size: 220% 100%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: loaderShine 2.6s linear infinite;
-    }
-
     .chat-text {
       font-size: 13px;
       line-height: 1.3;
       word-break: break-word;
-    }
-
-    .chat-msg.style-chatBubble {
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.24);
-      box-shadow: 0 4px 14px rgba(0,0,0,.35);
-    }
-
-    .chat-msg.style-bgNebula {
-      background:
-        radial-gradient(circle at 20% 20%, rgba(95, 0, 161, .35), transparent 55%),
-        radial-gradient(circle at 80% 70%, rgba(0, 98, 255, .28), transparent 60%),
-        rgba(255,255,255,.05);
     }
 
     .chat-controls {
@@ -377,14 +333,12 @@
     #embedContainer {
       display: none;
       margin: 20px auto;
-      width: min(100%, 1080px);
+      width: 100%;
       aspect-ratio: 16/9;
       background: #000;
       border-radius: 18px;
       overflow: hidden;
       position: relative;
-      border: 1px solid rgba(255,255,255,.18);
-      box-shadow: 0 20px 46px rgba(0,0,0,.45);
     }
 
     #embedContainer iframe { width: 100%; height: 100%; border: none; }
@@ -514,76 +468,31 @@
 
     .game-card { position: relative; }
 
-    .game-preview {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      margin-bottom: 12px;
-      border-radius: 16px;
-      position: relative;
-      border: 1px solid rgba(255,255,255,.2);
-      background:
-        linear-gradient(135deg, rgba(255,255,255,.2), rgba(255,255,255,.02) 45%),
-        linear-gradient(225deg, rgba(0,0,0,.35), rgba(255,255,255,.02)),
-        linear-gradient(120deg, color-mix(in oklab, var(--accent) 58%, #fff 10%), color-mix(in oklab, var(--accent-dark) 86%, #000 18%));
-      overflow: hidden;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.26), 0 12px 28px rgba(0,0,0,.32);
-    }
-
-    .game-preview::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        repeating-linear-gradient(115deg, rgba(255,255,255,.12) 0 6px, transparent 6px 18px),
-        linear-gradient(180deg, transparent 0 68%, rgba(0,0,0,.36) 100%);
-      opacity: .45;
-      pointer-events: none;
-    }
-
-    .game-name-chip {
-      position: absolute;
-      left: 10px;
-      right: 10px;
-      bottom: 10px;
-      font-size: 12px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: .8px;
-      text-align: center;
-      padding: 7px 10px;
-      border-radius: 10px;
-      background: rgba(0,0,0,.44);
-      border: 1px solid rgba(255,255,255,.18);
-      backdrop-filter: blur(7px);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
     .game-btn {
       width: 100%;
-      padding: 14px;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.26);
-      background:
-        linear-gradient(160deg, rgba(255,255,255,.2), rgba(255,255,255,.04)),
-        linear-gradient(120deg, color-mix(in oklab, var(--accent) 80%, #fff 10%), color-mix(in oklab, var(--accent-dark) 92%, #000 24%));
+      padding: 22px;
+      border-radius: 16px;
+      border: none;
+      background: linear-gradient(135deg, var(--accent-dark), var(--accent));
       color: white;
       font-size: 16px;
-      font-weight: 900;
       cursor: pointer;
       position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 20px 44px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.3);
-      transition: transform .16s ease, box-shadow .2s ease, filter .2s ease, border-color .2s ease;
+      box-shadow:
+        0 6px 14px rgba(0, 0, 0, 0.4),
+        inset 0 2px 4px rgba(255, 255, 255, 0.15);
+      transition:
+        transform .15s ease,
+        box-shadow .15s ease,
+        filter .2s ease;
     }
 
     .game-btn:hover {
-      transform: translateY(-4px) scale(1.018);
-      box-shadow: 0 24px 46px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.34);
-      border-color: rgba(255,255,255,.45);
-      filter: brightness(1.12) saturate(1.08);
+      transform: translateY(-4px) scale(1.03);
+      box-shadow:
+        0 12px 22px rgba(0, 0, 0, 0.55),
+        inset 0 2px 6px rgba(255, 255, 255, 0.25);
+      filter: brightness(1.1);
     }
 
     .game-btn:active {
@@ -599,60 +508,21 @@
       inset: 0;
       border-radius: 16px;
       pointer-events: none;
-      box-shadow: 0 0 20px color-mix(in oklab, var(--accent) 80%, #fff 20%);
-      opacity: .75;
-    }
-
-    .sidebar-btn, .chat-send, .theme-btn, .fullscreen-btn, .profile-btn {
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.24);
-      box-shadow: 0 10px 26px rgba(0,0,0,.36), inset 0 1px 0 rgba(255,255,255,.2);
-      transition: transform .14s ease, filter .18s ease, box-shadow .18s ease;
-    }
-
-    .sidebar-btn:hover, .chat-send:hover, .theme-btn:hover, .fullscreen-btn:hover, .profile-btn:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.08);
-      box-shadow: 0 14px 32px rgba(0,0,0,.44), inset 0 1px 0 rgba(255,255,255,.26);
+      box-shadow: 0 0 12px var(--accent);
+      opacity: .5;
     }
 
     .favorite {
       position: absolute;
       top: 10px;
       right: 12px;
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,.28);
-      background: rgba(0,0,0,.42);
-      color: rgba(255,255,255,.75);
-      display: grid;
-      place-items: center;
-      font-size: 16px;
+      font-size: 20px;
       cursor: pointer;
-      transition: transform .14s ease, background .16s ease, color .16s ease, box-shadow .16s ease;
-      z-index: 2;
+      opacity: .5;
+      user-select: none;
     }
 
-    .favorite:hover { transform: scale(1.08); background: rgba(255,255,255,.16); color: #fff; }
-    .favorite.active { color: #ffd54a; background: rgba(255,205,64,.22); box-shadow: 0 0 16px rgba(255,205,64,.45); }
-
-    .toast {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,.75);
-      border: 1px solid rgba(255,255,255,.22);
-      border-radius: 999px;
-      padding: 10px 14px;
-      font-size: 13px;
-      z-index: 2600;
-      backdrop-filter: blur(8px);
-      opacity: 0;
-      transition: opacity .18s ease, transform .18s ease;
-    }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(-6px); }
+    .favorite.active { opacity: 1; color: gold; }
 
     #themePopup {
       position: fixed;
@@ -664,36 +534,22 @@
     }
 
     .theme-box {
-      width: min(760px, 94vw);
-      background: rgba(8,8,12,.92);
-      padding: 24px;
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.18);
-      backdrop-filter: blur(14px);
+      background: #111;
+      padding: 25px;
+      border-radius: 18px;
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 18px;
-    }
-
-    .theme-presets {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-      align-content: start;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
     }
 
     .theme-btn {
-      padding: 14px 10px;
+      padding: 18px;
       border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.16);
+      border: none;
       cursor: pointer;
-      font-size: 12px;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: .5px;
-      background: linear-gradient(135deg, color-mix(in oklab, var(--accent-dark) 80%, #000), var(--accent));
+      font-size: 22px;
+      background: linear-gradient(135deg, var(--accent-dark), var(--accent));
     }
-
 
     .recommended-section { margin: 20px 0 42px; }
     .recommended-title {
@@ -710,216 +566,6 @@
     }
     .recommended-row .recommended-btn { min-width: 180px; }
 
-    #searchInput {
-      width: 100%;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(0,0,0,.38);
-      color: #fff;
-      padding: 12px 14px;
-      outline: none;
-      transition: border-color .15s ease, box-shadow .15s ease;
-    }
-
-    #searchInput:focus {
-      border-color: rgba(255,255,255,.42);
-      box-shadow: 0 0 0 3px rgba(255,255,255,.12);
-    }
-
-    .search-meta {
-      margin-top: 6px;
-      font-size: 12px;
-      opacity: .82;
-      min-height: 16px;
-    }
-
-
-    .profile-btn {
-      position: fixed;
-      top: 12px;
-      right: 12px;
-      z-index: 1200;
-      border: 1px solid rgba(255,255,255,.35);
-      border-radius: 16px;
-      padding: 14px 20px;
-      font-size: 17px;
-      font-weight: 800;
-      letter-spacing: .2px;
-      color: white;
-      background: linear-gradient(135deg, color-mix(in srgb, var(--accent-dark) 78%, #000), var(--accent), #ffffff1a);
-      cursor: pointer;
-      box-shadow: 0 12px 28px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.22);
-      transition: transform .16s ease, box-shadow .16s ease, filter .16s ease;
-    }
-    .profile-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 32px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.26); filter: brightness(1.06); }
-    .profile-btn:active { transform: translateY(1px) scale(.98); }
-    .chat-status { font-size: 12px; margin-bottom: 8px; opacity: .9; }
-    .chat-msg { animation: popIn .25s ease; }
-    @keyframes popIn { from { transform: translateY(8px); opacity: 0;} to { transform: translateY(0); opacity: 1; } }
-    .modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,.62); z-index: 1500; }
-    .modal-box { width: min(520px, 90vw); max-height: 85vh; overflow: auto; background: linear-gradient(165deg, rgba(255,255,255,.08), rgba(0,0,0,.7)); border: 1px solid rgba(255,255,255,.22); border-radius: 18px; padding: 18px; box-shadow: 0 24px 60px rgba(0,0,0,.5); backdrop-filter: blur(14px); }
-    .modal-box.wide { width: min(760px, 94vw); }
-    .auth-input { width: 100%; margin-bottom: 8px; border: none; border-radius: 8px; padding: 9px; }
-    .info-card { margin-top: 10px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12); border-radius: 10px; padding: 10px; }
-    html.theme-blue body { --accent: #1e4fa3; --accent-dark: #0e2a52; background-image: linear-gradient(180deg, #0a2a6c, #000, #0a2a6c); }
-    html.theme-red body { --accent: #a30000; --accent-dark: #520000; background-image: linear-gradient(180deg, #5a0000, #000, #5a0000); }
-    html.theme-green body { --accent: #00a300; --accent-dark: #004d00; background-image: linear-gradient(180deg, #004d1a, #000, #004d1a); }
-    html.theme-yellow body { --accent: #ffd000; --accent-dark: #b89a00; background-image: linear-gradient(180deg, #665500, #000, #665500); }
-    html.theme-orange body { --accent: #ff8c00; --accent-dark: #c45f00; background-image: linear-gradient(180deg, #5a2a00, #000, #5a2a00); }
-    html.theme-gray body { --accent: #aaaaaa; --accent-dark: #666666; background-image: linear-gradient(180deg, #2b2b2b, #000, #2b2b2b); }
-    html.theme-purple body { --accent: #8a2be2; --accent-dark: #4b0082; background-image: linear-gradient(180deg, #2b0040, #000, #2b0040); }
-    html.theme-pink body { --accent: #ff69b4; --accent-dark: #c71585; background-image: linear-gradient(180deg, #4a0028, #000, #4a0028); }
-    html.theme-cyan body { --accent: #00d4ff; --accent-dark: #005f7a; background-image: linear-gradient(180deg, #002c36, #000, #003d4d); }
-    html.theme-sunset body { --accent: #ff6b6b; --accent-dark: #7a1b4d; background-image: linear-gradient(180deg, #4a1736, #14010a, #6a2e25); }
-    html.theme-neon body { --accent: #39ff14; --accent-dark: #0f5a19; background-image: linear-gradient(180deg, #05210b, #000, #0a2d0f); }
-
-    .intro-overlay { position: fixed; inset: 0; z-index: 2200; display:flex; align-items:center; justify-content:center; background-image: inherit; background-size: 400% 400%; animation: bgMove 25s ease infinite; overflow:hidden; }
-    .intro-overlay::before,
-    .intro-overlay::after {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      filter: blur(120px);
-      pointer-events: none;
-    }
-    .intro-overlay::before {
-      background:
-        radial-gradient(circle at 30% 30%, var(--accent), transparent 60%),
-        radial-gradient(circle at 70% 40%, var(--accent-dark), transparent 65%),
-        radial-gradient(circle at 50% 70%, var(--accent), transparent 60%);
-      opacity: .55;
-      animation: auroraMove 40s ease-in-out infinite;
-    }
-    .intro-overlay::after {
-      background:
-        radial-gradient(circle at 60% 30%, var(--accent-dark), transparent 60%),
-        radial-gradient(circle at 20% 60%, var(--accent), transparent 65%);
-      opacity: .4;
-      animation: auroraMove 60s ease-in-out infinite;
-    }
-    .intro-box { position: relative; z-index: 1; text-align:center; background: rgba(0,0,0,.55); padding: 26px; border: 1px solid rgba(255,255,255,.24); border-radius: 16px; width:min(520px,88vw); }
-    .intro-loader-box .loader-title { margin-bottom: 14px; }
-    .intro-overlay.fade-out { animation: introFadeOut .55s ease forwards; }
-    @keyframes introFadeOut { from { opacity:1; } to { opacity:0; visibility:hidden; } }
-    .admin-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px; }
-    body.popup-open .favorite { pointer-events: none; }
-
-    .admin-modal-box {
-      background: linear-gradient(160deg, rgba(255,255,255,.1), rgba(0,0,0,.76));
-      border: 1px solid rgba(255,255,255,.24);
-    }
-    .admin-modal-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
-    .admin-modal-head h3 { margin:0; letter-spacing:.4px; }
-    .admin-badge {
-      font-size: 12px;
-      font-weight: 800;
-      border-radius: 999px;
-      padding: 6px 10px;
-      border: 1px solid rgba(255,255,255,.24);
-      background: rgba(0,0,0,.35);
-    }
-    .admin-badge.offline { background: rgba(180,40,40,.35); border-color: rgba(255,90,90,.45); }
-    .admin-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:10px; }
-
-    .chat-tabs { display:flex; gap:6px; }
-    .chat-tab { border:none; border-radius:999px; padding:6px 10px; background:rgba(255,255,255,.12); color:#fff; font-weight:700; cursor:pointer; }
-    .chat-tab.active { background: linear-gradient(135deg, var(--accent-dark), var(--accent)); }
-    .chat-view { display:flex; flex-direction:column; min-height:0; flex:1; }
-    .private-friends { display:flex; gap:6px; overflow-x:auto; padding:8px; border-bottom:1px solid rgba(255,255,255,.12); }
-    .private-friend-btn { border:none; border-radius:999px; padding:6px 12px; cursor:pointer; color:#fff; background:rgba(255,255,255,.14); white-space:nowrap; }
-    .private-friend-btn.active { background: linear-gradient(135deg, var(--accent-dark), var(--accent)); }
-    .profile-modal-box {
-      background:
-        radial-gradient(circle at 0% 0%, rgba(99,102,241,.22), transparent 40%),
-        radial-gradient(circle at 100% 0%, rgba(236,72,153,.16), transparent 34%),
-        linear-gradient(155deg, rgba(10,10,16,.96), rgba(18,26,40,.95));
-      border: 1px solid rgba(120,180,255,.4);
-      box-shadow: 0 24px 44px rgba(0,0,0,.52);
-      padding: 18px;
-    }
-    .profile-modal-header { margin-bottom: 12px; }
-    .profile-modal-title { margin: 0; font-size: 26px; letter-spacing: .4px; }
-    .profile-modal-subtitle { margin: 6px 0 0; opacity: .82; font-size: 13px; }
-    .profile-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-    .profile-section {
-      background: linear-gradient(165deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
-      border:1px solid rgba(255,255,255,.2);
-      border-radius:14px;
-      padding:12px;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
-    }
-    .profile-section h4 { margin:0 0 10px; font-size: 16px; }
-    .profile-actions { display:flex; flex-wrap:wrap; gap:8px; margin-bottom: 6px; }
-    .profile-actions .chat-send { flex:1; min-width: 110px; }
-
-    .quest-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 12px;
-      background: transparent;
-      border: none;
-      padding: 0;
-    }
-
-    .quest-item {
-      background: linear-gradient(160deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
-      border: 1px solid rgba(255,255,255,.18);
-      border-radius: 14px;
-      padding: 12px;
-      box-shadow: 0 8px 18px rgba(0,0,0,.28);
-      display: grid;
-      gap: 8px;
-    }
-
-    .quest-head { display:flex; align-items:center; justify-content:space-between; gap:8px; }
-    .quest-title { font-weight: 800; font-size: 14px; line-height: 1.3; }
-    .quest-reward { font-size: 12px; opacity:.9; }
-    .quest-status { font-size: 11px; padding: 4px 8px; border-radius: 999px; border:1px solid rgba(255,255,255,.2); }
-    .quest-status.done { background: rgba(34,197,94,.2); color:#bbf7d0; border-color: rgba(34,197,94,.45); }
-    .quest-status.claimed { background: rgba(56,189,248,.2); color:#bae6fd; border-color: rgba(56,189,248,.45); }
-    .quest-status.progress { background: rgba(250,204,21,.18); color:#fef08a; border-color: rgba(250,204,21,.35); }
-    .quest-progress { font-size: 12px; opacity: .88; }
-    .quest-progress-track { height: 10px; border-radius: 999px; background: rgba(255,255,255,.1); overflow:hidden; border:1px solid rgba(255,255,255,.15); }
-    .quest-progress-fill { height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, var(--accent-dark), var(--accent), #fff); transition: width .25s ease; }
-
-    .shop-shell {
-      background: linear-gradient(165deg, rgba(8,10,20,.82), rgba(15,23,42,.72));
-      border: 1px solid rgba(148, 163, 184, .32);
-      border-radius: 16px;
-      padding: 14px;
-      box-shadow: 0 14px 32px rgba(0,0,0,.35);
-    }
-    .shop-balance {
-      font-weight: 800;
-      font-size: 18px;
-      margin-bottom: 12px;
-      letter-spacing: .4px;
-    }
-    .shop-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 12px;
-    }
-    .shop-item {
-      background: linear-gradient(165deg, rgba(30,41,59,.72), rgba(30,41,59,.4));
-      border: 1px solid rgba(148,163,184,.28);
-      border-radius: 14px;
-      padding: 12px;
-      display: grid;
-      gap: 8px;
-      transition: transform .16s ease, border-color .16s ease;
-    }
-    .shop-item:hover { transform: translateY(-3px); border-color: rgba(255,255,255,.45); }
-    .shop-item.owned { border-color: rgba(34,197,94,.55); }
-    .shop-item-top { display:flex; align-items:center; justify-content:space-between; gap:8px; }
-    .shop-item-title { font-weight: 800; }
-    .shop-item-desc { font-size: 12px; opacity: .86; min-height: 34px; }
-    .shop-item-price { font-size: 13px; opacity: .9; }
-    .tag { font-size: 11px; border-radius: 999px; padding: 4px 8px; border: 1px solid rgba(255,255,255,.25); }
-    .tag.owned { border-color: rgba(34,197,94,.7); color: #bbf7d0; }
-    .tag.missing { border-color: rgba(251,191,36,.5); color: #fde68a; }
-
-
     @media (max-width: 768px) {
       .header h1 { font-size: 34px; }
       .subtitle { font-size: 14px; letter-spacing: 1px; }
@@ -932,10 +578,6 @@
       .loader-title { font-size: 20px; }
       .loader-message { font-size: 13px; }
 
-      .profile-btn { top: 10px; right: 10px; padding: 12px 14px; font-size: 15px; border-radius: 13px; }
-      .profile-grid { grid-template-columns: 1fr; }
-      .profile-actions .chat-send { min-width: 100%; }
-
       .chat-panel {
         left: 10px;
         right: 10px;
@@ -945,54 +587,30 @@
       }
     }
   </style>
-<body class="blue" id="appBody">
+<body class="blue">
   <div class="app">
     <button id="menuToggle" class="menu-toggle" onclick="toggleSidebar()" aria-label="Öppna meny" aria-expanded="false">☰</button>
     <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
-    <button id="profileBtn" class="profile-btn" onclick="openProfileModal()">👤 Profil</button>
 
     <div class="sidebar" id="sidebar">
       <button class="sidebar-btn" onclick="goHome()"><span class="icon">🏠</span><span class="label">Hem</span></button>
-      <button id="favoritesBtn" class="sidebar-btn" onclick="showFavorites()"><span class="icon">⭐</span><span id="favoritesLabel" class="label">Favoriter (0)</span></button>
+      <button class="sidebar-btn" onclick="showFavorites()"><span class="icon">⭐</span><span class="label">Favoriter</span></button>
       <button class="sidebar-btn" onclick="showRecent()"><span class="icon">⏱</span><span class="label">Senaste</span></button>
       <button class="sidebar-btn" onclick="openIframe('https://alv3333.github.io/Coola-Mattespel-Soundboard.github.io/')"><span class="icon">🔊</span><span class="label">Soundboard</span></button>
       <button class="sidebar-btn" onclick="openIframe('https://studio.pickaxe.co/STUDIOGX4LHRY55GYHQ15/295XP68K97')"><span class="icon">🤖</span><span class="label">AI</span></button>
       <button class="sidebar-btn" onclick="openIframe('https://docs.google.com/forms/d/e/1FAIpQLScUxR7Ychb0ivMguYI-3BHwb8D3ZH2x7n1vkpXuYjNeVlU3Cg/viewform?usp=header')"><span class="icon">📩</span><span class="label">Förslag</span></button>
-      <button class="sidebar-btn" onclick="showUpdates()"><span class="icon">⬆</span><span class="label">Uppdateringar</span></button>
-      <button class="sidebar-btn" onclick="showQuests()"><span class="icon">🎯</span><span class="label">Quests</span></button>
-      <button class="sidebar-btn" onclick="showShop()"><span class="icon">🛒</span><span class="label">Shop</span></button>
-      <button class="sidebar-btn" onclick="showInventory()"><span class="icon">🎒</span><span class="label">Inventory</span></button>
-      <button class="sidebar-btn" onclick="openAdminGate()"><span class="icon">🛡️</span><span class="label">Admin</span></button>
+     <button class="sidebar-btn" onclick="showUpdates()"><span class="icon">⬆</span><span class="label">Uppdateringar</span></button>
       <button class="sidebar-btn" onclick="openThemePopup()"><span class="icon">🎨</span><span class="label">Tema</span></button>
     </div>
 
     <div class="chat-panel" id="chatPanel">
-      <div class="chat-header">
-        <span>💬 Chat</span>
-        <div class="chat-tabs">
-          <button id="globalTabBtn" class="chat-tab active" onclick="setChatTab('global')">Global</button>
-          <button id="privateTabBtn" class="chat-tab" onclick="setChatTab('private')">Privat</button>
-        </div>
-      </div>
-      <div id="globalChatView" class="chat-view">
-        <div class="chat-messages" id="chatMessages"></div>
-        <div class="chat-controls">
-          <div id="chatStatus" class="chat-status">Logga in för att chatta.</div>
-          <div class="chat-row">
-            <input id="chatInput" class="chat-input" maxlength="200" placeholder="Skriv meddelande..." />
-            <button id="chatSend" class="chat-send">Skicka</button>
-          </div>
-        </div>
-      </div>
-      <div id="privateChatView" class="chat-view" style="display:none;">
-        <div id="privateFriendsList" class="private-friends"></div>
-        <div id="privateMessages" class="chat-messages"></div>
-        <div class="chat-controls">
-          <div id="privateStatus" class="chat-status">Välj en vän för privat chatt.</div>
-          <div class="chat-row">
-            <input id="privateInput" class="chat-input" maxlength="200" placeholder="Privat meddelande..." />
-            <button id="privateSend" class="chat-send">Skicka</button>
-          </div>
+      <div class="chat-header">💬 Live Chat</div>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-controls">
+        <input id="chatName" class="chat-name" maxlength="40" placeholder="Ditt namn" />
+        <div class="chat-row">
+          <input id="chatInput" class="chat-input" maxlength="200" placeholder="Skriv meddelande..." />
+          <button id="chatSend" class="chat-send">Skicka</button>
         </div>
       </div>
     </div>
@@ -1003,8 +621,7 @@
         <p class="subtitle">Cool sida med coola mattespel!</p>
         <p id="activePlayers" class="active-players">Aktiva spelare: ...</p> <!-- NYTT -->
         <div class="search-box">
-         <input id="searchInput" placeholder="Sök spel snabbt..." oninput="filterGames()" />
-         <div id="searchMeta" class="search-meta"></div>
+         <input id="searchInput" placeholder="Sök spel..." oninput="filterGames()" />
         </div>
       </div>
 
@@ -1039,108 +656,20 @@
   ">
   </div>
 </div>
-      <div id="questsPage" style="display:none;margin-top:30px;">
-  <h2 style="font-size:28px;margin-bottom:15px;">🎯 Quests</h2>
-  <div id="questCard" class="info-card quest-list"></div>
-</div>
-<div id="shopPage" style="display:none;margin-top:30px;">
-  <h2 style="font-size:28px;margin-bottom:15px;">🛒 Shop</h2>
-  <div id="shopList" class="shop-shell"></div>
-</div>
-<div id="inventoryPage" style="display:none;margin-top:30px;">
-  <h2 style="font-size:28px;margin-bottom:15px;">🎒 Inventory</h2>
-  <div id="inventoryList" class="shop-shell"></div>
-</div>
       <div class="games-grid" id="gamesGrid"></div>
     </div>
   </div>
 
-  <div id="themePopup" onclick="if(event.target===this)closeThemePopup()">
+  <div id="themePopup" onclick="if(event.target===this)this.style.display='none'">
     <div class="theme-box">
-      <div class="theme-presets">
-        <button class="theme-btn" onclick="setTheme('blue')">BLUE</button>
-        <button class="theme-btn" onclick="setTheme('red')">RED</button>
-        <button class="theme-btn" onclick="setTheme('green')">GREEN</button>
-        <button class="theme-btn" onclick="setTheme('yellow')">YELLOW</button>
-        <button class="theme-btn" onclick="setTheme('orange')">ORANGE</button>
-        <button class="theme-btn" onclick="setTheme('gray')">GRAY</button>
-        <button class="theme-btn" onclick="setTheme('purple')">PURPLE</button>
-        <button class="theme-btn" onclick="setTheme('pink')">PINK</button>
-        <button class="theme-btn" onclick="setTheme('cyan')">CYAN</button>
-        <button class="theme-btn" onclick="setTheme('sunset')">SUNSET</button>
-        <button class="theme-btn" onclick="setTheme('neon')">NEON</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="introOverlay" class="intro-overlay">
-    <div class="intro-box intro-loader-box">
-      <div class="loader-title">Laddar Coola Mattespel V4</div>
-      <div class="loader-track">
-        <div id="introLoaderFill" class="loader-fill"></div>
-      </div>
-      <div id="introLoaderMessage" class="loader-message"></div>
-    </div>
-  </div>
-
-  <div id="profileModal" class="modal" onclick="closeModalOnBackdrop(event, 'profileModal')">
-    <div class="modal-box wide profile-modal-box">
-      <div class="profile-modal-header">
-        <h3 class="profile-modal-title">👤 Min Profil</h3>
-        <p class="profile-modal-subtitle">Hantera konto, vänner och din personliga stil.</p>
-      </div>
-      <div class="profile-grid">
-        <div class="profile-section">
-          <h4>🔐 Inloggning</h4>
-          <input id="authEmail" class="auth-input" type="email" placeholder="Mail" />
-          <input id="authUsername" class="auth-input" maxlength="20" placeholder="Username (vid registrering)" />
-          <input id="authPassword" class="auth-input" type="password" placeholder="Lösenord" />
-          <div class="profile-actions">
-            <button class="chat-send" onclick="registerAccount()">Registrera</button>
-            <button class="chat-send" onclick="loginAccount()">Logga in</button>
-            <button class="chat-send" onclick="logoutAccount()">Logga ut</button>
-          </div>
-          <div id="profileInfo" class="info-card"></div>
-        </div>
-        <div class="profile-section">
-          <h4>🤝 Kompisar</h4>
-          <div class="chat-row">
-            <input id="friendInput" class="chat-input" placeholder="Lägg till vän via username" />
-            <button class="chat-send" onclick="sendFriendRequest()">Lägg till</button>
-          </div>
-          <div id="friendRequests" class="info-card"></div>
-          <div id="friendsList" class="info-card"></div>
-          <div id="privateChat" class="info-card" style="display:none;"></div>
-        </div>
-      </div>
-      <div class="profile-actions" style="margin-top:10px;">
-        <button class="chat-send" onclick="closeProfileModal()">Stäng</button>
-      </div>
-    </div>
-  </div>
-
-  </div>
-
-  <div id="adminModal" class="modal" onclick="closeModalOnBackdrop(event, 'adminModal')">
-    <div class="modal-box wide admin-modal-box">
-      <div class="admin-modal-head">
-        <h3>🛡️ Admin Panel</h3>
-        <div id="chatToggleStatus" class="admin-badge">Chat: Aktiv</div>
-      </div>
-      <div class="admin-grid">
-        <input id="adminPassword" class="auth-input" type="password" placeholder="Admin-lösenord" />
-        <input id="adminTarget" class="auth-input" placeholder="Mål (username)" />
-        <input id="adminCoins" class="auth-input" type="number" placeholder="Coins att ge" />
-      </div>
-      <div class="admin-actions">
-        <button class="chat-send" onclick="adminAction('kick')">Kick</button>
-        <button class="chat-send" onclick="adminAction('timeout')">Timeout 5 min</button>
-        <button class="chat-send" onclick="adminAction('ban')">Ban</button>
-        <button class="chat-send" onclick="adminAction('coins')">Ge coins</button>
-        <button class="chat-send" onclick="adminAction('verify')">Verifera ✔️</button>
-        <button class="chat-send" onclick="toggleChatState()">Start/Stop chatt</button>
-      </div>
-      <button class="chat-send" onclick="closeAdminPanel()">Stäng</button>
+      <button class="theme-btn" onclick="setTheme('blue')">🔵</button>
+      <button class="theme-btn" onclick="setTheme('red')">🔴</button>
+      <button class="theme-btn" onclick="setTheme('green')">🟢</button>
+      <button class="theme-btn" onclick="setTheme('yellow')">🟡</button>
+      <button class="theme-btn" onclick="setTheme('orange')">🟠</button>
+      <button class="theme-btn" onclick="setTheme('gray')">⚪</button>
+      <button class="theme-btn" onclick="setTheme('purple')">🟣</button>
+      <button class="theme-btn" onclick="setTheme('pink')">🌸</button>
     </div>
   </div>
 
@@ -1164,7 +693,7 @@
     files.sort((a, b) => a.localeCompare(b, "sv", { sensitivity: "base" }));
 
     let recentGames = JSON.parse(localStorage.getItem("recentGames") || "[]");
-    let favoriteGames = [...new Set(JSON.parse(localStorage.getItem("favoriteGames") || "[]"))];
+    let favoriteGames = JSON.parse(localStorage.getItem("favoriteGames") || "[]");
 
     const gamesGrid = document.getElementById("gamesGrid");
     const embedContainer = document.getElementById("embedContainer");
@@ -1177,24 +706,13 @@
     const iframeLoader = document.getElementById("iframeLoader");
     const loaderFill = document.getElementById("loaderFill");
     const loaderMessage = document.getElementById("loaderMessage");
-    const introLoaderFill = document.getElementById("introLoaderFill");
-    const introLoaderMessage = document.getElementById("introLoaderMessage");
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
     const chatMessagesEl = document.getElementById("chatMessages");
+    const chatNameEl = document.getElementById("chatName");
     const chatInputEl = document.getElementById("chatInput");
     const chatSendEl = document.getElementById("chatSend");
-    const chatStatusEl = document.getElementById("chatStatus");
-    const privateStatusEl = document.getElementById("privateStatus");
-    const privateInputEl = document.getElementById("privateInput");
-    const privateSendEl = document.getElementById("privateSend");
-    const privateMessagesEl = document.getElementById("privateMessages");
-    const privateFriendsListEl = document.getElementById("privateFriendsList");
-    const activePlayersEl = document.getElementById("activePlayers");
-    const profileInfoEl = document.getElementById("profileInfo");
-    const friendRequestsEl = document.getElementById("friendRequests");
-    const friendsListEl = document.getElementById("friendsList");
-    const privateChatEl = document.getElementById("privateChat");
+    const activePlayersEl = document.getElementById("activePlayers"); // NYTT
     const updates = [
       "Här kommer uppdateringar synas, varje uppdatering kommer ungefär varje söndag. 👍",
       "Nästa uppdatering (SÖN 14/3) --> V4.1 ⬆",
@@ -1214,80 +732,7 @@
       appId: "1:348091861694:web:ff6f9945fae5fee9412cef"
     };
 
-
-
     let chatRef = null;
-    let db = null;
-    let currentUser = null;
-    let userRef = null;
-    let chatCooldownUntil = 0;
-    let selectedFriend = null;
-    let activeGame = null;
-    let activeGameLastTick = null;
-    let gameTrackerInterval = null;
-    const ADMIN_PASSWORD = "SigmaAdmin1234!";
-    const USER_BANNED_WORDS = ["admin", "mod", "owner", "support"];
-    const ALLOWED_EMAIL_SUFFIXES = ["@edu.lomma.se", "@gmail.com", "@icloud.com"];
-    let adminUnlocked = false;
-    let activeChatTab = "global";
-    let privateListenerRef = null;
-    const SESSION_KEY = "v4AuthSession";
-    const CHAT_ENABLED_KEY = "v4ChatEnabled";
-    let chatEnabled = localStorage.getItem(CHAT_ENABLED_KEY) !== "0";
-    const preferredQuestGames = [
-      "clsummerRider3D", "climposter", "clworldguessr", "clslopeplus", "clretrobowl", "cltemplerun2",
-      "clsubwaysurfers", "clvex", "clpaperio", "cltinyfishing", "clbasketrandom", "clbasketballstars",
-      "cl8ballpool", "cldriftboss", "cldrivemad", "cleggycar", "cltunnelrush", "clcrossyroad",
-      "clsmashkarts", "clwrestlebros", "clvolleyrandom", "clmotoX3M", "clmotoX3M2", "clmotoX3Mspookyland",
-      "clgetawayshootout", "clrun3", "clstickmanhook", "clgeometrydash", "clsnowrider", "clbloonsTD5",
-      "clbitlife", "clchess", "clwordle", "clducklife", "clducklife2", "clducklife3"
-    ];
-
-    function buildQuestsFromFiles() {
-      const availableSet = new Set(files);
-      const selectedGames = [];
-      const questDisplayName = (file) => {
-        const raw = file.replace(/^cl/i, "").trim();
-        return raw.replace(/^([^A-Za-zÅÄÖåäö]*)([a-zåäö])/, (_, prefix, letter) => prefix + letter.toUpperCase());
-      };
-
-      preferredQuestGames.forEach((game) => {
-        if (availableSet.has(game) && !selectedGames.includes(game)) selectedGames.push(game);
-      });
-
-      files.forEach((file) => {
-        const looksLikeGame = /^cl[\w-]+$/i.test(file);
-        if (!looksLikeGame || selectedGames.includes(file)) return;
-        if (selectedGames.length >= 40) return;
-        selectedGames.push(file);
-      });
-
-      return selectedGames.slice(0, 40).map((game, idx) => {
-        const minutes = 6 + (idx % 10);
-        const reward = Math.max(5, Math.round(minutes * 0.9));
-        return {
-          id: `quest_${idx + 1}_${game.replace(/[^a-z0-9]/gi, "").toLowerCase().slice(0, 18)}`,
-          game,
-          label: `Spela ${questDisplayName(game)} i ${minutes} min`,
-          targetMs: minutes * 60 * 1000,
-          reward
-        };
-      });
-    }
-
-    const questsConfig = buildQuestsFromFiles();
-    const shopItems = [
-      { id: "sparkle", title: "✨ Namn-effekt", price: 15, desc: "Lägger till extra sparkle i ditt namn." },
-      { id: "vip", title: "👑 VIP-tag", price: 25, desc: "Ger dig VIP-prefix i chatten." },
-      { id: "rainbow", title: "🌈 Rainbow-tag", price: 30, desc: "Gör namnet neon/rainbow i chatten." },
-      { id: "glow", title: "💡 Glow-namn", price: 22, desc: "Ger lysande namn-effekt." },
-      { id: "avatarFrame", title: "🖼️ Profilram", price: 20, desc: "Visar en ram runt ditt chattnamn." },
-      { id: "chatBubble", title: "💬 Chat-bubbla", price: 18, desc: "Snygg rundad bubbla runt dina meddelanden." },
-      { id: "titleLegend", title: "🏆 Titel: Legend", price: 35, desc: "Lägger till [Legend] efter namnet." },
-      { id: "nameFire", title: "🔥 Fire-namn", price: 28, desc: "Lägger till fire-badge vid ditt namn." },
-      { id: "iconStar", title: "⭐ Stjärnikon", price: 12, desc: "Visar en stjärna efter ditt namn." },
-      { id: "bgNebula", title: "🌌 Nebula-bakgrund", price: 40, desc: "Nebula-bakgrund på dina meddelanden." }
-    ];
 
     const loadingMessages = [
       "Laddar laddningen som laddar laddningen",
@@ -1319,60 +764,12 @@
       });
     };
 
-    function createGameThumb(file) {
-      const preview = document.createElement("div");
-      preview.className = "game-preview";
-
-      const chip = document.createElement("div");
-      chip.className = "game-name-chip";
-      chip.textContent = displayName(file);
-
-      preview.append(chip);
-      return preview;
-    }
-
-    function saveFavorites() {
-      localStorage.setItem("favoriteGames", JSON.stringify(favoriteGames));
-      if (favoritesLabel) favoritesLabel.textContent = `Favoriter (${favoriteGames.length})`;
-    }
-
-    function isFavorite(file) {
-      return favoriteGames.includes(file);
-    }
-
-    function showToast(message) {
-      let toast = document.getElementById("uiToast");
-      if (!toast) {
-        toast = document.createElement("div");
-        toast.id = "uiToast";
-        toast.className = "toast";
-        document.body.appendChild(toast);
-      }
-      toast.textContent = message;
-      toast.classList.add("show");
-      clearTimeout(showToast._t);
-      showToast._t = setTimeout(() => toast.classList.remove("show"), 1500);
-    }
-
-    function toggleFavorite(file, { quiet = false } = {}) {
-      if (isFavorite(file)) {
-        favoriteGames = favoriteGames.filter((g) => g !== file);
-        if (!quiet) showToast(`Tog bort ${displayName(file)} från favoriter`);
-      } else {
-        favoriteGames.unshift(file);
-        favoriteGames = [...new Set(favoriteGames)].slice(0, 300);
-        if (!quiet) showToast(`La till ${displayName(file)} i favoriter`);
-      }
-      saveFavorites();
-    }
-
     function openSidebar() {
       sidebar.classList.add("open");
       sidebarOverlay.classList.add("show");
       menuToggle.textContent = "✕";
       menuToggle.setAttribute("aria-expanded", "true");
       menuToggle.setAttribute("aria-label", "Stäng meny");
-      addSystemChatMessage("Välkommen till chatten, om det finns någon som säger att de är Coola Mattespel och de inte har \"✔️\" i sitt namn så är den personen oftast inte Coola Mattespel så lita EJ på vad de säger.");
     }
 
     function closeSidebar() {
@@ -1393,7 +790,10 @@
     });
     function showUpdates(){
 
-  hidePages();
+  gamesGrid.style.display="none";
+  recommendedSection.style.display="none";
+  embedContainer.style.display="none";
+
   const page=document.getElementById("updatesPage");
   const list=document.getElementById("updatesList");
 
@@ -1505,88 +905,21 @@ const bannedWords = [
   "dih",
   "dräng",
   "snippa",
-  "niger",
-  "nazist",
-  "nazism",
-  "heil",
-  "kkk",
-  "isis",
-  "terrorist",
-  "självmord",
-  "suicide",
-  "kill yourself",
-  "kys",
-  "cp",
-  "mongo",
-  "retard",
-  "retarded",
-  "bitch",
-  "asshole",
-  "motherfucker",
-  "mf",
-  "slampa",
-  "hora",
-  "porr",
-  "porn",
-  "xxx",
-  "rape",
-  "rapist",
-  "våldta",
-  "våldt",
-  "pedo",
-  "pedofil",
-  "groom",
-  "groomer",
-  "knulla",
-  "knull",
-  "jävla",
-  "helvete",
-  "idiot",
-  "dumbass",
-  "fucking",
-  "shit",
-  "bullshit",
-  "cunt",
-  "whore",
-  "fag",
-  "faggot",
-  "tranny",
-  "wetback",
-  "chink",
-  "paki",
-  "spic",
-  "beaner",
-  "n1gger",
-  "n!gger",
-  "n igger"
+  "niger"
 ];
 
 function containsBannedWord(text) {
   const lower = text.toLowerCase();
   return bannedWords.some(word => lower.includes(word));
 }
-
-function hasDisallowedUsernameChars(username) {
-  return /[^a-zA-Z0-9åäöÅÄÖ _-]/.test(username || "");
-}
-
-function validateUsernameInput(rawUsername) {
-  const trimmed = (rawUsername || "").trim();
-  if (!trimmed) return "Du måste skriva ett username.";
-  if (hasDisallowedUsernameChars(trimmed)) return "Du kan inte ha emojis eller specialtecken i ditt username.";
-  if (containsBannedWord(trimmed) || USER_BANNED_WORDS.some((w) => trimmed.toLowerCase().includes(w))) {
-    return "Username innehåller förbjudet ord.";
-  }
-  return "";
-}
     function addChatMessage(msg) {
       const box = document.createElement("div");
       box.className = "chat-msg";
-      applyChatMessageVisuals(box, msg);
 
       const meta = document.createElement("div");
       meta.className = "chat-meta";
-      renderChatMeta(meta, msg, "name");
+      const t = new Date(msg.ts || Date.now()).toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" });
+      meta.textContent = `${(msg.name || "Gäst").slice(0, 20)} • ${t}`;
 
       const text = document.createElement("div");
       text.className = "chat-text";
@@ -1601,138 +934,22 @@ function validateUsernameInput(rawUsername) {
       addChatMessage({ name: "System", text, ts: Date.now() });
     }
 
-function getDisplayUsername() {
-  if (!currentUser) return "Gäst";
-  return `${currentUser.username}${currentUser.verified ? " ✔️" : ""}`;
-}
-
-function isChatBlocked() {
-  const now = Date.now();
-  if (!currentUser) return "Du måste vara inloggad för att chatta.";
-  if (currentUser.banned) return "Du är bannad från chatten.";
-  if (currentUser.timeoutUntil && currentUser.timeoutUntil > now) {
-    return `Du har timeout i ${Math.ceil((currentUser.timeoutUntil - now) / 1000)} sek.`;
-  }
-  if (chatCooldownUntil > now) return `Cooldown: ${((chatCooldownUntil - now) / 1000).toFixed(1)}s`;
-  return "";
-}
-
-function refreshChatStatus() {
-  if (!chatEnabled) {
-    chatStatusEl.textContent = "Chatten har blivit stoppad.";
-    privateStatusEl.textContent = "Chatten har blivit stoppad.";
-    chatInputEl.disabled = true;
-    chatSendEl.disabled = true;
-    privateInputEl.disabled = true;
-    privateSendEl.disabled = true;
-    return;
-  }
-
-  const msg = isChatBlocked();
-  chatStatusEl.textContent = msg || `Inloggad som ${getDisplayUsername()}`;
-  privateStatusEl.textContent = selectedFriend ? `Privat chatt med ${selectedFriend.name}` : "Välj en vän för privat chatt.";
-  chatInputEl.disabled = !!msg;
-  chatSendEl.disabled = !!msg;
-  privateInputEl.disabled = !currentUser || !selectedFriend;
-  privateSendEl.disabled = !currentUser || !selectedFriend;
-}
-
-function getCurrentUserChatStyle() {
-  const inv = currentUser?.inventory || {};
-  const equipped = currentUser?.equipped || inv;
-  return {
-    sparkle: !!(inv.sparkle && equipped.sparkle),
-    vip: !!(inv.vip && equipped.vip),
-    rainbow: !!(inv.rainbow && equipped.rainbow),
-    glow: !!(inv.glow && equipped.glow),
-    avatarFrame: !!(inv.avatarFrame && equipped.avatarFrame),
-    chatBubble: !!(inv.chatBubble && equipped.chatBubble),
-    titleLegend: !!(inv.titleLegend && equipped.titleLegend),
-    nameFire: !!(inv.nameFire && equipped.nameFire),
-    iconStar: !!(inv.iconStar && equipped.iconStar),
-    bgNebula: !!(inv.bgNebula && equipped.bgNebula),
-    fireBadge: !!((inv.nameFire && equipped.nameFire) || (inv.rainbow && equipped.rainbow)),
-    neonName: !!((inv.glow && equipped.glow) || (inv.chatBubble && equipped.chatBubble) || (inv.rainbow && equipped.rainbow))
-  };
-}
-
-function buildStyledChatIdentity(baseName, style) {
-  let name = baseName || "Gäst";
-  if (style.vip) name = `👑 ${name}`;
-  if (style.titleLegend) name = `${name} [Legend]`;
-  if (style.iconStar) name = `${name} ⭐`;
-  return name;
-}
-
-function renderChatMeta(metaEl, msg, fallbackNameKey = "name") {
-  const t = new Date(msg.ts || Date.now()).toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" });
-  const baseName = (msg[fallbackNameKey] || "Gäst").slice(0, 28);
-  const identity = buildStyledChatIdentity(baseName, msg);
-  metaEl.textContent = `${identity} • ${t}`;
-  if (msg.fireBadge) metaEl.textContent += " 🔥";
-  if (msg.sparkle) metaEl.textContent += " ✨";
-  if (msg.avatarFrame) metaEl.textContent = `[◈ ${metaEl.textContent} ◈]`;
-  if (msg.neonName || msg.glow || msg.rainbow) metaEl.classList.add("neon");
-}
-
-function applyChatMessageVisuals(box, msg) {
-  if (msg.chatBubble) box.classList.add("style-chatBubble");
-  if (msg.bgNebula) box.classList.add("style-bgNebula");
-}
-
 function sendChatMessage() {
   const text = sanitizeText(chatInputEl.value);
   if (!text || !chatRef) return;
-  if (!chatEnabled) {
-    alert("Chatten har blivit stoppad.");
-    return;
-  }
-  const blockedMsg = isChatBlocked();
-  if (blockedMsg) {
-    alert(blockedMsg);
-    return;
-  }
+
   if (containsBannedWord(text)) {
     alert("Ditt meddelande innehåller ord som inte är tillåtna.");
     return;
   }
 
-  const chatStyle = getCurrentUserChatStyle();
-  chatRef.push({ uid: currentUser.id, name: getDisplayUsername(), text, ts: Date.now(), ...chatStyle });
-  chatCooldownUntil = Date.now() + 3000;
+
+  const name = sanitizeName(chatNameEl.value);
+  chatNameEl.value = name;
+  localStorage.setItem("chatName", name);
+
+  chatRef.push({ name, text, ts: Date.now() });
   chatInputEl.value = "";
-  refreshChatStatus();
-  setTimeout(refreshChatStatus, 3100);
-}
-
-function hidePages() {
-  gamesGrid.style.display = "none";
-  recommendedSection.style.display = "none";
-  embedContainer.style.display = "none";
-  activeGame = null;
-  activeGameLastTick = null;
-  document.getElementById("updatesPage").style.display = "none";
-  document.getElementById("questsPage").style.display = "none";
-  document.getElementById("shopPage").style.display = "none";
-  document.getElementById("inventoryPage").style.display = "none";
-}
-
-function showQuests() {
-  hidePages();
-  document.getElementById("questsPage").style.display = "block";
-  renderQuest();
-}
-
-function showShop() {
-  hidePages();
-  document.getElementById("shopPage").style.display = "block";
-  renderShop();
-}
-
-function showInventory() {
-  hidePages();
-  document.getElementById("inventoryPage").style.display = "block";
-  renderInventory();
 }
 
     function renderRecommended() {
@@ -1742,7 +959,7 @@ function showInventory() {
       picks.forEach((file) => {
         const btn = document.createElement("button");
         btn.className = "game-btn recommended-btn";
-        btn.append(createGameThumb(file));
+        btn.textContent = displayName(file);
         btn.onclick = () => openGame(file);
         recommendedRow.appendChild(btn);
       });
@@ -1759,20 +976,25 @@ function showInventory() {
       gamesGrid.style.display = "grid";
       recommendedSection.style.display = "block";
 
-      const sortedList = [...list].sort((a, b) => {
-        const favDelta = Number(isFavorite(b)) - Number(isFavorite(a));
-        if (favDelta !== 0) return favDelta;
-        return displayName(a).localeCompare(displayName(b), "sv", { sensitivity: "base", numeric: true });
-      });
-
       const groups = { "#": [] };
       alphabet.forEach((letter) => (groups[letter] = []));
-      sortedList.forEach((file) => groups[getGroupLabel(file)].push(file));
+
+      list.forEach((file) => {
+        groups[getGroupLabel(file)].push(file);
+      });
 
       const order = ["#", ...alphabet];
+
       order.forEach((groupKey) => {
         const groupItems = groups[groupKey];
         if (!groupItems.length) return;
+
+        groupItems.sort((a, b) =>
+          displayName(a).localeCompare(displayName(b), "sv", {
+            sensitivity: "base",
+            numeric: true
+          })
+        );
 
         const header = document.createElement("div");
         header.className = "group-header";
@@ -1785,24 +1007,23 @@ function showInventory() {
 
           const b = document.createElement("button");
           b.className = "game-btn";
-          b.append(createGameThumb(file));
+          b.textContent = displayName(file);
           b.onclick = () => openGame(file);
 
-          const f = document.createElement("button");
-          f.type = "button";
-          f.className = `favorite${isFavorite(file) ? " active" : ""}`;
+          const f = document.createElement("span");
+          f.className = "favorite";
           f.textContent = "★";
-          f.title = isFavorite(file) ? "Ta bort favorit" : "Lägg till favorit";
-          f.setAttribute("aria-label", f.title);
-          f.setAttribute("aria-pressed", String(isFavorite(file)));
+          if (favoriteGames.includes(file)) f.classList.add("active");
 
           f.onclick = (e) => {
             e.stopPropagation();
-            toggleFavorite(file);
-            f.classList.toggle("active", isFavorite(file));
-            f.title = isFavorite(file) ? "Ta bort favorit" : "Lägg till favorit";
-            f.setAttribute("aria-label", f.title);
-            f.setAttribute("aria-pressed", String(isFavorite(file)));
+            if (favoriteGames.includes(file)) {
+              favoriteGames = favoriteGames.filter((g) => g !== file);
+            } else {
+              favoriteGames.push(file);
+            }
+            localStorage.setItem("favoriteGames", JSON.stringify(favoriteGames));
+            renderGames(list);
           };
 
           c.append(b, f);
@@ -1813,8 +1034,6 @@ function showInventory() {
 
     function openGame(game) {
       startFakeLoader();
-      activeGame = game;
-      activeGameLastTick = Date.now();
 
       embedContainer.style.display = "block";
       gameFrame.onload = null;
@@ -1831,64 +1050,16 @@ function showInventory() {
       }
     }
 
-    let searchDebounce = null;
-
-    function normalizeSearchText(value) {
-      return (value || "")
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[̀-ͯ]/g, "")
-        .replace(/[^a-z0-9]/g, "");
-    }
-
-    function scoreGameMatch(file, query) {
-      const raw = displayName(file);
-      const name = normalizeSearchText(raw);
-      if (!query) return { score: 1, ok: true };
-      if (name.startsWith(query)) return { score: 1000 - name.length, ok: true };
-      const idx = name.indexOf(query);
-      if (idx !== -1) return { score: 700 - idx, ok: true };
-
-      let qi = 0;
-      for (let i = 0; i < name.length && qi < query.length; i++) {
-        if (name[i] === query[qi]) qi++;
-      }
-      if (qi === query.length) return { score: 300 - Math.max(0, name.length - query.length), ok: true };
-      return { score: -1, ok: false };
-    }
-
-    function runGameSearch() {
-      const q = normalizeSearchText(searchInput.value);
-      if (!q) {
-        searchMeta.textContent = "Visar alla spel";
-        renderGames(files);
-        return;
-      }
-
-      const ranked = files
-        .map((file) => ({ file, ...scoreGameMatch(file, q) }))
-        .filter((r) => r.ok)
-        .sort((a, b) => b.score - a.score || displayName(a.file).localeCompare(displayName(b.file), "sv", { sensitivity: "base" }));
-
-      searchMeta.textContent = `${ranked.length} träffar för "${searchInput.value.trim()}"`;
-      renderGames(ranked.map((r) => r.file));
-    }
-
-    function filterGames() {
-      if (searchDebounce) clearTimeout(searchDebounce);
-      searchDebounce = setTimeout(runGameSearch, 90);
-    }
+ function filterGames() {
+  const q = document.getElementById("searchInput").value.toLowerCase();
+  renderGames(files.filter((f) => displayName(f).toLowerCase().includes(q)));
+}
 
     function goHome() {
       location.reload();
     }
 
     function showFavorites() {
-      if (!favoriteGames.length) {
-        searchMeta.textContent = "Inga favoriter än. Klicka på ★ för att lägga till.";
-      } else {
-        searchMeta.textContent = `Visar ${favoriteGames.length} favoriter`;
-      }
       renderGames(favoriteGames);
     }
 
@@ -1898,8 +1069,6 @@ function showInventory() {
 
     function openIframe(url) {
       startFakeLoader();
-      activeGame = null;
-      activeGameLastTick = null;
 
       embedContainer.style.display = "block";
       gameFrame.onload = null;
@@ -1907,10 +1076,6 @@ function showInventory() {
 
       gamesGrid.style.display = "none";
       recommendedSection.style.display = "none";
-      document.getElementById("updatesPage").style.display = "none";
-      document.getElementById("questsPage").style.display = "none";
-      document.getElementById("shopPage").style.display = "none";
-      document.getElementById("inventoryPage").style.display = "none";
     }
 
     function toggleFullscreen() {
@@ -1923,525 +1088,31 @@ function showInventory() {
 
     function setTheme(t) {
       document.body.className = t;
-      document.documentElement.classList.remove("theme-blue","theme-red","theme-green","theme-yellow","theme-orange","theme-gray","theme-purple","theme-pink","theme-cyan","theme-sunset","theme-neon");
-      document.documentElement.classList.add(`theme-${t}`);
       localStorage.setItem("theme", t);
-      closeThemePopup();
+      document.getElementById("themePopup").style.display = "none";
     }
 
     function openThemePopup() {
       document.getElementById("themePopup").style.display = "flex";
-      setPopupOpen(true);
-    }
-
-
-    function setPopupOpen(open) {
-      document.body.classList.toggle("popup-open", !!open);
-    }
-
-    function closeThemePopup() {
-      document.getElementById("themePopup").style.display = "none";
-      setPopupOpen(false);
-    }
-
-    function updateChatToggleUI() {
-      const badge = document.getElementById("chatToggleStatus");
-      if (!badge) return;
-      badge.textContent = chatEnabled ? "Chat: Aktiv" : "Chat: Stoppad";
-      badge.classList.toggle("offline", !chatEnabled);
-    }
-
-    function toggleChatState() {
-      chatEnabled = !chatEnabled;
-      localStorage.setItem(CHAT_ENABLED_KEY, chatEnabled ? "1" : "0");
-      updateChatToggleUI();
-      refreshChatStatus();
-      if (!chatEnabled) addSystemChatMessage("Chatten har blivit stoppad.");
-      else addSystemChatMessage("Chatten är startad igen.");
-    }
-
-    function closeModalOnBackdrop(event, id) {
-      if (event.target.id === id) {
-        document.getElementById(id).style.display = "none";
-        setPopupOpen(false);
-      }
-    }
-
-    function setChatTab(tab) {
-      activeChatTab = tab;
-      const isGlobal = tab === "global";
-      document.getElementById("globalChatView").style.display = isGlobal ? "flex" : "none";
-      document.getElementById("privateChatView").style.display = isGlobal ? "none" : "flex";
-      document.getElementById("globalTabBtn").classList.toggle("active", isGlobal);
-      document.getElementById("privateTabBtn").classList.toggle("active", !isGlobal);
-      renderPrivateFriendsBar();
-    }
-
-    function openProfileModal() { document.getElementById("profileModal").style.display = "flex"; setPopupOpen(true); renderProfile(); }
-    function closeProfileModal() { document.getElementById("profileModal").style.display = "none"; setPopupOpen(false); }
-    function openAdminGate() {
-      const entered = prompt("Skriv admin-lösenord för att öppna panelen:") || "";
-      if (entered !== ADMIN_PASSWORD) return alert("Fel admin-lösenord.");
-      adminUnlocked = true;
-      document.getElementById("adminPassword").value = "";
-      openAdminPanel();
-    }
-    function openAdminPanel() {
-      if (!adminUnlocked) return alert("Du måste verifiera admin-lösenord först.");
-      document.getElementById("adminModal").style.display = "flex";
-      setPopupOpen(true);
-      updateChatToggleUI();
-    }
-    function closeAdminPanel() { document.getElementById("adminModal").style.display = "none"; setPopupOpen(false); }
-
-    async function registerAccount() {
-      if (!db) return;
-      const email = (document.getElementById("authEmail").value || "").trim().toLowerCase();
-      const rawUsername = document.getElementById("authUsername").value || "";
-      const usernameError = validateUsernameInput(rawUsername);
-      if (usernameError) return alert(usernameError);
-      const username = sanitizeName(rawUsername);
-      const password = (document.getElementById("authPassword").value || "").trim();
-      if (!email || !username || !password) return alert("Fyll i mail, username och lösenord.");
-      if (!ALLOWED_EMAIL_SUFFIXES.some((suffix) => email.endsWith(suffix))) return alert("Mail måste sluta med @edu.lomma.se, @gmail.com eller @icloud.com.");
-      const existing = await db.ref("accounts").orderByChild("usernameLower").equalTo(username.toLowerCase()).once("value");
-      if (existing.exists()) return alert("Det username är upptaget.");
-      const emailExists = await db.ref("accounts").orderByChild("email").equalTo(email).once("value");
-      if (emailExists.exists()) return alert("Mail används redan.");
-      const ref = db.ref("accounts").push();
-      const quests = {};
-      questsConfig.forEach((q) => { quests[q.id] = { progressMs: 0, claimed: false }; });
-      await ref.set({ email, username, usernameLower: username.toLowerCase(), password, coins: 0, verified: false, banned: false, timeoutUntil: 0, sessionActive: false, createdAt: Date.now(), quests, inventory: {}, equipped: {} });
-      alert("Konto skapat! Logga in nu.");
-    }
-
-    async function loginAccount() {
-      if (!db) return;
-      const email = (document.getElementById("authEmail").value || "").trim().toLowerCase();
-      const password = (document.getElementById("authPassword").value || "").trim();
-      const snap = await db.ref("accounts").orderByChild("email").equalTo(email).once("value");
-      if (!snap.exists()) return alert("Kontot hittades inte.");
-      let found = null;
-      snap.forEach((c) => { if (!found) found = { id: c.key, ...c.val() }; });
-      if (!found || found.password !== password) return alert("Fel lösenord.");
-      if (found.banned) return alert("Detta konto är bannat.");
-      const existingSessionRaw = localStorage.getItem(SESSION_KEY);
-      let existingSession = null;
-      try { existingSession = existingSessionRaw ? JSON.parse(existingSessionRaw) : null; } catch (e) {}
-      const sessionId = found.sessionId || `sess_${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
-      await db.ref(`accounts/${found.id}`).update({ sessionActive: true, sessionId, lastSeen: Date.now(), forcedLogout: false });
-      localStorage.setItem(SESSION_KEY, JSON.stringify({ accountId: found.id, sessionId }));
-      currentUser = { ...found, sessionId };
-      userRef = db.ref(`accounts/${found.id}`);
-      watchCurrentUser();
-      renderProfile();
-      refreshChatStatus();
-      setChatTab(activeChatTab);
-      alert("Inloggad!");
-    }
-
-    async function logoutAccount() {
-      if (!currentUser || !db) return;
-      await db.ref(`accounts/${currentUser.id}`).update({ sessionActive: false, sessionId: null });
-      localStorage.removeItem(SESSION_KEY);
-      if (userRef) userRef.off();
-      if (privateListenerRef) privateListenerRef.off();
-      currentUser = null;
-      selectedFriend = null;
-      privateMessagesEl.innerHTML = "";
-      renderProfile();
-      refreshChatStatus();
-      renderPrivateFriendsBar();
-    }
-
-    function watchCurrentUser() {
-      if (!userRef) return;
-      userRef.off();
-      userRef.on("value", (snap) => {
-        const data = snap.val();
-        if (!data) return;
-        currentUser = { id: snap.key, ...data };
-        renderProfile();
-        refreshChatStatus();
-        renderPrivateFriendsBar();
-        renderQuest();
-        renderShop();
-        renderInventory();
-      });
-    }
-
-    async function sendFriendRequest() {
-      if (!currentUser || !db) return alert("Logga in först.");
-      const targetName = sanitizeName(document.getElementById("friendInput").value);
-      const snap = await db.ref("accounts").orderByChild("usernameLower").equalTo(targetName.toLowerCase()).once("value");
-      if (!snap.exists()) return alert("Användaren finns inte.");
-      let target = null;
-      snap.forEach((c) => { if (!target) target = { id: c.key, ...c.val() }; });
-      if (target.id === currentUser.id) return alert("Du kan inte adda dig själv.");
-      const alreadyFriends = await db.ref(`friends/${currentUser.id}/${target.id}`).once("value");
-      if (alreadyFriends.exists()) return alert("Ni är redan vänner.");
-      await db.ref(`friend-requests/${target.id}/${currentUser.id}`).set({ fromUsername: currentUser.username, ts: Date.now() });
-      alert("Förfrågan skickad.");
-    }
-
-    async function respondFriendRequest(uid, accept) {
-      if (!currentUser || !db) return;
-      if (accept) {
-        await db.ref(`friends/${currentUser.id}/${uid}`).set(true);
-        await db.ref(`friends/${uid}/${currentUser.id}`).set(true);
-      }
-      await db.ref(`friend-requests/${currentUser.id}/${uid}`).remove();
-      renderPrivateFriendsBar();
-    }
-
-    function getPrivateChatId(a, b) { return [a, b].sort().join("__"); }
-
-    function openPrivateChat(friendId, friendName) {
-      selectedFriend = { id: friendId, name: friendName };
-      privateChatEl.style.display = "block";
-      privateChatEl.innerHTML = `<h4>Vald vän: ${friendName}</h4><div>Gå till chatten och öppna fliken <b>Privat</b>.</div>`;
-      setChatTab("private");
-      renderPrivateFriendsBar();
-      subscribePrivateChat();
-    }
-
-    function subscribePrivateChat() {
-      privateMessagesEl.innerHTML = "";
-      if (!selectedFriend || !currentUser) {
-        privateStatusEl.textContent = "Välj en vän för privat chatt.";
-        return;
-      }
-      privateStatusEl.textContent = `Privat chatt med ${selectedFriend.name}`;
-      const cid = getPrivateChatId(currentUser.id, selectedFriend.id);
-      if (privateListenerRef) privateListenerRef.off();
-      privateListenerRef = db.ref(`private-chats/${cid}/messages`).limitToLast(120);
-      privateListenerRef.on("child_added", (snap) => {
-        const msg = snap.val() || {};
-        const row = document.createElement("div");
-        row.className = "chat-msg";
-        applyChatMessageVisuals(row, msg);
-        const meta = document.createElement("div");
-        meta.className = "chat-meta";
-        renderChatMeta(meta, msg, "fromName");
-        const text = document.createElement("div");
-        text.className = "chat-text";
-        text.textContent = (msg.text || "").slice(0, 200);
-        row.append(meta, text);
-        privateMessagesEl.appendChild(row);
-        privateMessagesEl.scrollTop = privateMessagesEl.scrollHeight;
-      });
-    }
-
-    async function renderPrivateFriendsBar() {
-      privateFriendsListEl.innerHTML = "";
-      if (!currentUser || !db) return;
-      const snap = await db.ref(`friends/${currentUser.id}`).once("value");
-      if (!snap.exists()) {
-        privateFriendsListEl.innerHTML = `<div class="chat-status">Inga vänner ännu.</div>`;
-        return;
-      }
-      const ids = Object.keys(snap.val());
-      for (const fid of ids) {
-        const fs = await db.ref(`accounts/${fid}`).once("value");
-        const f = fs.val();
-        if (!f) continue;
-        const btn = document.createElement("button");
-        btn.className = "private-friend-btn" + (selectedFriend && selectedFriend.id === fid ? " active" : "");
-        btn.textContent = f.username;
-        btn.onclick = () => {
-          selectedFriend = { id: fid, name: f.username };
-          renderPrivateFriendsBar();
-          subscribePrivateChat();
-        };
-        privateFriendsListEl.appendChild(btn);
-      }
-    }
-
-    function sendPrivateMessage() {
-      if (!chatEnabled) return alert("Chatten har blivit stoppad.");
-      if (!selectedFriend || !currentUser) return alert("Välj en vän först.");
-      const text = sanitizeText(privateInputEl.value);
-      if (!text) return;
-      if (containsBannedWord(text)) return alert("Ditt meddelande innehåller ord som inte är tillåtna.");
-      const cid = getPrivateChatId(currentUser.id, selectedFriend.id);
-      const chatStyle = getCurrentUserChatStyle();
-      db.ref(`private-chats/${cid}/messages`).push({ from: currentUser.id, fromName: getDisplayUsername(), text, ts: Date.now(), ...chatStyle });
-      privateInputEl.value = "";
-    }
-
-    function getOwnedShopEffects(inv, equipped = {}) {
-      if (!inv) return [];
-      const owned = shopItems.filter((item) => inv[item.id]);
-      return owned.map((item) => `${item.title}${equipped[item.id] ? " (på)" : " (av)"}`);
-    }
-
-    function renderProfile() {
-      if (!currentUser) {
-        profileInfoEl.innerHTML = "Inte inloggad.";
-        friendRequestsEl.innerHTML = "";
-        friendsListEl.innerHTML = "";
-        privateChatEl.style.display = "none";
-        return;
-      }
-      const ownedEffects = getOwnedShopEffects(currentUser.inventory || {}, currentUser.equipped || {});
-      profileInfoEl.innerHTML = `Inloggad som <b>${getDisplayUsername()}</b><br>Mail: ${currentUser.email}<br>Coins: ${currentUser.coins || 0}<br>Shop-effekter i chatten/profilen: ${ownedEffects.length ? ownedEffects.join(", ") : "Inga köpta ännu."}`;
-      db.ref(`friend-requests/${currentUser.id}`).on("value", (snap) => {
-        friendRequestsEl.innerHTML = "<b>Vänförfrågningar (måste accepteras)</b><br>";
-        if (!snap.exists()) { friendRequestsEl.innerHTML += "Inga."; return; }
-        snap.forEach((c) => {
-          const d = c.val() || {};
-          friendRequestsEl.innerHTML += `${d.fromUsername} <button onclick="respondFriendRequest('${c.key}', true)">Acceptera</button> <button onclick="respondFriendRequest('${c.key}', false)">Neka</button><br>`;
-        });
-      });
-      db.ref(`friends/${currentUser.id}`).on("value", async (snap) => {
-        friendsListEl.innerHTML = "<b>Kompisar</b><br>";
-        if (!snap.exists()) { friendsListEl.innerHTML += "Inga ännu."; return; }
-        for (const fid of Object.keys(snap.val())) {
-          const fs = await db.ref(`accounts/${fid}`).once("value");
-          const f = fs.val();
-          if (!f) continue;
-          friendsListEl.innerHTML += `${f.username} <button onclick="openPrivateChat('${fid}','${f.username}')">Öppna privat chat</button><br>`;
-        }
-      });
-    }
-
-    function renderQuest() {
-      const card = document.getElementById("questCard");
-      if (!currentUser) { card.textContent = "Logga in för quests."; return; }
-      const questState = currentUser.quests || {};
-      card.innerHTML = "";
-      questsConfig.forEach((q) => {
-        const st = questState[q.id] || { progressMs: 0, claimed: false };
-        const done = st.progressMs >= q.targetMs;
-        const pct = Math.max(0, Math.min(100, (st.progressMs / q.targetMs) * 100));
-        const statusClass = st.claimed ? "claimed" : done ? "done" : "progress";
-        const statusText = st.claimed ? "Claimad" : done ? "Klar att claima" : "Pågår";
-        const row = document.createElement("div");
-        row.className = "quest-item";
-        row.innerHTML = `
-          <div class="quest-head">
-            <div class="quest-title">${q.label}</div>
-            <div class="quest-status ${statusClass}">${statusText}</div>
-          </div>
-          <div class="quest-reward">Reward: <b>${q.reward} coins</b></div>
-          <div class="quest-progress">${(st.progressMs/60000).toFixed(1)} / ${(q.targetMs/60000).toFixed(0)} min</div>
-          <div class="quest-progress-track"><div class="quest-progress-fill" style="width:${pct.toFixed(1)}%"></div></div>
-          <div>${st.claimed ? "✅ Claimad" : done ? `<button class="chat-send" onclick="claimQuest('${q.id}')">Claim ${q.reward}</button>` : "Spela mer för att låsa upp reward."}</div>
-        `;
-        card.appendChild(row);
-      });
-    }
-
-    function isActivelyPlayingGame() {
-      return !!(
-        currentUser && db && activeGame &&
-        embedContainer.style.display !== "none" &&
-        !document.hidden &&
-        gameFrame.src && gameFrame.src.includes("UGS-Files/")
-      );
-    }
-
-    async function claimQuest(questId) {
-      if (!currentUser) return;
-      const q = questsConfig.find((x) => x.id === questId);
-      if (!q) return;
-      const state = currentUser.quests?.[questId] || { progressMs: 0, claimed: false };
-      if (state.claimed || state.progressMs < q.targetMs) return;
-      await db.ref(`accounts/${currentUser.id}/coins`).set((currentUser.coins || 0) + q.reward);
-      await db.ref(`accounts/${currentUser.id}/quests/${questId}/claimed`).set(true);
-    }
-
-    function renderShop() {
-      const list = document.getElementById("shopList");
-      if (!currentUser) { list.textContent = "Logga in för shoppen."; return; }
-      const inv = currentUser.inventory || {};
-      const rows = shopItems.map((item) => {
-        const owned = !!inv[item.id];
-        return `
-          <div class="shop-item ${owned ? "owned" : ""}">
-            <div class="shop-item-top">
-              <div class="shop-item-title">${item.title}</div>
-              <div class="tag ${owned ? "owned" : "missing"}">${owned ? "Köpt" : "Till salu"}</div>
-            </div>
-            <div class="shop-item-desc">${item.desc || "Kosmetisk effekt för chatt/profil."}</div>
-            <div class="shop-item-price">Pris: <b>${item.price} coins</b></div>
-            <div>${owned ? "✅ Redan i inventory" : `<button class="chat-send" onclick="buyItem('${item.id}', ${item.price})">Köp</button>`}</div>
-          </div>
-        `;
-      }).join("");
-      list.innerHTML = `<div class="shop-balance">🪙 Coins: ${currentUser.coins || 0}</div><div class="shop-grid">${rows}</div>`;
-    }
-
-    async function buyItem(item, price) {
-      if (!currentUser || (currentUser.coins || 0) < price) return alert("Inte tillräckligt med coins.");
-      const inv = currentUser.inventory || {};
-      const equipped = currentUser.equipped || {};
-      if (inv[item]) return alert("Du har redan denna item.");
-      inv[item] = true;
-      equipped[item] = true;
-      await db.ref(`accounts/${currentUser.id}`).update({ coins: (currentUser.coins || 0) - price, inventory: inv, equipped });
-    }
-
-    function renderInventory() {
-      const list = document.getElementById("inventoryList");
-      if (!currentUser) { list.textContent = "Logga in för inventory."; return; }
-      const inv = currentUser.inventory || {};
-      const equipped = currentUser.equipped || {};
-      const ownedItems = shopItems.filter((item) => inv[item.id]);
-      if (!ownedItems.length) {
-        list.innerHTML = `<div class="shop-balance">Du har inga items ännu.</div><div class="shop-item-desc">Köp saker i shoppen för att kunna aktivera dem här.</div>`;
-        return;
-      }
-      const rows = ownedItems.map((item) => {
-        const isOn = !!equipped[item.id];
-        return `
-          <div class="shop-item owned">
-            <div class="shop-item-top">
-              <div class="shop-item-title">${item.title}</div>
-              <div class="tag ${isOn ? "owned" : "missing"}">${isOn ? "På" : "Av"}</div>
-            </div>
-            <div class="shop-item-desc">${item.desc || "Kosmetisk effekt för chatt/profil."}</div>
-            <div><button class="chat-send" onclick="toggleEquipItem('${item.id}')">${isOn ? "Ta av" : "Sätt på"}</button></div>
-          </div>
-        `;
-      }).join("");
-      list.innerHTML = `<div class="shop-balance">🎒 Dina items (${ownedItems.length})</div><div class="shop-grid">${rows}</div>`;
-    }
-
-    async function toggleEquipItem(itemId) {
-      if (!currentUser) return;
-      const inv = currentUser.inventory || {};
-      if (!inv[itemId]) return alert("Du äger inte denna item.");
-      const equipped = { ...(currentUser.equipped || {}) };
-      equipped[itemId] = !equipped[itemId];
-      await db.ref(`accounts/${currentUser.id}/equipped`).set(equipped);
-    }
-
-    async function adminAction(action) {
-      if (!adminUnlocked) return alert("Adminpanelen är låst.");
-      if ((document.getElementById("adminPassword").value || "") !== ADMIN_PASSWORD) return alert("Skriv admin-lösenord igen för att bekräfta åtgärden.");
-      const username = sanitizeName(document.getElementById("adminTarget").value);
-      const snap = await db.ref("accounts").orderByChild("usernameLower").equalTo(username.toLowerCase()).once("value");
-      if (!snap.exists()) return alert("Mål hittades inte.");
-      let target = null;
-      snap.forEach((c) => { if (!target) target = { id: c.key, ...c.val() }; });
-      if (action === "kick") await db.ref(`accounts/${target.id}`).update({ forcedLogout: true, sessionActive: false });
-      if (action === "timeout") await db.ref(`accounts/${target.id}`).update({ timeoutUntil: Date.now() + 5 * 60 * 1000 });
-      if (action === "ban") await db.ref(`accounts/${target.id}`).update({ banned: true, sessionActive: false, forcedLogout: true });
-      if (action === "verify") await db.ref(`accounts/${target.id}`).update({ verified: true });
-      if (action === "coins") {
-        const amount = Number(document.getElementById("adminCoins").value || 0);
-        await db.ref(`accounts/${target.id}/coins`).set((target.coins || 0) + amount);
-      }
-      alert("Admin-åtgärd utförd.");
-    }
-
-    function startGameTracker() {
-      if (gameTrackerInterval) clearInterval(gameTrackerInterval);
-      gameTrackerInterval = setInterval(async () => {
-        if (!isActivelyPlayingGame()) {
-          activeGameLastTick = Date.now();
-          return;
-        }
-        const now = Date.now();
-        if (!activeGameLastTick) activeGameLastTick = now;
-        const delta = Math.max(0, Math.min(now - activeGameLastTick, 1500));
-        activeGameLastTick = now;
-        const matching = questsConfig.filter((q) => q.game === activeGame);
-        if (!matching.length) return;
-        for (const q of matching) {
-          const current = currentUser.quests?.[q.id] || { progressMs: 0, claimed: false };
-          const next = Math.min(current.progressMs + delta, q.targetMs);
-          if (next === current.progressMs) continue;
-          await db.ref(`accounts/${currentUser.id}/quests/${q.id}`).update({ progressMs: next, claimed: !!current.claimed });
-        }
-      }, 1000);
-    }
-
-    function startIntroLoader() {
-      const intro = document.getElementById("introOverlay");
-      if (!intro || !introLoaderFill || !introLoaderMessage) return;
-      const duration = Math.floor(Math.random() * 3000) + 3000; // 3-6s
-      const slowDownStart = Math.floor(duration * 0.82);
-      introLoaderFill.style.transform = "scaleX(0)";
-      introLoaderMessage.textContent = loadingMessages[Math.floor(Math.random() * loadingMessages.length)];
-      let startTs = null;
-
-      const animate = (ts) => {
-        if (startTs === null) startTs = ts;
-        const elapsed = ts - startTs;
-        let progress = 0;
-        if (elapsed < slowDownStart) {
-          const t = elapsed / slowDownStart;
-          progress = 95 * (1 - Math.pow(1 - t, 3));
-        } else if (elapsed < duration) {
-          const t = (elapsed - slowDownStart) / (duration - slowDownStart);
-          progress = 95 + 5 * (1 - Math.pow(1 - t, 2));
-        } else {
-          introLoaderFill.style.transform = "scaleX(1)";
-          setTimeout(() => {
-            intro.classList.add("fade-out");
-            setTimeout(() => intro.remove(), 560);
-          }, 180);
-          return;
-        }
-        introLoaderFill.style.transform = `scaleX(${Math.min(progress, 100) / 100})`;
-        requestAnimationFrame(animate);
-      };
-
-      requestAnimationFrame(animate);
-    }
-
-    async function restoreSessionFromStorage() {
-      if (!db) return;
-      const raw = localStorage.getItem(SESSION_KEY);
-      if (!raw) return;
-      let sess = null;
-      try { sess = JSON.parse(raw); } catch (e) { localStorage.removeItem(SESSION_KEY); return; }
-      if (!sess || !sess.accountId || !sess.sessionId) { localStorage.removeItem(SESSION_KEY); return; }
-
-      const snap = await db.ref(`accounts/${sess.accountId}`).once("value");
-      if (!snap.exists()) { localStorage.removeItem(SESSION_KEY); return; }
-      const acc = snap.val() || {};
-      if (acc.banned) { localStorage.removeItem(SESSION_KEY); return; }
-
-      await db.ref(`accounts/${sess.accountId}`).update({ sessionActive: true, sessionId: sess.sessionId, lastSeen: Date.now(), forcedLogout: false });
-      currentUser = { id: sess.accountId, ...acc, sessionId: sess.sessionId };
-      userRef = db.ref(`accounts/${sess.accountId}`);
-      watchCurrentUser();
-      renderProfile();
-      refreshChatStatus();
-      setChatTab(activeChatTab);
     }
 
     (function init() {
       const saved = localStorage.getItem("theme");
-      if (saved) {
-        document.body.className = saved;
-        document.documentElement.classList.remove("theme-blue","theme-red","theme-green","theme-yellow","theme-orange","theme-gray","theme-purple","theme-pink","theme-cyan","theme-sunset","theme-neon");
-        document.documentElement.classList.add(`theme-${saved}`);
-      }
-      saveFavorites();
+      if (saved) document.body.className = saved;
       renderRecommended();
       renderGames(files);
-      searchMeta.textContent = "Visar alla spel";
-      startIntroLoader();
-      refreshChatStatus();
 
       document.querySelectorAll(".sidebar .sidebar-btn").forEach((btn) => {
         btn.addEventListener("click", closeSidebar);
       });
 
+      const savedName = localStorage.getItem("chatName");
+      chatNameEl.value = savedName ? sanitizeName(savedName) : `Gäst${Math.floor(1000 + Math.random() * 9000)}`;
+
       chatSendEl.addEventListener("click", sendChatMessage);
       chatInputEl.addEventListener("keydown", (e) => {
         if (e.key === "Enter") sendChatMessage();
       });
-      privateSendEl.addEventListener("click", sendPrivateMessage);
-      privateInputEl.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") sendPrivateMessage();
-      });
-      updateChatToggleUI();
-      setChatTab("global");
 
       const notConfigured = (
         !firebaseConfig.apiKey || firebaseConfig.apiKey.includes("DIN_") ||
@@ -2456,7 +1127,7 @@ function showInventory() {
 
       try {
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        db = firebase.database();
+        const db = firebase.database();
 
         // NYTT: Aktiva spelare (presence)
         const presenceRef = db.ref("presence");
@@ -2485,9 +1156,9 @@ function showInventory() {
           activePlayersEl.textContent = "Aktiva spelare: --";
         });
       chatRef = db.ref("global-chat");
-        chatRef.limitToLast(120).on("child_added", (snap) => { addChatMessage(snap.val() || {}); });
-        startGameTracker();
-        restoreSessionFromStorage();
+        chatRef.limitToLast(120).on("child_added", (snap) => {
+          addChatMessage(snap.val() || {});
+        });
       } catch (err) {
         activePlayersEl.textContent = "Aktiva spelare: --";
         addSystemChatMessage("Kunde inte ansluta chatten.");
@@ -2497,3 +1168,18 @@ function showInventory() {
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
