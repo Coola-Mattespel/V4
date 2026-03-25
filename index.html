@@ -2096,6 +2096,50 @@ function _todayKeyDate(){
   var d=new Date();
   return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }
+function _usernameKey(u){return (u||"").trim().toLowerCase();}
+function _getLocalAccountByUsername(u){
+  var target=_usernameKey(u);
+  for(var i=0;i<localStorage.length;i++){
+    var k=localStorage.key(i)||"";
+    if(!k.startsWith("acc_"))continue;
+    var raw=k.substring(4);
+    if(_usernameKey(raw)===target)return {username:raw,password_hash:localStorage.getItem(k)||"",banned:!!localStorage.getItem("banned_"+raw),is_admin:isUserAdmin(raw)};
+  }
+  return null;
+}
+function _findCloudAccount(u){
+  if(_firestore){
+    var ulc=_usernameKey(u);
+    return _firestore.collection("accounts").where("username_lc","==",ulc).limit(1).get().then(function(snap){
+      if(!snap.empty){
+        var doc=snap.docs[0];
+        var d=doc.data()||{};
+        d._id=doc.id;
+        return d;
+      }
+      return _firestore.collection("accounts").where("username","==",u).limit(1).get().then(function(snap2){
+        if(snap2.empty)return null;
+        var doc2=snap2.docs[0];
+        var d2=doc2.data()||{};
+        d2._id=doc2.id;
+        return d2;
+      });
+    });
+  }
+  if(_sb){
+    return _sb.from("accounts").select("*").eq("username_lc",_usernameKey(u)).limit(1).then(function(res){
+      if(res.error||!res.data||!res.data.length)return null;
+      return res.data[0];
+    });
+  }
+  return Promise.resolve(null);
+}
+function _createCloudAccount(u,p){
+  var payload={username:u,username_lc:_usernameKey(u),password_hash:btoa(p),is_admin:isUserAdmin(u),banned:false,created_at:Date.now()};
+  if(_firestore)return _firestore.collection("accounts").add(payload);
+  if(_sb)return _sb.from("accounts").insert(payload);
+  return Promise.reject(new Error("Ingen molndatabas tillgänglig"));
+}
 
 function doLogin(){
   var u=document.getElementById("loginUser").value.trim();
@@ -2114,15 +2158,15 @@ function doLogin(){
     toast("Välkommen, "+u+"! (Admin)");
     return;
   }
-  if(_sb){
-    // --- Firebase-flöde (konton sparas online) ---
+  if(_firestore||_sb){
+    // --- Molnflöde (konton sparas online) ---
     if(mode==="reg"){
-      _sb.from("accounts").select("username").eq("username",u).single().then(function(res){
-        if(res.data){err.textContent="Användarnamn taget";err.style.display="block";return;}
+      _findCloudAccount(u).then(function(existing){
+        if(existing){err.textContent="Användarnamn taget";err.style.display="block";return;}
         var initSettings={animations:true,sounds:true,darkMode:true,theme:"purple",lang:"sv"};
-        _sb.from("accounts").insert({username:u,password_hash:btoa(p),is_admin:isUserAdmin(u),banned:false}).then(function(r){
-          if(r.error){err.textContent="Fel vid registrering: "+r.error.message;err.style.display="block";return;}
-          _sb.from("user_data").insert({username:u,coins:50,xp:0,level:1,favorites:[],games_played:0,settings:initSettings}).then(function(){});
+        _createCloudAccount(u,p).then(function(){
+          if(_firestore)_firestore.collection("user_data").doc(u).set({username:u,coins:50,xp:0,level:1,favorites:[],games_played:0,settings:initSettings},{merge:true}).catch(function(){});
+          else if(_sb)_sb.from("user_data").insert({username:u,coins:50,xp:0,level:1,favorites:[],games_played:0,settings:initSettings}).then(function(){});
           localStorage.setItem("acc_"+u,btoa(p));
           loadState(u);state.user=u;state.isAdmin=isUserAdmin(u);
           localStorage.setItem("lastUser",u);
@@ -2130,48 +2174,56 @@ function doLogin(){
           state.coins=50;updateHUD();saveState();
           closeLoginModal();finishLogin();
           toast("Välkommen, "+u+"! +50 mynt");
+        }).catch(function(e){
+          err.textContent="Fel vid registrering: "+((e&&e.message)||"okänt fel");
+          err.style.display="block";
         });
       });
     }else{
-      _sb.from("accounts").select("*").eq("username",u).single().then(function(res){
-        if(!res.data){err.textContent="Fel användarnamn eller lösenord";err.style.display="block";return;}
-        var acc=res.data;
+      _findCloudAccount(u).then(function(acc){
+        if(!acc){err.textContent="Fel användarnamn eller lösenord";err.style.display="block";return;}
         if(acc.banned){err.textContent="Ditt konto är bannat";err.style.display="block";return;}
         if(acc.password_hash!==btoa(p)){err.textContent="Fel användarnamn eller lösenord";err.style.display="block";return;}
-        _sb.from("user_data").select("*").eq("username",u).single().then(function(ud){
-          var d=ud.data||{};
-          state.user=u;
+        var userDocPromise=_firestore
+          ? _firestore.collection("user_data").doc(acc.username||u).get().then(function(ud){return (ud&&ud.data)?(ud.data()||{}):{};})
+          : _sb.from("user_data").select("*").eq("username",acc.username||u).limit(1).then(function(ud){return (ud&&ud.data&&ud.data[0])||{};});
+        userDocPromise.then(function(d){
+          var resolvedUser=acc.username||u;
+          state.user=resolvedUser;
           state.coins=d.coins||0;state.xp=d.xp||0;state.level=d.level||1;
           state.favorites=d.favorites||[];state.gamesPlayed=d.games_played||0;
           state.settings=Object.assign({animations:true,sounds:true,darkMode:true,theme:"purple",lang:"sv"},d.settings||{});
-          state.isAdmin=acc.is_admin||isUserAdmin(u)||(btoa(btoa(p))===ADMINPW);
-          localStorage.setItem("acc_"+u,btoa(p));
-          localStorage.setItem("lastUser",u);
-          localStorage.setItem("jspel_"+u,JSON.stringify({coins:state.coins,xp:state.xp,level:state.level,favorites:state.favorites,gamesPlayed:state.gamesPlayed,settings:state.settings}));
+          state.isAdmin=acc.is_admin||isUserAdmin(resolvedUser)||(btoa(btoa(p))===ADMINPW);
+          localStorage.setItem("acc_"+resolvedUser,btoa(p));
+          localStorage.setItem("lastUser",resolvedUser);
+          localStorage.setItem("jspel_"+resolvedUser,JSON.stringify({coins:state.coins,xp:state.xp,level:state.level,favorites:state.favorites,gamesPlayed:state.gamesPlayed,settings:state.settings}));
           closeLoginModal();finishLogin();
-          toast("Välkommen tillbaka, "+u+"!");
+          toast("Välkommen tillbaka, "+resolvedUser+"!");
           applyDarkMode(state.settings.darkMode===true);
           if(state.settings.theme&&state.settings.theme!=="purple")applyTheme(state.settings.theme);
         });
+      }).catch(function(e){
+        err.textContent="Fel vid inloggning: "+((e&&e.message)||"okänt fel");
+        err.style.display="block";
       });
     }
   }else{
     // --- Lokalt läge (localStorage) ---
     if(mode==="reg"){
-      if(localStorage.getItem("acc_"+u)){err.textContent="Användarnamn taget";err.style.display="block";return;}
+      if(_getLocalAccountByUsername(u)){err.textContent="Användarnamn taget";err.style.display="block";return;}
       localStorage.setItem("acc_"+u,btoa(p));
       loadState(u);state.user=u;state.isAdmin=isUserAdmin(u);
       localStorage.setItem("lastUser",u);
       addCoins(50,"Välkomstbonus!");
       toast("Välkommen, "+u+"! +50 mynt");
     }else{
-      if(localStorage.getItem("banned_"+u)){err.textContent="Ditt konto är bannat";err.style.display="block";return;}
-      var stored=localStorage.getItem("acc_"+u);
-      if(!stored||stored!==btoa(p)){err.textContent="Fel användarnamn eller lösenord";err.style.display="block";return;}
-      loadState(u);state.user=u;
-      state.isAdmin=isUserAdmin(u)||(btoa(btoa(p))===ADMINPW);
-      localStorage.setItem("lastUser",u);
-      toast("Välkommen tillbaka, "+u+"!");
+      var localAcc=_getLocalAccountByUsername(u);
+      if(!localAcc||localAcc.password_hash!==btoa(p)){err.textContent="Fel användarnamn eller lösenord";err.style.display="block";return;}
+      if(localAcc.banned){err.textContent="Ditt konto är bannat";err.style.display="block";return;}
+      loadState(localAcc.username);state.user=localAcc.username;
+      state.isAdmin=isUserAdmin(localAcc.username)||(btoa(btoa(p))===ADMINPW);
+      localStorage.setItem("lastUser",localAcc.username);
+      toast("Välkommen tillbaka, "+localAcc.username+"!");
     }
     closeLoginModal();
     finishLogin();
