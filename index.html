@@ -753,22 +753,14 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;background:var
 <footer class="footer">🎮 Coola Mattespel V4 &bull; Sprid sidan till alla du känner!</footer>
 
 <script>
-
-/* =======================================================
-   FIREBASE-KONFIGURATION (för konton över enheter)
-   1. Skapa ett projekt i https://console.firebase.google.com
-   2. Aktivera Realtime Database
-   3. Klistra in din web app-konfiguration nedan
-   4. Fyll i en egen adapter om du vill ersätta localStorage-flödet fullt ut
-   ======================================================= */
-var FIREBASE_CONFIG={
-  apiKey:"AIzaSyAVkdpk71Oe8wEQz-kzKSbaqhCA5xqUD28",
-  authDomain:"v5simga.firebaseapp.com",
-  databaseURL:"https://v5simga-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId:"v5simga",
-  storageBucket:"v5simga.firebasestorage.app",
-  messagingSenderId:"611002035280",
-  appId:"1:611002035280:web:964ca0a72daa2a69e53555"
+const firebaseConfig = {
+  apiKey: "AIzaSyDaqGgaoDtNwiBQQF_D0y9PpGwHmFPvP9o",
+  authDomain: "alphagamesite.firebaseapp.com",
+  databaseURL: "https://alphagamesite-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "alphagamesite",
+  storageBucket: "alphagamesite.firebasestorage.app",
+  messagingSenderId: "195428890908",
+  appId: "1:195428890908:web:7633b44fe156fd25a2a2d9"
 };
 var _sb=null;
 var _rtdb=null;
