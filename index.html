@@ -468,7 +468,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;background:var
     <div class="logo"><div class="spark s2"></div><div class="spark s3"></div>
       <div class="logoInner"><img src="logo.png" alt="Logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
       <span class="logoEmoji" style="display:none">🎮</span></div></div>
-    <div class="brandText"><div class="title">Anchor Arcade</div><div class="sub">1 946+ games</div></div>
+    <div class="brandText"><div class="title">Anchor's Arcade</div><div class="sub">1 946+ games</div></div>
   </a>
   <div class="topRight">
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
@@ -651,7 +651,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;background:var
 </div>
 <div class="panelOverlay" id="linksOverlay" onclick="if(event.target===this)closePanelOverlay('links')">
   <div class="panelWin" style="max-width:500px">
-    <div class="panelHead"><h3>🔗 <span data-i18n="nav_links">Anchor Arcade Links</span></h3><button class="closeBtn" onclick="closePanelOverlay('links')">✕</button></div>
+    <div class="panelHead"><h3>🔗 <span data-i18n="nav_links">Anchor's Arcade Links</span></h3><button class="closeBtn" onclick="closePanelOverlay('links')">✕</button></div>
     <div class="panelBody" id="linksOverlayBody"></div>
   </div>
 </div>
@@ -681,7 +681,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;background:var
     <div class="heroCenter">
       <h1 data-i18n="heroTitle">Anchor Games</h1>
       <p class="hero-subtitle">Cool gamesite with over 1946+ games</p>
-      <div class="discordBanner" onclick="window.open('https://discord.gg/j5AFhXTGvd','_blank','noopener')">Join the Discord: <a href="https://discord.gg/j5AFhXTGvd" target="_blank" rel="noopener" onclick="event.stopPropagation()">https://discord.gg/j5AFhXTGvd</a></div>
+      <div class="discordBanner" onclick="window.open('https://discord.gg/b5rEZkEWFe','_blank','noopener')">Join the Discord: <a href="https://discord.gg/b5rEZkEWFe" target="_blank" rel="noopener" onclick="event.stopPropagation()">https://discord.gg/b5rEZkEWFe</a></div>
       <div class="hintRow">
         <span class="hintPill" data-i18n="pill_games">🎮 1 946 games</span>
         <span class="hintPill" data-i18n="pill_coins">🏆 Collect coins</span>
@@ -702,7 +702,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;background:var
   <div class="gamesGrid" id="gamesGrid"></div>
 </main>
 
-<footer class="footer">⚓ Anchor Arcade V4 &bull; Most sigma game site</footer>
+<footer class="footer">⚓ Anchor's Arcade V4 &bull; Most sigma game site</footer>
 
 <script>
 
@@ -799,7 +799,7 @@ var _loaderMsgs=[
       "Rizz",
       "Maybe loading sumthing",
       "RIP V2",
-      "Anchor Arcade is BEST",
+      "Anchor's Arcade is BEST",
       "Ok, Alright, skibidi",
       "Mi mi mi mi mm im imi ",
       "Loading nothing",
@@ -1472,11 +1472,11 @@ function closeRoadmapPage(){
 function renderLinksPanel(){
   var el=document.getElementById('linksOverlayBody');if(!el)return;
   el.innerHTML=''
-    +'<div style="font-size:15px;font-weight:700;color:var(--w);margin-bottom:12px">Active Anchor Arcade links:</div>'
+    +'<div style="font-size:15px;font-weight:700;color:var(--w);margin-bottom:12px">Active Anchor&#39;s Arcade links:</div>'
     +'<div style="display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.5">'
-    +'<div>V5: <a href="https://anchor-arcade.github.io/V5/" target="_blank" rel="noopener">https://anchor-arcade.github.io/V5/</a></div>'
-    +'<div>V4: <a href="https://anchor-arcade.github.io/V4/" target="_blank" rel="noopener">https://anchor-arcade.github.io/V4/</a></div>'
-    +'<div>Discord: <a href="https://discord.gg/j5AFhXTGvd" target="_blank" rel="noopener">https://discord.gg/j5AFhXTGvd</a></div>'
+    +'<div>V5: <a href="https://anchors-arcade.github.io/V5/" target="_blank" rel="noopener">https://anchors-arcade.github.io/V5/</a></div>'
+    +'<div>V4: <a href="https://anchors-arcade.github.io/V4/" target="_blank" rel="noopener">https://anchors-arcade.github.io/V4/</a></div>'
+    +'<div>Discord: <a href="https://discord.gg/b5rEZkEWFe" target="_blank" rel="noopener">https://discord.gg/b5rEZkEWFe</a></div>'
     +'<div style="margin-top:6px">RIP V2 🪦</div>'
     +'</div>';
 }
@@ -1750,7 +1750,7 @@ function _renderChangelogHTML(el){
   var tagColors={new:"#7fffb3",update:"#7ec8ff",launch:"#ffdd57"};
   var tagLabels={new:"NYTT",update:"UPDATE",launch:"LAUNCH"};
   var h='<div class="updates-heading"><span>📢</span> Uppdateringar</div>';
-  h+='<div class="updates-sub">Latest updates and changes on Anchor Arcade links</div>';
+  h+='<div class="updates-sub">Latest updates and changes on Anchor&#39;s Arcade links</div>';
   logs.forEach(function(log){
     var tc=tagColors[log.tag]||"var(--p1)";
     var lbl=tagLabels[log.tag]||log.tag.toUpperCase();
@@ -2954,7 +2954,7 @@ function closeSoundboardWindow(){
 
 document.addEventListener("DOMContentLoaded",function(){
   // Show loader immediately on page load
-  showLoader("Anchor Arcade");
+  showLoader("Anchor's Arcade");
   _loadRemoteGameUrlMap().then(function(){renderGames();});
   document.querySelectorAll(".filterBtn").forEach(function(btn){
     btn.addEventListener("click",function(){
@@ -3042,7 +3042,7 @@ document.addEventListener("DOMContentLoaded",function(){
 
 // =================== i18n TRANSLATIONS ===================
 var LANG={
-en:{heroTitle:"Anchor Arcade",pill_games:"🎮 1,946 games",pill_coins:"🏆 Collect coins",
+en:{heroTitle:"Anchor's Arcade",pill_games:"🎮 1,946 games",pill_coins:"🏆 Collect coins",
   pill_favs:"⭐ Save favorites",pill_quests:"📋 Complete quests",allGames:"All games",
   favBtnLabel:"⭐ Favorites",searchPlaceholder:"Search among 1 946 games...",
   back:"← Back",fullscreen:"⛶ Fullscreen",chatTitle:"💬 Chat",
@@ -3058,7 +3058,7 @@ en:{heroTitle:"Anchor Arcade",pill_games:"🎮 1,946 games",pill_coins:"🏆 Col
   nav_quests:"Quests",nav_leaderboard:"Leaderboard",nav_achievements:"Achievements",nav_soundboard:"Soundboard",nav_shop:"Shop",quest_claim:"Claim",quest_claimed:"✅ Claimed",
   quest_daily:"Daily",quest_social:"Social",quest_milestone:"Milestones",quest_no_login:"Log in to see quests",ach_no_login:"Log in to see achievements",lb_title:"Leaderboard",shop_title:"Shop",
   streak_days:"day streak 🔥",rate_title:"Rate game",profile_edit:"Edit",profile_view:"View profile",profile_joined:"Joined",profile_showcase:"Showcase",profile_pinned:"Pinned games",
-  rec_worldguessr:"Guess countries",rec_eaglercraft:"Minecraft but tougher",rec_summerrider:"Snowrider without snow",nav_links:"Anchor Arcade links",recTitle:"✨ Recommended games"}
+  rec_worldguessr:"Guess countries",rec_eaglercraft:"Minecraft but tougher",rec_summerrider:"Snowrider without snow",nav_links:"Anchor's Arcade links",recTitle:"✨ Recommended games"}
 };
 LANG.sv=Object.assign({},LANG.en);LANG.es=Object.assign({},LANG.en);LANG.fr=Object.assign({},LANG.en);LANG.de=Object.assign({},LANG.en);LANG.ru=Object.assign({},LANG.en);LANG.zh=Object.assign({},LANG.en);
 
